@@ -20,6 +20,12 @@ goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
 
 
+// TODO(benvanik): PinchRecognizer
+// TODO(benvanik): SwipeRecognizer
+// TODO(benvanik): RotationRecognizer
+// TODO(benvanik): LongPressRecognizer
+
+
 /**
  * Creates a new {@see goog.dom.gestures.PanRecognizer}.
  *
