@@ -69,6 +69,48 @@ goog.dom.gestures.Recognizer = function(target) {
   this.state_ = goog.dom.gestures.State.POSSIBLE;
 
   /**
+   * X offset of the gesture from the top-left of the container element.
+   * @private
+   * @type {number}
+   */
+  this.offsetX_ = 0;
+
+  /**
+   * Y offset of the gesture from the top-left of the container element.
+   * @private
+   * @type {number}
+   */
+  this.offsetY_ = 0;
+
+  /**
+   * X offset of the gesture from the top-left of the visible window.
+   * @private
+   * @type {number}
+   */
+  this.clientX_ = 0;
+
+  /**
+   * Y offset of the gesture from the top-left of the visible window.
+   * @private
+   * @type {number}
+   */
+  this.clientY_ = 0;
+
+  /**
+   * X offset of the gesture from the top-left of the page.
+   * @private
+   * @type {number}
+   */
+  this.pageX_ = 0;
+
+  /**
+   * Y offset of the gesture from the top-left of the page.
+   * @private
+   * @type {number}
+   */
+  this.pageY_ = 0;
+
+  /**
    * Listeners for recognizer updates.
    * @private
    * @type {!Array.<!goog.dom.gestures.Recognizer.Listener_>}
@@ -227,6 +269,58 @@ goog.dom.gestures.Recognizer.prototype.isValidTransition_ =
 
 
 /**
+ * @return {number} X offset of the gesture from the top-left of the container
+ *     element.
+ */
+goog.dom.gestures.Recognizer.prototype.getOffsetX = function() {
+  return this.offsetX_;
+};
+
+
+/**
+ * @return {number} Y offset of the gesture from the top-left of the container
+ *     element.
+ */
+goog.dom.gestures.Recognizer.prototype.getOffsetY = function() {
+  return this.offsetY_;
+};
+
+
+/**
+ * @return {number} X offset of the gesture from the top-left of the browser
+ *     window.
+ */
+goog.dom.gestures.Recognizer.prototype.getClientX = function() {
+  return this.clientX_;
+};
+
+
+/**
+ * @return {number} Y offset of the gesture from the top-left of the browser
+ *     window.
+ */
+goog.dom.gestures.Recognizer.prototype.getClientY = function() {
+  return this.clientY_;
+};
+
+
+/**
+ * @return {number} X offset of the gesture from the top-left of the page.
+ */
+goog.dom.gestures.Recognizer.prototype.getPageX = function() {
+  return this.pageX_;
+};
+
+
+/**
+ * @return {number} Y offset of the gesture from the top-left of the page.
+ */
+goog.dom.gestures.Recognizer.prototype.getPageY = function() {
+  return this.pageY_;
+};
+
+
+/**
  * Resets all state to the default values.
  * This will be called when the state machine transitions back to
  * {@see goog.dom.gestures.State.POSSIBLE}.
@@ -234,6 +328,7 @@ goog.dom.gestures.Recognizer.prototype.isValidTransition_ =
  */
 goog.dom.gestures.Recognizer.prototype.reset = function() {
   this.setState(goog.dom.gestures.State.POSSIBLE);
+  this.updateLocation();
 };
 
 
@@ -269,6 +364,55 @@ goog.dom.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
   // Reset to POSSIBLE if requested
   if (opt_reset) {
     this.reset();
+  }
+};
+
+
+/**
+ * Updates the gesture location based on the given touches.
+ * If there are no touches the location will be reset. If there are multiple
+ * touches the centroid will be used.
+ * @protected
+ * @param {Array.<!TouchEvent>|TouchList=} opt_touches A list of active touches.
+ */
+goog.dom.gestures.Recognizer.prototype.updateLocation = function(opt_touches) {
+  if (!opt_touches || !opt_touches.length) {
+    // No touches - reset
+    this.offsetX_ = this.offsetY_ = 0;
+    this.clientX_ = this.clientY_ = 0;
+    this.pageX_ = this.pageY_ = 0;
+  } else if (opt_touches.length == 1) {
+    // One touch - fast common case
+    var touch = opt_touches[0];
+    this.offsetX_ = touch.clientX - this.target_.clientLeft;
+    this.offsetY_ = touch.clientY - this.target_.clientTop;
+    this.clientX_ = touch.clientX;
+    this.clientY_ = touch.clientY;
+    this.pageX_ = touch.pageX;
+    this.pageY_ = touch.pageY;
+  } else {
+    // Compute centroid
+    // NOTE: this may be possible to optimize by doing the math once and
+    //     offseting by the diff between a single touches offset/client/page
+    this.offsetX_ = this.offsetY_ = 0;
+    this.clientX_ = this.clientY_ = 0;
+    this.pageX_ = this.pageY_ = 0;
+    for (var n = 0; n < opt_touches.length; n++) {
+      var touch = opt_touches[n];
+      this.offsetX_ += touch.offsetX;
+      this.offsetY_ += touch.offsetY;
+      this.clientX_ += touch.clientX;
+      this.clientY_ += touch.clientY;
+      this.pageX_ += touch.pageX;
+      this.pageY_ += touch.pageY;
+    }
+    var count = opt_touches.length;
+    this.offsetX_ = (this.offsetX_ / count) - this.target_.clientLeft;
+    this.offsetY_ = (this.offsetY_ / count) - this.target_.clientTop;
+    this.clientX_ /= count;
+    this.clientY_ /= count;
+    this.pageX_ /= count;
+    this.pageY_ /= count;
   }
 };
 

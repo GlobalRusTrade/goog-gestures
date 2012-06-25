@@ -53,16 +53,11 @@ goog.dom.gestures.TapRecognizer = function(target) {
   this.moveHysteresis_ = 6;
 
   /**
-   * Tracks information about each touch, such as distance moved/start point.
-   * The hash is keyed on {@code Touch.identifier}.
+   * The total distance the center has moved, in px.
    * @private
-   * @type {!Object.<{
-   *   lastX: number,
-   *   lastY: number,
-   *   distance: number
-   * }>}
+   * @type {number}
    */
-  this.touchTrackers_ = {};
+  this.centroidDistance_ = 0;
 };
 goog.inherits(goog.dom.gestures.TapRecognizer, goog.dom.gestures.Recognizer);
 
@@ -111,8 +106,7 @@ goog.dom.gestures.TapRecognizer.prototype.setTouchCount = function(value) {
  * @override
  */
 goog.dom.gestures.TapRecognizer.prototype.reset = function() {
-  // There may be a less-garbagy way, but I don't know it
-  this.touchTrackers_ = {};
+  this.centroidDistance_ = 0;
   goog.base(this, 'reset');
 };
 
@@ -125,21 +119,13 @@ goog.dom.gestures.TapRecognizer.prototype.touchesBegan = function(e) {
     return;
   }
 
-  if (e.touches.length > this.touchCount_) {
+  if (e.targetTouches.length > this.touchCount_) {
     // Exceeded touch count, no way to recognize
     this.setState(goog.dom.gestures.State.FAILED);
     return;
   }
 
-  // Start tracking the touches
-  for (var n = 0; n < e.changedTouches.length; n++) {
-    var touch = e.changedTouches[n];
-    this.touchTrackers_[touch.identifier] = {
-      lastX: touch.pageX,
-      lastY: touch.pageY,
-      distance: 0
-    };
-  }
+  this.updateLocation(e.targetTouches);
 };
 
 
@@ -151,22 +137,21 @@ goog.dom.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
     return;
   }
 
-  for (var n = 0; n < e.changedTouches.length; n++) {
-    var touch = e.changedTouches[n];
-    var tracker = this.touchTrackers_[touch.identifier];
-    if (!tracker) {
-      continue;
-    }
-    var dx = touch.pageX - tracker.lastX;
-    var dy = touch.pageY - tracker.lastY;
-    tracker.lastX = touch.pageX;
-    tracker.lastY = touch.pageY;
-    tracker.distance += Math.sqrt(dx * dx + dy * dy);
-    if (tracker.distance > this.moveHysteresis_) {
-      // Touch has moved too much - fail
-      this.setState(goog.dom.gestures.State.FAILED);
-      return;
-    }
+  // Grab the latest centroid position
+  var oldPageX = this.getPageX();
+  var oldPageY = this.getPageY();
+  this.updateLocation(e.targetTouches);
+  var pageX = this.getPageX();
+  var pageY = this.getPageY();
+
+  // Compute distance moved
+  var dx = pageX - oldPageX;
+  var dy = pageY - oldPageY;
+  this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
+  if (this.centroidDistance_ >= this.moveHysteresis_) {
+    // Touch has moved too much - fail
+    this.setState(goog.dom.gestures.State.FAILED);
+    return;
   }
 };
 
@@ -178,12 +163,12 @@ goog.dom.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.dom.gestures.State.POSSIBLE) {
     // TODO(benvanik): tap count
     // TODO(benvanik): touch count
-    if (e.touches.length + e.changedTouches.length == this.touchCount_) {
+    if (e.targetTouches.length + e.changedTouches.length == this.touchCount_) {
       this.setState(goog.dom.gestures.State.RECOGNIZED);
     }
   }
 
-  if (!e.touches.length) {
+  if (!e.targetTouches.length) {
     this.reset();
   }
 };

@@ -17,6 +17,7 @@
 goog.provide('goog.dom.gestures.exports');
 
 goog.require('goog.dom.gestures');
+goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.Recognizer');
 goog.require('goog.dom.gestures.State');
 goog.require('goog.dom.gestures.TapRecognizer');
@@ -34,12 +35,16 @@ goog.dom.gestures.exports.ENABLE_EXPORTS = false;
 
 
 if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
+  // Root namespace
   goog.exportSymbol('goog.dom.gestures', goog.dom.gestures);
   goog.exportProperty(
-      goog.dom.gestures,
-      'createTapGesture',
+      goog.dom.gestures, 'createPanGesture',
+      goog.dom.gestures.createPanGesture);
+  goog.exportProperty(
+      goog.dom.gestures, 'createTapGesture',
       goog.dom.gestures.createTapGesture);
 
+  // State
   goog.exportSymbol('goog.dom.gestures.State', goog.dom.gestures.State);
   goog.exportProperty(
       goog.dom.gestures.State, 'POSSIBLE',
@@ -63,29 +68,57 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
       goog.dom.gestures.State, 'RECOGNIZED',
       goog.dom.gestures.State.RECOGNIZED);
 
+  // Recognizer
   goog.exportProperty(
-      goog.dom.gestures.Recognizer.prototype,
-      'getTarget',
+      goog.dom.gestures.Recognizer.prototype, 'getTarget',
       goog.dom.gestures.Recognizer.prototype.getTarget);
   goog.exportProperty(
-      goog.dom.gestures.Recognizer.prototype,
-      'isEnabled',
+      goog.dom.gestures.Recognizer.prototype, 'isEnabled',
       goog.dom.gestures.Recognizer.prototype.isEnabled);
   goog.exportProperty(
-      goog.dom.gestures.Recognizer.prototype,
-      'setEnabled',
+      goog.dom.gestures.Recognizer.prototype, 'setEnabled',
       goog.dom.gestures.Recognizer.prototype.setEnabled);
   goog.exportProperty(
-      goog.dom.gestures.Recognizer.prototype,
-      'getState',
+      goog.dom.gestures.Recognizer.prototype, 'getState',
       goog.dom.gestures.Recognizer.prototype.getState);
-
   goog.exportProperty(
-      goog.dom.gestures.TapRecognizer.prototype,
-      'setTapCount',
+      goog.dom.gestures.Recognizer.prototype, 'getOffsetX',
+      goog.dom.gestures.Recognizer.prototype.getOffsetX);
+  goog.exportProperty(
+      goog.dom.gestures.Recognizer.prototype, 'getOffsetY',
+      goog.dom.gestures.Recognizer.prototype.getOffsetY);
+  goog.exportProperty(
+      goog.dom.gestures.Recognizer.prototype, 'getClientX',
+      goog.dom.gestures.Recognizer.prototype.getClientX);
+  goog.exportProperty(
+      goog.dom.gestures.Recognizer.prototype, 'getClientY',
+      goog.dom.gestures.Recognizer.prototype.getClientY);
+  goog.exportProperty(
+      goog.dom.gestures.Recognizer.prototype, 'getPageX',
+      goog.dom.gestures.Recognizer.prototype.getPageX);
+  goog.exportProperty(
+      goog.dom.gestures.Recognizer.prototype, 'getPageY',
+      goog.dom.gestures.Recognizer.prototype.getPageY);
+
+  // PanRecognizer
+  goog.exportProperty(
+      goog.dom.gestures.PanRecognizer.prototype, 'setMinimumTouchCount',
+      goog.dom.gestures.PanRecognizer.prototype.setMinimumTouchCount);
+  goog.exportProperty(
+      goog.dom.gestures.PanRecognizer.prototype, 'setMaximumTouchCount',
+      goog.dom.gestures.PanRecognizer.prototype.setMaximumTouchCount);
+  goog.exportProperty(
+      goog.dom.gestures.PanRecognizer.prototype, 'getTranslateX',
+      goog.dom.gestures.PanRecognizer.prototype.getTranslateX);
+  goog.exportProperty(
+      goog.dom.gestures.PanRecognizer.prototype, 'getTranslateY',
+      goog.dom.gestures.PanRecognizer.prototype.getTranslateY);
+
+  // TapRecognizer
+  goog.exportProperty(
+      goog.dom.gestures.TapRecognizer.prototype, 'setTapCount',
       goog.dom.gestures.TapRecognizer.prototype.setTapCount);
   goog.exportProperty(
-      goog.dom.gestures.TapRecognizer.prototype,
-      'setTouchCount',
+      goog.dom.gestures.TapRecognizer.prototype, 'setTouchCount',
       goog.dom.gestures.TapRecognizer.prototype.setTouchCount);
 }

@@ -16,7 +16,24 @@
 
 goog.provide('goog.dom.gestures');
 
+goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
+
+
+/**
+ * Creates a new {@see goog.dom.gestures.PanRecognizer}.
+ *
+ * @param {!Element} target DOM element to attach to.
+ * @param {!goog.dom.gestures.CallbackFunction} callback Function called on each
+ *     gesture action.
+ * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @return {!goog.dom.gestures.PanRecognizer} A new bound gesture instance.
+ */
+goog.dom.gestures.createPanGesture = function(target, callback, opt_scope) {
+  var recognizer = new goog.dom.gestures.PanRecognizer(target);
+  recognizer.addListener(callback, opt_scope);
+  return recognizer;
+};
 
 
 /**

@@ -2,12 +2,18 @@
 <html>
   <head>
     <title>goog-gestures example 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <script src="example-loader.js"></script>
     <style>
+      .container {
+        position: relative;
+        width: 200px;
+        height: 220px;
+      }
       .box {
         position: absolute;
-        width: 128px;
-        height: 128px;
+        width: 200px;
+        height: 200px;
 
         border: 3px solid #AAAAAA;
         border-radius: 3px;
@@ -16,32 +22,125 @@
         -webkit-user-select: none;
         -webkit-transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
       }
-      .box-changing {
+      .box-tapped {
         background-color: #663333;
+      }
+      .box-panning {
+        background-color: #336633;
       }
     </style>
   </head>
   <body>
-
-    <div id="tapBox" class="box"></div>
+    <div id="logBox">[log]</div>
+    <div class="container">
+      tap:
+      <div id="tapBox" class="box"></div>
+    </div>
+    <div class="container">
+      pan:
+      <div id="panBox" class="box"></div>
+    </div>
+    <div class="container">
+      tap/pan:
+      <div id="tapPanBox" class="box"></div>
+    </div>
 
     <script>
       prepareExample(function() {
+        window.logBox = document.getElementById('logBox');
         window.console.log('ready', goog.dom.gestures);
 
-        var tapBox = document.getElementById('tapBox');
-        var tapGesture = goog.dom.gestures.createTapGesture(tapBox,
-            function(gesture) {
-              if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
-                console.log('tapped');
-                tapBox.className = 'box box-changing';
-                window.setTimeout(function() {
-                  tapBox.className = 'box';
-                }, 200);
-              }
-            });
-        tapGesture.setTapCount(1);
-        tapGesture.setTouchCount(1);
+        // Prevent scrolling
+        document.body.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
+        (function() {
+          var tapBox = document.getElementById('tapBox');
+          var tapGesture = goog.dom.gestures.createTapGesture(tapBox,
+              function(gesture) {
+                if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  tapBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    tapBox.className = 'box';
+                  }, 200);
+                }
+              });
+          tapGesture.setTapCount(1);
+          tapGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var panBox = document.getElementById('panBox');
+          var stx = 0;
+          var sty = 0;
+          var tx = 0;
+          var ty = 0;
+          var panGesture = goog.dom.gestures.createPanGesture(panBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.dom.gestures.State.BEGAN:
+                    stx = tx;
+                    sty = ty;
+                    panBox.className = 'box box-panning';
+                    break;
+                  case goog.dom.gestures.State.CHANGED:
+                    tx = stx + gesture.getTranslateX();
+                    ty = sty + gesture.getTranslateY();
+                    panBox.style.webkitTransform =
+                        'translate(' + tx + 'px,' + ty + 'px)';
+                    window.logBox.innerText = tx + ',' + ty;
+                    break;
+                  case goog.dom.gestures.State.ENDED:
+                    panBox.className = 'box';
+                    break;
+                }
+              });
+          // panGesture.setMinimumTouchCount(1);
+          // panGesture.setMaximumTouchCount(2);
+        })();
+
+        (function() {
+          var tapPanBox = document.getElementById('tapPanBox');
+          var stx = 0;
+          var sty = 0;
+          var tx = 0;
+          var ty = 0;
+          var tapGesture = goog.dom.gestures.createTapGesture(tapPanBox,
+              function(gesture) {
+                if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  tapPanBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    tapPanBox.className = 'box';
+                  }, 200);
+                }
+              });
+          var panGesture = goog.dom.gestures.createPanGesture(tapPanBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.dom.gestures.State.BEGAN:
+                    stx = tx;
+                    sty = ty;
+                    tapPanBox.className = 'box box-panning';
+                    break;
+                  case goog.dom.gestures.State.CHANGED:
+                    tx = stx + gesture.getTranslateX();
+                    ty = sty + gesture.getTranslateY();
+                    tapPanBox.style.webkitTransform =
+                        'translate(' + tx + 'px,' + ty + 'px)';
+                    window.logBox.innerText = tx + ',' + ty;
+                    break;
+                  case goog.dom.gestures.State.ENDED:
+                    tapPanBox.className = 'box';
+                    break;
+                }
+              });
+        })();
+
       });
     </script>
   </body>
