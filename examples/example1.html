@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>goog-gestures example 1</title>
+    <script src="example-loader.js"></script>
+    <style>
+      .box {
+        position: absolute;
+        width: 128px;
+        height: 128px;
+
+        border: 3px solid #AAAAAA;
+        border-radius: 3px;
+        background-color: #666666;
+
+        -webkit-user-select: none;
+        -webkit-transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
+      }
+      .box-changing {
+        background-color: #663333;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="tapBox" class="box"></div>
+
+    <script>
+      prepareExample(function() {
+        window.console.log('ready', goog.dom.gestures);
+
+        var tapBox = document.getElementById('tapBox');
+        var tapGesture = goog.dom.gestures.createTapGesture(tapBox,
+            function(gesture) {
+              if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                console.log('tapped');
+                tapBox.className = 'box box-changing';
+                window.setTimeout(function() {
+                  tapBox.className = 'box';
+                }, 200);
+              }
+            });
+        tapGesture.setTapCount(1);
+        tapGesture.setTouchCount(1);
+      });
+    </script>
+  </body>
+</html>
