@@ -218,7 +218,10 @@ goog.dom.gestures.Recognizer.prototype.setState = function(value) {
     }
   }
 
-  window.console.log('setState(' + value + ')');
+  // TODO(benvanik): better logging switch
+  if (goog.DEBUG) {
+    window.console.log('setState(' + value + ')');
+  }
 
   // Trandition
   this.state_ = value;

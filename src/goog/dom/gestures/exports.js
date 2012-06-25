@@ -18,6 +18,7 @@ goog.provide('goog.dom.gestures.exports');
 
 goog.require('goog.dom.gestures');
 goog.require('goog.dom.gestures.PanRecognizer');
+goog.require('goog.dom.gestures.PinchRecognizer');
 goog.require('goog.dom.gestures.Recognizer');
 goog.require('goog.dom.gestures.State');
 goog.require('goog.dom.gestures.TapRecognizer');
@@ -113,6 +114,20 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures.PanRecognizer.prototype, 'getTranslateY',
       goog.dom.gestures.PanRecognizer.prototype.getTranslateY);
+
+  // PinchRecognizer
+  goog.exportProperty(
+      goog.dom.gestures.PinchRecognizer.prototype, 'setMinimumTouchCount',
+      goog.dom.gestures.PinchRecognizer.prototype.setMinimumTouchCount);
+  goog.exportProperty(
+      goog.dom.gestures.PinchRecognizer.prototype, 'setMaximumTouchCount',
+      goog.dom.gestures.PinchRecognizer.prototype.setMaximumTouchCount);
+  goog.exportProperty(
+      goog.dom.gestures.PinchRecognizer.prototype, 'getScale',
+      goog.dom.gestures.PinchRecognizer.prototype.getScale);
+  goog.exportProperty(
+      goog.dom.gestures.PinchRecognizer.prototype, 'getVelocity',
+      goog.dom.gestures.PinchRecognizer.prototype.getVelocity);
 
   // TapRecognizer
   goog.exportProperty(

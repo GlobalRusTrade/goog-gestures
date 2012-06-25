@@ -101,7 +101,7 @@ goog.dom.gestures.PanRecognizer.DEFAULT_HYSTERESIS_ = 6;
 
 
 /**
- * @return {number} Number of taps required for the gesture recognize.
+ * @return {number} Number of touches required for the gesture recognize.
  */
 goog.dom.gestures.PanRecognizer.prototype.getMinimumTouchCount = function() {
   return this.minTouchCount_;
@@ -109,8 +109,8 @@ goog.dom.gestures.PanRecognizer.prototype.getMinimumTouchCount = function() {
 
 
 /**
- * Sets the number of taps required for the gesture to recognize.
- * @param {number} value New tap count value, >= 1.
+ * Sets the number of touches required for the gesture to recognize.
+ * @param {number} value New touch count value, >= 1.
  */
 goog.dom.gestures.PanRecognizer.prototype.setMinimumTouchCount =
     function(value) {
@@ -138,6 +138,7 @@ goog.dom.gestures.PanRecognizer.prototype.setMaximumTouchCount =
   goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
+  goog.asserts.assert(this.maxTouchCount_ >= value);
   this.maxTouchCount_ = value;
 };
 
