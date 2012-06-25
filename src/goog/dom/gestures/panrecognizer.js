@@ -245,6 +245,6 @@ goog.dom.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
  * @override
  */
 goog.dom.gestures.PanRecognizer.prototype.touchesCancelled = function(e) {
-  this.setState(goog.dom.gestures.State.FAILED);
+  this.setState(goog.dom.gestures.State.CANCELLED);
   this.reset();
 };
