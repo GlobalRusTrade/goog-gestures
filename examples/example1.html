@@ -142,7 +142,7 @@
           var scale = 1;
           function updateTransform() {
             multiBox.style.webkitTransform =
-                'scale(' + scale + ') translate(' + tx + 'px,' + ty + 'px)';
+                'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
           };
           var tapGesture = goog.dom.gestures.createTapGesture(multiBox,
               function(gesture) {
@@ -190,6 +190,9 @@
                     break;
                 }
               });
+          // Allow both the pan and pinch gestures to recognize together
+          goog.dom.gestures.allowSimultaneousRecognition(
+              panGesture, pinchGesture);
         })();
 
       });

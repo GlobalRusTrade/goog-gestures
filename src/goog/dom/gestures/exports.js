@@ -42,8 +42,14 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
       goog.dom.gestures, 'createPanGesture',
       goog.dom.gestures.createPanGesture);
   goog.exportProperty(
+      goog.dom.gestures, 'createPinchGesture',
+      goog.dom.gestures.createPinchGesture);
+  goog.exportProperty(
       goog.dom.gestures, 'createTapGesture',
       goog.dom.gestures.createTapGesture);
+  goog.exportProperty(
+      goog.dom.gestures, 'allowSimultaneousRecognition',
+      goog.dom.gestures.allowSimultaneousRecognition);
 
   // State
   goog.exportSymbol('goog.dom.gestures.State', goog.dom.gestures.State);

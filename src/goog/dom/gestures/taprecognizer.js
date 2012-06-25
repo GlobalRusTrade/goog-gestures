@@ -190,6 +190,5 @@ goog.dom.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
  * @override
  */
 goog.dom.gestures.TapRecognizer.prototype.touchesCancelled = function(e) {
-  this.setState(goog.dom.gestures.State.CANCELLED);
   this.reset();
 };

@@ -18,6 +18,7 @@ goog.provide('goog.dom.gestures.CallbackFunction');
 goog.provide('goog.dom.gestures.Recognizer');
 
 goog.require('goog.Disposable');
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom.gestures.State');
 goog.require('goog.dom.gestures.TouchView');
@@ -117,6 +118,16 @@ goog.dom.gestures.Recognizer = function(target) {
    */
   this.listeners_ = [];
 
+  /**
+   * A list of recognizers that are allowed to recognize simultaneously.
+   * If a recognizer is in this list then it is allowed to recognize if this
+   * gesture is currently recognizing. These relationships are not always
+   * symmetrical.
+   * @private
+   * @type {!Array.<!goog.dom.gestures.Recognizer>}
+   */
+  this.allowedSimultaneousRecognizers_ = [];
+
   // TODO(benvanik): chaining (require failure of another gesture, for 2x tap)
   // TODO(benvanik): cancel touches in the target that the recognizer eats
   // TODO(benvanik): delay touches to the target until failure, if desired
@@ -200,6 +211,7 @@ goog.dom.gestures.Recognizer.prototype.getState = function() {
  * @param {goog.dom.gestures.State} value The new state machine state.
  */
 goog.dom.gestures.Recognizer.prototype.setState = function(value) {
+  // Ignore redundant states of certain kinds
   if (this.state_ == value && value == goog.dom.gestures.State.POSSIBLE) {
     return;
   }
@@ -226,39 +238,6 @@ goog.dom.gestures.Recognizer.prototype.setState = function(value) {
   // Trandition
   this.state_ = value;
   this.issueCallback();
-};
-
-
-/**
- * Checks to see if the recognizer is allowed to begin.
- * @private
- * @return {boolean} True if the recognizer can recognize.
- */
-goog.dom.gestures.Recognizer.prototype.canRecognize_ = function() {
-  var allRecognizers = this.view_.getGestureRecognizers();
-  for (var n = 0; n < allRecognizers.length; n++) {
-    var recognizer = allRecognizers[n];
-    if (recognizer != this &&
-        recognizer.getState() == goog.dom.gestures.State.CHANGED) {
-      if (!recognizer.canRecognizeWith(this)) {
-        return false;
-      }
-    }
-  }
-  return true;
-};
-
-
-/**
- * Checks to see if the current gesture (assumed to be recognizing) allows the
- * given other gesture to begin recognizing.
- * @protected
- * @param {!goog.dom.gestures.Recognizer} other The gesture that is trying to
- *     recognize.
- * @return {boolean} Whether the two gestures can be recognized simultaneously.
- */
-goog.dom.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
-  return false;
 };
 
 
@@ -314,6 +293,54 @@ goog.dom.gestures.Recognizer.prototype.isValidTransition_ =
       break;
   }
   return valid;
+};
+
+
+/**
+ * Adds a new allowed simultaneous recognizer.
+ * The given recognizer will be allowed to recognize if this recognizer is
+ * already recognizing a gesture.
+ * @param {!goog.dom.gestures.Recognizer} recognizer Recognizer to allow.
+ */
+goog.dom.gestures.Recognizer.prototype.addAllowedSimultaneousRecognizer =
+    function(recognizer) {
+  goog.asserts.assert(recognizer != this);
+  goog.asserts.assert(!
+      goog.array.contains(this.allowedSimultaneousRecognizers_, recognizer));
+  this.allowedSimultaneousRecognizers_.push(recognizer);
+};
+
+
+/**
+ * Checks to see if the recognizer is allowed to begin.
+ * @private
+ * @return {boolean} True if the recognizer can recognize.
+ */
+goog.dom.gestures.Recognizer.prototype.canRecognize_ = function() {
+  var allRecognizers = this.view_.getGestureRecognizers();
+  for (var n = 0; n < allRecognizers.length; n++) {
+    var recognizer = allRecognizers[n];
+    if (recognizer != this &&
+        recognizer.getState() == goog.dom.gestures.State.CHANGED) {
+      if (!recognizer.canRecognizeWith(this)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+
+/**
+ * Checks to see if the current gesture (assumed to be recognizing) allows the
+ * given other gesture to begin recognizing.
+ * @protected
+ * @param {!goog.dom.gestures.Recognizer} other The gesture that is trying to
+ *     recognize.
+ * @return {boolean} Whether the two gestures can be recognized simultaneously.
+ */
+goog.dom.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
+  return goog.array.contains(this.allowedSimultaneousRecognizers_, other);
 };
 
 

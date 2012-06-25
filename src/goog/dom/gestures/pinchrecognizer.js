@@ -298,6 +298,8 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
  * @override
  */
 goog.dom.gestures.PinchRecognizer.prototype.touchesCancelled = function(e) {
-  this.setState(goog.dom.gestures.State.CANCELLED);
-  this.reset();
+  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+    this.setState(goog.dom.gestures.State.CANCELLED);
+    this.reset();
+  }
 };

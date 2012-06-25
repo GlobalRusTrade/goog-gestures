@@ -16,6 +16,7 @@
 
 goog.provide('goog.dom.gestures');
 
+goog.require('goog.asserts');
 goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.PinchRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
@@ -71,4 +72,25 @@ goog.dom.gestures.createTapGesture = function(target, callback, opt_scope) {
   var recognizer = new goog.dom.gestures.TapRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;
+};
+
+
+/**
+ * Allows for symmetrical simultaneous recognition of the given list of
+ * gesture recognizers.
+ * @param {...!goog.dom.gestures.Recognizer} var_args Recognizers that are
+ *     allowed to simultaneously recognize.
+ */
+goog.dom.gestures.allowSimultaneousRecognition = function(var_args) {
+  for (var n = 0; n < arguments.length; n++) {
+    var target = /** @type {goog.dom.gestures.Recognizer} */ (arguments[n]);
+    goog.asserts.assert(target);
+    for (var m = 0; m < arguments.length; m++) {
+      if (n != m) {
+        var other = /** @type {goog.dom.gestures.Recognizer} */ (arguments[m]);
+        goog.asserts.assert(other);
+        target.addAllowedSimultaneousRecognizer(other);
+      }
+    }
+  }
 };
