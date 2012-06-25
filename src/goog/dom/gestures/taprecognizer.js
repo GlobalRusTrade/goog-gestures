@@ -50,7 +50,7 @@ goog.dom.gestures.TapRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = 6;
+  this.moveHysteresis_ = goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * The total distance the center has moved, in px.
@@ -60,6 +60,17 @@ goog.dom.gestures.TapRecognizer = function(target) {
   this.centroidDistance_ = 0;
 };
 goog.inherits(goog.dom.gestures.TapRecognizer, goog.dom.gestures.Recognizer);
+
+
+/**
+ * Default movement hysteresis.
+ * If the touch centroid moves more than this the gesture will fail to
+ * recognize.
+ * @private
+ * @const
+ * @type {number}
+ */
+goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 40;
 
 
 /**
@@ -165,6 +176,7 @@ goog.dom.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
     // TODO(benvanik): touch count
     if (e.targetTouches.length + e.changedTouches.length == this.touchCount_) {
       this.setState(goog.dom.gestures.State.RECOGNIZED);
+      this.reset();
     }
   }
 

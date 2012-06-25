@@ -43,14 +43,14 @@ goog.dom.gestures.PanRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.maxTouchCount_ = 999;
+  this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
    * Number of pixels of movement in a touch to activate the gesture.
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = 6;
+  this.moveHysteresis_ = goog.dom.gestures.PanRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * X of the centroid when the gesture first began.
@@ -88,6 +88,16 @@ goog.dom.gestures.PanRecognizer = function(target) {
   this.centroidDistance_ = 0;
 };
 goog.inherits(goog.dom.gestures.PanRecognizer, goog.dom.gestures.Recognizer);
+
+
+/**
+ * Default movement hysteresis.
+ * The touch centroid must move more than this for the gesture to recognize.
+ * @private
+ * @const
+ * @type {number}
+ */
+goog.dom.gestures.PanRecognizer.DEFAULT_HYSTERESIS_ = 6;
 
 
 /**
@@ -207,12 +217,14 @@ goog.dom.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
   // Begin if we have moved far enough
   if (this.getState() == goog.dom.gestures.State.POSSIBLE &&
       this.centroidDistance_ > this.moveHysteresis_) {
-    // Moved far enough, start!
+    // Moved far enough, start (or try to)
     this.centroidStartX_ = pageX;
     this.centroidStartY_ = pageY;
     this.centroidShiftX_ = this.centroidShiftY_ = 0;
     this.setState(goog.dom.gestures.State.BEGAN);
-    this.setState(goog.dom.gestures.State.CHANGED);
+    if (this.getState() == goog.dom.gestures.State.BEGAN) {
+      this.setState(goog.dom.gestures.State.CHANGED);
+    }
   } else if ((dx || dy) && this.getState() == goog.dom.gestures.State.CHANGED) {
     // Normal update
     this.setState(goog.dom.gestures.State.CHANGED);

@@ -45,6 +45,13 @@ goog.dom.gestures.State = {
   ENDED: 3,
 
   /**
+   * The gesture has been recognized.
+   * The recognizer will reset to {@see #POSSIBLE}.
+   * This is a synonym to {@see #ENDED}, useful for discrete gestures.
+   */
+  RECOGNIZED: 3,
+
+  /**
    * The continuous gesture has been cancelled.
    * The recognizer will reset to {@see #POSSIBLE}.
    */
@@ -54,13 +61,6 @@ goog.dom.gestures.State = {
    * The gesture has failed recognition.
    * The recognizer will reset to {@see #POSSIBLE}.
    */
-  FAILED: 5,
-
-  /**
-   * The gesture has been recognized.
-   * The recognizer will reset to {@see #POSSIBLE}.
-   * This is a synonym to {@see #ENDED}, useful for discrete gestures.
-   */
-  RECOGNIZED: 3
+  FAILED: 5
 };
 
