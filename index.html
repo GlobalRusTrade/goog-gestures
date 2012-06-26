@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Closure Gestures by benvanik</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Closure Gestures</h1>
+        <p>A simple Closure touch gesture library</p>
+
+        <p class="view"><a href="https://github.com/benvanik/goog-gestures">View the Project on GitHub <small>benvanik/goog-gestures</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/benvanik/goog-gestures/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/benvanik/goog-gestures/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/benvanik/goog-gestures">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>goog-gestures</h1>
+
+<p>A simple Closure touch gesture library. This will hopefully be merged into the
+Closure Library at some point, but is here to play with until I can get it good
+enough to justify getting it included :)</p>
+
+<p>More info forthcoming as I actually build something.</p>
+
+<h2>Setup</h2>
+
+<p>Wanna play around?</p>
+
+<pre><code># ensure you have python and easy_install!
+# clone the repo
+git clone https://github.com/benvanik/goog-gestures.git
+cd goog-gestures/
+# run the setup script to initialize the repo and dependencies
+sudo ./tools/setup.sh
+# start a local webserver on :8080
+anvil serve
+# build debug, open http://localhost:8080/examples/example1.html?uncompiled
+anvil build :debug
+# build release, open http://localhost:8080/examples/example1.html
+anvil build :release
+# deploy a release build
+anvil deploy -o /tmp/goog-gestures-release/ :release
+</code></pre>
+
+<h2>Contributing</h2>
+
+<p>Have a fix or feature? Submit a pull request - I love them!
+Note that I do keep to the <a href="https://github.com/benvanik/games-framework/blob/master/docs/style_guide.md">style_guide</a>,
+so please check it out first!</p>
+
+<p>As this is a Google project, you <em>must</em> first e-sign the
+<a href="http://code.google.com/legal/individual-cla-v1.0.html">Google Contributor License Agreement</a> before I can accept any
+code. It takes only a second and basically just says you won't sue us or claim copyright of your submitted code.</p>
+
+<h2>License</h2>
+
+<p>All code except dependencies under third_party/ is licensed under the permissive Apache 2.0 license.
+Feel free to fork/rip/etc and use as you wish!</p>
+
+<h2>Credits</h2>
+
+<p>Code by <a href="http://noxa.org">Ben Vanik</a>. See <a href="https://github.com/benvanik/goog-gestures/blob/master/AUTHORS">AUTHORS</a> for additional contributors.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benvanik">benvanik</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-541992-8");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
