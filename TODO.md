@@ -14,6 +14,13 @@ Recognizer Additions
     * RotateRecognizer
 * Factor swipe speed into precision required
 
+Behavior
+========
+
+* Pan/scroll cancellation
+    * iOS behaves weird on taps/swipes when scrolling
+    * iOS scrolls when moving the complex box
+
 Performance/Reuse
 =================
 
