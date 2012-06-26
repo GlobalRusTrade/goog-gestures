@@ -19,6 +19,7 @@ goog.provide('goog.events.gestures.PinchRecognizer');
 goog.require('goog.asserts');
 goog.require('goog.events.gestures.Recognizer');
 goog.require('goog.events.gestures.State');
+goog.require('goog.events.gestures.utils');
 
 
 
@@ -30,6 +31,8 @@ goog.require('goog.events.gestures.State');
  */
 goog.events.gestures.PinchRecognizer = function(target) {
   goog.base(this, target);
+
+  this.setMovementThreshold(goog.events.gestures.utils.MOVEMENT_HYSTERESIS);
 
   /**
    * Minimum number of touches required for the gesture to recognize.
@@ -44,14 +47,6 @@ goog.events.gestures.PinchRecognizer = function(target) {
    * @type {number}
    */
   this.maxTouchCount_ = Number.MAX_VALUE;
-
-  /**
-   * Number of pixels of movement in a touch to activate the gesture.
-   * @private
-   * @type {number}
-   */
-  this.moveHysteresis_ =
-      goog.events.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * The distance between the active touches when the pinch began, in px.
@@ -88,16 +83,6 @@ goog.events.gestures.PinchRecognizer = function(target) {
 };
 goog.inherits(goog.events.gestures.PinchRecognizer,
     goog.events.gestures.Recognizer);
-
-
-/**
- * Default movement hysteresis.
- * A touch must move more than this for the gesture to recognize.
- * @private
- * @const
- * @type {number}
- */
-goog.events.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_ = 10;
 
 
 /**
@@ -254,7 +239,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
     trackedTouch.lastX = touch.pageX;
     trackedTouch.lastY = touch.pageY;
     trackedTouch.distance += Math.sqrt(dx * dx + dy * dy);
-    if (trackedTouch.distance > this.moveHysteresis_) {
+    if (trackedTouch.distance > this.getMovementThreshold()) {
       anyMovedEnough = true;
     }
   }

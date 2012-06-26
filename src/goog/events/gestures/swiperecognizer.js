@@ -20,6 +20,7 @@ goog.require('goog.asserts');
 goog.require('goog.events.gestures.Direction');
 goog.require('goog.events.gestures.Recognizer');
 goog.require('goog.events.gestures.State');
+goog.require('goog.events.gestures.utils');
 
 
 
@@ -32,20 +33,14 @@ goog.require('goog.events.gestures.State');
 goog.events.gestures.SwipeRecognizer = function(target) {
   goog.base(this, target);
 
+  this.setMovementThreshold(3 * goog.events.gestures.utils.MOVEMENT_HYSTERESIS);
+
   /**
    * Number of touches required for the gesture to recognize.
    * @private
    * @type {number}
    */
   this.touchCount_ = 1;
-
-  /**
-   * Number of pixels of movement in a touch to cancel the tap.
-   * @private
-   * @type {number}
-   */
-  this.moveHysteresis_ =
-      goog.events.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * Whether the current touches are being watched as possible swipes.
@@ -86,16 +81,6 @@ goog.events.gestures.SwipeRecognizer = function(target) {
 };
 goog.inherits(goog.events.gestures.SwipeRecognizer,
     goog.events.gestures.Recognizer);
-
-
-/**
- * Default movement hysteresis.
- * The swipe must move more than this in a direction to recognize.
- * @private
- * @const
- * @type {number}
- */
-goog.events.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_ = 30;
 
 
 /**
@@ -182,7 +167,7 @@ goog.events.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
 
       // TODO(benvanik): vary the slip allowed by the elapsed time
       var elapsed = goog.now() - this.startTime_;
-      var distanceRequired = this.moveHysteresis_;
+      var distanceRequired = this.getMovementThreshold();
       var slipAllowed = distanceRequired / 3;
 
       var direction = goog.events.gestures.Direction.NONE;

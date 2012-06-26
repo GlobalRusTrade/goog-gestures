@@ -19,6 +19,7 @@ goog.provide('goog.events.gestures.TapRecognizer');
 goog.require('goog.asserts');
 goog.require('goog.events.gestures.Recognizer');
 goog.require('goog.events.gestures.State');
+goog.require('goog.events.gestures.utils');
 
 
 
@@ -30,6 +31,8 @@ goog.require('goog.events.gestures.State');
  */
 goog.events.gestures.TapRecognizer = function(target) {
   goog.base(this, target);
+
+  this.setMovementThreshold(3 * goog.events.gestures.utils.MOVEMENT_HYSTERESIS);
 
   /**
    * Number of taps required for the gesture to recognize.
@@ -46,13 +49,6 @@ goog.events.gestures.TapRecognizer = function(target) {
   this.touchCount_ = 1;
 
   /**
-   * Number of pixels of movement in a touch to cancel the tap.
-   * @private
-   * @type {number}
-   */
-  this.moveHysteresis_ = goog.events.gestures.TapRecognizer.DEFAULT_HYSTERESIS_;
-
-  /**
    * The total distance the center has moved, in px.
    * @private
    * @type {number}
@@ -61,17 +57,6 @@ goog.events.gestures.TapRecognizer = function(target) {
 };
 goog.inherits(goog.events.gestures.TapRecognizer,
     goog.events.gestures.Recognizer);
-
-
-/**
- * Default movement hysteresis.
- * If the touch centroid moves more than this the gesture will fail to
- * recognize.
- * @private
- * @const
- * @type {number}
- */
-goog.events.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 30;
 
 
 /**
@@ -160,7 +145,7 @@ goog.events.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
   var dx = pageX - oldPageX;
   var dy = pageY - oldPageY;
   this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
-  if (this.centroidDistance_ >= this.moveHysteresis_) {
+  if (this.centroidDistance_ >= this.getMovementThreshold()) {
     // Touch has moved too much - fail
     this.setState(goog.events.gestures.State.FAILED);
     return;

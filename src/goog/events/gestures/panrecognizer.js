@@ -19,6 +19,7 @@ goog.provide('goog.events.gestures.PanRecognizer');
 goog.require('goog.asserts');
 goog.require('goog.events.gestures.Recognizer');
 goog.require('goog.events.gestures.State');
+goog.require('goog.events.gestures.utils');
 
 
 
@@ -30,6 +31,8 @@ goog.require('goog.events.gestures.State');
  */
 goog.events.gestures.PanRecognizer = function(target) {
   goog.base(this, target);
+
+  this.setMovementThreshold(goog.events.gestures.utils.MOVEMENT_HYSTERESIS / 2);
 
   /**
    * Minimum number of touches required for the gesture to recognize.
@@ -44,13 +47,6 @@ goog.events.gestures.PanRecognizer = function(target) {
    * @type {number}
    */
   this.maxTouchCount_ = Number.MAX_VALUE;
-
-  /**
-   * Number of pixels of movement in a touch to activate the gesture.
-   * @private
-   * @type {number}
-   */
-  this.moveHysteresis_ = goog.events.gestures.PanRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * X of the centroid when the gesture first began.
@@ -89,16 +85,6 @@ goog.events.gestures.PanRecognizer = function(target) {
 };
 goog.inherits(goog.events.gestures.PanRecognizer,
     goog.events.gestures.Recognizer);
-
-
-/**
- * Default movement hysteresis.
- * The touch centroid must move more than this for the gesture to recognize.
- * @private
- * @const
- * @type {number}
- */
-goog.events.gestures.PanRecognizer.DEFAULT_HYSTERESIS_ = 6;
 
 
 /**
@@ -218,7 +204,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
 
   // Begin if we have moved far enough
   if (this.getState() == goog.events.gestures.State.POSSIBLE &&
-      this.centroidDistance_ > this.moveHysteresis_) {
+      this.centroidDistance_ > this.getMovementThreshold()) {
     // Moved far enough, start (or try to)
     this.centroidStartX_ = pageX;
     this.centroidStartY_ = pageY;

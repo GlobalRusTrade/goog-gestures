@@ -113,6 +113,12 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.Recognizer.prototype, 'getTarget',
       goog.events.gestures.Recognizer.prototype.getTarget);
   goog.exportProperty(
+      goog.events.gestures.Recognizer.prototype, 'getMovementThreshold',
+      goog.events.gestures.Recognizer.prototype.getMovementThreshold);
+  goog.exportProperty(
+      goog.events.gestures.Recognizer.prototype, 'setMovementThreshold',
+      goog.events.gestures.Recognizer.prototype.setMovementThreshold);
+  goog.exportProperty(
       goog.events.gestures.Recognizer.prototype, 'isEnabled',
       goog.events.gestures.Recognizer.prototype.isEnabled);
   goog.exportProperty(

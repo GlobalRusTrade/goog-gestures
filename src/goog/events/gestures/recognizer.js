@@ -56,6 +56,14 @@ goog.events.gestures.Recognizer = function(target) {
   this.view_ = goog.events.gestures.TouchView.getInstance(this.target_);
 
   /**
+   * Number of pixels of movement in a touch to activate the gesture.
+   * Some gestures may use this as a min, some use it as a max.
+   * @private
+   * @type {number}
+   */
+  this.movementThreshold_ = 0;
+
+  /**
    * Whether the recognizer is actively listening for gestures.
    * @private
    * @type {boolean}
@@ -166,6 +174,27 @@ goog.events.gestures.Recognizer.prototype.getTarget = function() {
  */
 goog.events.gestures.Recognizer.prototype.getView = function() {
   return this.view_;
+};
+
+
+/**
+ * @return {number} Distance a touch must move to activate the gesture.
+ */
+goog.events.gestures.Recognizer.prototype.getMovementThreshold = function() {
+  return this.movementThreshold_;
+};
+
+
+/**
+ * Sets the distance a touch must move before it activates the gesture.
+ * @param {number} value New distance value in pixels, >= 0.
+ */
+goog.events.gestures.Recognizer.prototype.setMovementThreshold =
+    function(value) {
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
+  value |= 0;
+  goog.asserts.assert(value >= 0);
+  this.movementThreshold_ = value;
 };
 
 
