@@ -24,6 +24,28 @@ such routines, as well as to change their parameters before recognition begins.
 For example, tap gestures can have the number of taps required to recognize
 changed with `setTapCount()`.
 
+## Recognizers
+
+### Tap
+
+`gesture = goog.events.gestures.attachTapGesture(element, callback, opt_scope)`
+
+### Swipe
+
+`gesture = goog.events.gestures.attachSwipeGesture(element, callback, opt_scope)`
+
+### Pan
+
+`gesture = goog.events.gestures.attachPanGesture(element, callback, opt_scope)`
+
+### Pinch
+
+`gesture = goog.events.gestures.attachPinchGesture(element, callback, opt_scope)`
+
+### Rotate
+
+`gesture = goog.events.gestures.attachRotateGesture(element, callback, opt_scope)`
+
 ## Examples
 
 ### Taps
