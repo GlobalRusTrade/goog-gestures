@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.PinchRecognizer');
+goog.provide('goog.events.gestures.PinchRecognizer');
 
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.Recognizer');
-goog.require('goog.dom.gestures.State');
+goog.require('goog.events.gestures.Recognizer');
+goog.require('goog.events.gestures.State');
 
 
 
 /**
  * A pinch gesture recognizer.
  * @constructor
- * @extends {goog.dom.gestures.Recognizer}
+ * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.dom.gestures.PinchRecognizer = function(target) {
+goog.events.gestures.PinchRecognizer = function(target) {
   goog.base(this, target);
 
   /**
@@ -50,7 +50,8 @@ goog.dom.gestures.PinchRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = goog.dom.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_;
+  this.moveHysteresis_ =
+      goog.events.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * The distance between the active touches when the pinch began, in px.
@@ -85,7 +86,8 @@ goog.dom.gestures.PinchRecognizer = function(target) {
    */
   this.trackedTouches_ = {};
 };
-goog.inherits(goog.dom.gestures.PinchRecognizer, goog.dom.gestures.Recognizer);
+goog.inherits(goog.events.gestures.PinchRecognizer,
+    goog.events.gestures.Recognizer);
 
 
 /**
@@ -95,13 +97,14 @@ goog.inherits(goog.dom.gestures.PinchRecognizer, goog.dom.gestures.Recognizer);
  * @const
  * @type {number}
  */
-goog.dom.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_ = 10;
+goog.events.gestures.PinchRecognizer.DEFAULT_HYSTERESIS_ = 10;
 
 
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.PinchRecognizer.prototype.getMinimumTouchCount = function() {
+goog.events.gestures.PinchRecognizer.prototype.getMinimumTouchCount =
+    function() {
   return this.minTouchCount_;
 };
 
@@ -110,9 +113,9 @@ goog.dom.gestures.PinchRecognizer.prototype.getMinimumTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New tap count value, >= 2.
  */
-goog.dom.gestures.PinchRecognizer.prototype.setMinimumTouchCount =
+goog.events.gestures.PinchRecognizer.prototype.setMinimumTouchCount =
     function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 2);
   goog.asserts.assert(value <= this.maxTouchCount_);
@@ -123,7 +126,8 @@ goog.dom.gestures.PinchRecognizer.prototype.setMinimumTouchCount =
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.PinchRecognizer.prototype.getMaximumTouchCount = function() {
+goog.events.gestures.PinchRecognizer.prototype.getMaximumTouchCount =
+    function() {
   return this.maxTouchCount_;
 };
 
@@ -132,9 +136,9 @@ goog.dom.gestures.PinchRecognizer.prototype.getMaximumTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New touch count value, >= 2.
  */
-goog.dom.gestures.PinchRecognizer.prototype.setMaximumTouchCount =
+goog.events.gestures.PinchRecognizer.prototype.setMaximumTouchCount =
     function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 2);
   goog.asserts.assert(this.maxTouchCount_ >= value);
@@ -145,7 +149,7 @@ goog.dom.gestures.PinchRecognizer.prototype.setMaximumTouchCount =
 /**
  * @return {number} The change in scaling factor.
  */
-goog.dom.gestures.PinchRecognizer.prototype.getScale = function() {
+goog.events.gestures.PinchRecognizer.prototype.getScale = function() {
   return this.distance_ / this.lastDistance_;
 };
 
@@ -153,7 +157,7 @@ goog.dom.gestures.PinchRecognizer.prototype.getScale = function() {
 /**
  * @return {number} The current velocity of the pinch.
  */
-goog.dom.gestures.PinchRecognizer.prototype.getVelocity = function() {
+goog.events.gestures.PinchRecognizer.prototype.getVelocity = function() {
   return this.velocity_;
 };
 
@@ -161,7 +165,7 @@ goog.dom.gestures.PinchRecognizer.prototype.getVelocity = function() {
 /**
  * @override
  */
-goog.dom.gestures.PinchRecognizer.prototype.reset = function() {
+goog.events.gestures.PinchRecognizer.prototype.reset = function() {
   this.lastDistance_ = 0;
   this.distance_ = 0;
   this.velocity_ = 0;
@@ -173,7 +177,7 @@ goog.dom.gestures.PinchRecognizer.prototype.reset = function() {
 /**
  * @override
  */
-goog.dom.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
+goog.events.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
   // Stash touch start for distance calculations
@@ -187,10 +191,10 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
     };
   }
 
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length > this.maxTouchCount_) {
       // Exceeded touch count, stop recognizing
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
     }
@@ -201,7 +205,7 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
+goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
   // Ignore if out of touch range
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
@@ -256,17 +260,18 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
   }
 
   // Begin if we have moved far enough
-  if (this.getState() == goog.dom.gestures.State.POSSIBLE && anyMovedEnough) {
+  if (this.getState() == goog.events.gestures.State.POSSIBLE &&
+      anyMovedEnough) {
     // Moved far enough, start (or try to)
     this.lastDistance_ = this.distance_;
-    this.setState(goog.dom.gestures.State.BEGAN);
-    if (this.getState() == goog.dom.gestures.State.BEGAN) {
-      this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.BEGAN);
+    if (this.getState() == goog.events.gestures.State.BEGAN) {
+      this.setState(goog.events.gestures.State.CHANGED);
     }
-  } else if (this.getState() == goog.dom.gestures.State.CHANGED &&
+  } else if (this.getState() == goog.events.gestures.State.CHANGED &&
       this.distance_ != this.lastDistance_) {
     // Normal update
-    this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.CHANGED);
   }
 };
 
@@ -274,8 +279,8 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+goog.events.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
       // Still have some valid touches
       this.updateLocation(e.targetTouches);
@@ -289,7 +294,7 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
       this.distance_ = this.lastDistance_ = newDistance;
     } else {
       // Not enough touches
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }
   }
@@ -299,9 +304,9 @@ goog.dom.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PinchRecognizer.prototype.touchesCancelled = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
-    this.setState(goog.dom.gestures.State.CANCELLED);
+goog.events.gestures.PinchRecognizer.prototype.touchesCancelled = function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
+    this.setState(goog.events.gestures.State.CANCELLED);
     this.reset();
   }
 };

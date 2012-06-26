@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.TouchView');
+goog.provide('goog.events.gestures.TouchView');
 
 goog.require('goog.Disposable');
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.State');
 goog.require('goog.events.EventType');
+goog.require('goog.events.gestures.State');
 
 
 
@@ -36,7 +36,7 @@ goog.require('goog.events.EventType');
  * @extends {goog.Disposable}
  * @param {!Element} target Target DOM element.
  */
-goog.dom.gestures.TouchView = function(target) {
+goog.events.gestures.TouchView = function(target) {
   goog.base(this);
 
   /**
@@ -49,7 +49,7 @@ goog.dom.gestures.TouchView = function(target) {
   /**
    * All recognizers attached to this view.
    * @private
-   * @type {!Array.<!goog.dom.gestures.Recognizer>}
+   * @type {!Array.<!goog.events.gestures.Recognizer>}
    */
   this.recognizers_ = [];
 
@@ -62,20 +62,21 @@ goog.dom.gestures.TouchView = function(target) {
   this.boundHandlers_ = [];
 
   // Bind to the target DOM element
-  goog.asserts.assert(!this.target_[goog.dom.gestures.TouchView.DOM_PROPERTY_]);
-  this.target_[goog.dom.gestures.TouchView.DOM_PROPERTY_] = this;
+  goog.asserts.assert(
+      !this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_]);
+  this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_] = this;
 
   // Bind all events
   // The expectation is that if we are created we will be using them soon
   this.bindAllEvents_();
 };
-goog.inherits(goog.dom.gestures.TouchView, goog.Disposable);
+goog.inherits(goog.events.gestures.TouchView, goog.Disposable);
 
 
 /**
  * @override
  */
-goog.dom.gestures.TouchView.prototype.disposeInternal = function() {
+goog.events.gestures.TouchView.prototype.disposeInternal = function() {
   // Cleanup any recognizers (if they exist)
   this.removeAllGestureRecognizers();
 
@@ -83,8 +84,9 @@ goog.dom.gestures.TouchView.prototype.disposeInternal = function() {
   this.unbindAllEvents_();
 
   // Remove from the DOM
-  goog.asserts.assert(this.target_[goog.dom.gestures.TouchView.DOM_PROPERTY_]);
-  delete this.target_[goog.dom.gestures.TouchView.DOM_PROPERTY_];
+  goog.asserts.assert(
+      this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_]);
+  delete this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_];
 
   goog.base(this, 'disposeInternal');
 };
@@ -97,38 +99,38 @@ goog.dom.gestures.TouchView.prototype.disposeInternal = function() {
  * @const
  * @type {string}
  */
-goog.dom.gestures.TouchView.DOM_PROPERTY_ = 'gdg_view';
+goog.events.gestures.TouchView.DOM_PROPERTY_ = 'gdg_view';
 
 
 /**
- * Gets an existing {@see goog.dom.gestures.TouchView} wrapper for the given
+ * Gets an existing {@see goog.events.gestures.TouchView} wrapper for the given
  * DOM element or creates a new one.
  * @param {!Element} target Target DOM element.
- * @return {!goog.dom.gestures.TouchView} A view wrapper.
+ * @return {!goog.events.gestures.TouchView} A view wrapper.
  */
-goog.dom.gestures.TouchView.getInstance = function(target) {
-  var view = /** @type {goog.dom.gestures.TouchView} */ (
-      target[goog.dom.gestures.TouchView.DOM_PROPERTY_]);
+goog.events.gestures.TouchView.getInstance = function(target) {
+  var view = /** @type {goog.events.gestures.TouchView} */ (
+      target[goog.events.gestures.TouchView.DOM_PROPERTY_]);
   if (view) {
     return view;
   }
-  return new goog.dom.gestures.TouchView(target);
+  return new goog.events.gestures.TouchView(target);
 };
 
 
 /**
  * @return {!Element} Target DOM element.
  */
-goog.dom.gestures.TouchView.prototype.getTarget = function() {
+goog.events.gestures.TouchView.prototype.getTarget = function() {
   return this.target_;
 };
 
 
 /**
  * Adds a new gesture recognizer to this view.
- * @param {!goog.dom.gestures.Recognizer} recognizer Recognizer to add.
+ * @param {!goog.events.gestures.Recognizer} recognizer Recognizer to add.
  */
-goog.dom.gestures.TouchView.prototype.addGestureRecognizer =
+goog.events.gestures.TouchView.prototype.addGestureRecognizer =
     function(recognizer) {
   goog.asserts.assert(!recognizer.isDisposed());
   goog.asserts.assert(!goog.array.contains(this.recognizers_, recognizer));
@@ -138,9 +140,9 @@ goog.dom.gestures.TouchView.prototype.addGestureRecognizer =
 
 /**
  * Removes a gesture recognizer from this view.
- * @param {!goog.dom.gestures.Recognizer} recognizer Recognizer to remove.
+ * @param {!goog.events.gestures.Recognizer} recognizer Recognizer to remove.
  */
-goog.dom.gestures.TouchView.prototype.removeGestureRecognizer =
+goog.events.gestures.TouchView.prototype.removeGestureRecognizer =
     function(recognizer) {
   goog.asserts.assert(goog.array.contains(this.recognizers_, recognizer));
   goog.array.remove(this.recognizers_, recognizer);
@@ -155,7 +157,8 @@ goog.dom.gestures.TouchView.prototype.removeGestureRecognizer =
 /**
  * Removes all gesture recognizers from this view.
  */
-goog.dom.gestures.TouchView.prototype.removeAllGestureRecognizers = function() {
+goog.events.gestures.TouchView.prototype.removeAllGestureRecognizers =
+    function() {
   goog.disposeAll(this.recognizers_);
   this.recognizers_.length = 0;
   goog.dispose(this);
@@ -165,10 +168,10 @@ goog.dom.gestures.TouchView.prototype.removeAllGestureRecognizers = function() {
 /**
  * Gets a list of all gesture recognizers currently attached to the view.
  * The returned list should not be modified and may change at any time.
- * @return {!Array.<!goog.dom.gestures.Recognizer>} All recognizers attached to
- *     this view.
+ * @return {!Array.<!goog.events.gestures.Recognizer>} All recognizers attached
+ *     to this view.
  */
-goog.dom.gestures.TouchView.prototype.getGestureRecognizers = function() {
+goog.events.gestures.TouchView.prototype.getGestureRecognizers = function() {
   return this.recognizers_;
 };
 
@@ -177,7 +180,7 @@ goog.dom.gestures.TouchView.prototype.getGestureRecognizers = function() {
  * Binds all event handlers.
  * @private
  */
-goog.dom.gestures.TouchView.prototype.bindAllEvents_ = function() {
+goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
   // NOTE: we do not use goog.events.* here, as it adds a significant amount of
   //     overhead to each event. We are less concerned with browser event
   //     normalization and more about manipulating them quickly.
@@ -190,7 +193,7 @@ goog.dom.gestures.TouchView.prototype.bindAllEvents_ = function() {
 
   var recognizers = this.recognizers_;
   /**
-   * @type {!TouchEvent} e
+   * @param {!TouchEvent} e Event.
    */
   function dispatchEvent(e) {
     // TODO(benvanik): better logging switch
@@ -220,9 +223,9 @@ goog.dom.gestures.TouchView.prototype.bindAllEvents_ = function() {
       //     default - maybe even a settable attribute
       var state = recognizer.getState();
       switch (state) {
-        case goog.dom.gestures.State.BEGAN:
-        case goog.dom.gestures.State.CHANGED:
-        case goog.dom.gestures.State.ENDED:
+        case goog.events.gestures.State.BEGAN:
+        case goog.events.gestures.State.CHANGED:
+        case goog.events.gestures.State.ENDED:
           preventDefault = true;
           break;
       }
@@ -247,7 +250,7 @@ goog.dom.gestures.TouchView.prototype.bindAllEvents_ = function() {
  * @param {string} eventType Event type name.
  * @param {!Function} listener Event listener.
  */
-goog.dom.gestures.TouchView.prototype.bindEventHandler_ =
+goog.events.gestures.TouchView.prototype.bindEventHandler_ =
     function(eventType, listener) {
   this.boundHandlers_.push({
     eventType: eventType,
@@ -261,7 +264,7 @@ goog.dom.gestures.TouchView.prototype.bindEventHandler_ =
  * Unbinds all event handlers.
  * @private
  */
-goog.dom.gestures.TouchView.prototype.unbindAllEvents_ = function() {
+goog.events.gestures.TouchView.prototype.unbindAllEvents_ = function() {
   var target = this.target_;
   for (var n = 0; n < this.boundHandlers_.length; n++) {
     var handler = this.boundHandlers_[n];

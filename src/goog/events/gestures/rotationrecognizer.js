@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.RotationRecognizer');
+goog.provide('goog.events.gestures.RotationRecognizer');
 
-goog.require('goog.dom.gestures.Recognizer');
-goog.require('goog.dom.gestures.State');
+goog.require('goog.events.gestures.Recognizer');
+goog.require('goog.events.gestures.State');
 
 
 
 /**
  * A rotation gesture recognizer.
  * @constructor
- * @extends {goog.dom.gestures.Recognizer}
+ * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.dom.gestures.RotationRecognizer = function(target) {
+goog.events.gestures.RotationRecognizer = function(target) {
   goog.base(this, target);
 
   /**
@@ -49,7 +49,8 @@ goog.dom.gestures.RotationRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = goog.dom.gestures.RotationRecognizer.DEFAULT_HYSTERESIS_;
+  this.moveHysteresis_ =
+      goog.events.gestures.RotationRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * The previous angle of rotation, in radians.
@@ -84,7 +85,8 @@ goog.dom.gestures.RotationRecognizer = function(target) {
    */
   this.trackedTouches_ = {};
 };
-goog.inherits(goog.dom.gestures.RotationRecognizer, goog.dom.gestures.Recognizer);
+goog.inherits(goog.events.gestures.RotationRecognizer,
+    goog.events.gestures.Recognizer);
 
 
 /**
@@ -94,13 +96,13 @@ goog.inherits(goog.dom.gestures.RotationRecognizer, goog.dom.gestures.Recognizer
  * @const
  * @type {number}
  */
-goog.dom.gestures.RotationRecognizer.DEFAULT_HYSTERESIS_ = 10;
+goog.events.gestures.RotationRecognizer.DEFAULT_HYSTERESIS_ = 10;
 
 
 /**
  * @return {number} The change in rotation angle, in radians.
  */
-goog.dom.gestures.RotationRecognizer.prototype.getAngle = function() {
+goog.events.gestures.RotationRecognizer.prototype.getAngle = function() {
   return this.angle_;
 };
 
@@ -108,7 +110,7 @@ goog.dom.gestures.RotationRecognizer.prototype.getAngle = function() {
 /**
  * @return {number} The current velocity of the rotation.
  */
-goog.dom.gestures.RotationRecognizer.prototype.getVelocity = function() {
+goog.events.gestures.RotationRecognizer.prototype.getVelocity = function() {
   return this.velocity_;
 };
 
@@ -116,7 +118,7 @@ goog.dom.gestures.RotationRecognizer.prototype.getVelocity = function() {
 /**
  * @override
  */
-goog.dom.gestures.RotationRecognizer.prototype.reset = function() {
+goog.events.gestures.RotationRecognizer.prototype.reset = function() {
   this.lastAngle_ = 0;
   this.angle_ = 0;
   this.velocity_ = 0;
@@ -132,7 +134,7 @@ goog.dom.gestures.RotationRecognizer.prototype.reset = function() {
  * @param {!Touch} touch1 Second touch.
  * @return {number} Angle between the two touches, in radians.
  */
-goog.dom.gestures.RotationRecognizer.prototype.angleBetweenTouches_ =
+goog.events.gestures.RotationRecognizer.prototype.angleBetweenTouches_ =
     function(touch0, touch1) {
   // Note that we may not have been tracking the touch - treat it as a no-op
   var trackedTouch0 = this.trackedTouches_[touch0.identifier];
@@ -170,7 +172,7 @@ goog.dom.gestures.RotationRecognizer.prototype.angleBetweenTouches_ =
 /**
  * @override
  */
-goog.dom.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
+goog.events.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
   // Stash touch start for distance calculations
@@ -184,10 +186,10 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
     };
   }
 
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length > this.maxTouchCount_) {
       // Exceeded touch count, stop recognizing
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
     }
@@ -198,7 +200,7 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
+goog.events.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
   // Ignore if out of touch range
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
@@ -251,17 +253,18 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
   }
 
   // Begin if we have moved far enough
-  if (this.getState() == goog.dom.gestures.State.POSSIBLE && anyMovedEnough) {
+  if (this.getState() == goog.events.gestures.State.POSSIBLE &&
+      anyMovedEnough) {
     // Moved far enough, start (or try to)
     this.lastAngle_ = this.angle_;
-    this.setState(goog.dom.gestures.State.BEGAN);
-    if (this.getState() == goog.dom.gestures.State.BEGAN) {
-      this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.BEGAN);
+    if (this.getState() == goog.events.gestures.State.BEGAN) {
+      this.setState(goog.events.gestures.State.CHANGED);
     }
-  } else if (this.getState() == goog.dom.gestures.State.CHANGED &&
+  } else if (this.getState() == goog.events.gestures.State.CHANGED &&
       this.angle_) {
     // Normal update
-    this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.CHANGED);
   }
 };
 
@@ -269,8 +272,8 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+goog.events.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
       // Still have some valid touches
       this.updateLocation(e.targetTouches);
@@ -282,7 +285,7 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
       this.angle_ = this.lastAngle_ = newAngle;
     } else {
       // Not enough touches
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }
   }
@@ -292,9 +295,10 @@ goog.dom.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.RotationRecognizer.prototype.touchesCancelled = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
-    this.setState(goog.dom.gestures.State.CANCELLED);
+goog.events.gestures.RotationRecognizer.prototype.touchesCancelled =
+    function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
+    this.setState(goog.events.gestures.State.CANCELLED);
     this.reset();
   }
 };

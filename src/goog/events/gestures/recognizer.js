@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.CallbackFunction');
-goog.provide('goog.dom.gestures.Recognizer');
+goog.provide('goog.events.gestures.CallbackFunction');
+goog.provide('goog.events.gestures.Recognizer');
 
 goog.require('goog.Disposable');
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.State');
-goog.require('goog.dom.gestures.TouchView');
+goog.require('goog.events.gestures.State');
+goog.require('goog.events.gestures.TouchView');
 
 
 /**
  * A callback function that receives the gesture that originated the call.
- * @typedef {function(!goog.dom.gestures.Recognizer)}
+ * @typedef {function(!goog.events.gestures.Recognizer)}
  */
-goog.dom.gestures.CallbackFunction;
+goog.events.gestures.CallbackFunction;
 
 
 
@@ -38,7 +38,7 @@ goog.dom.gestures.CallbackFunction;
  * @extends {goog.Disposable}
  * @param {!Element} target Target DOM element.
  */
-goog.dom.gestures.Recognizer = function(target) {
+goog.events.gestures.Recognizer = function(target) {
   goog.base(this);
 
   /**
@@ -51,9 +51,9 @@ goog.dom.gestures.Recognizer = function(target) {
   /**
    * Target touch view.
    * @private
-   * @type {!goog.dom.gestures.TouchView}
+   * @type {!goog.events.gestures.TouchView}
    */
-  this.view_ = goog.dom.gestures.TouchView.getInstance(this.target_);
+  this.view_ = goog.events.gestures.TouchView.getInstance(this.target_);
 
   /**
    * Whether the recognizer is actively listening for gestures.
@@ -65,9 +65,9 @@ goog.dom.gestures.Recognizer = function(target) {
   /**
    * Current state of the state machine.
    * @private
-   * @type {goog.dom.gestures.State}
+   * @type {goog.events.gestures.State}
    */
-  this.state_ = goog.dom.gestures.State.POSSIBLE;
+  this.state_ = goog.events.gestures.State.POSSIBLE;
 
   /**
    * X offset of the gesture from the top-left of the container element.
@@ -114,7 +114,7 @@ goog.dom.gestures.Recognizer = function(target) {
   /**
    * Listeners for recognizer updates.
    * @private
-   * @type {!Array.<!goog.dom.gestures.Recognizer.Listener_>}
+   * @type {!Array.<!goog.events.gestures.Recognizer.Listener_>}
    */
   this.listeners_ = [];
 
@@ -124,7 +124,7 @@ goog.dom.gestures.Recognizer = function(target) {
    * gesture is currently recognizing. These relationships are not always
    * symmetrical.
    * @private
-   * @type {!Array.<!goog.dom.gestures.Recognizer>}
+   * @type {!Array.<!goog.events.gestures.Recognizer>}
    */
   this.allowedSimultaneousRecognizers_ = [];
 
@@ -135,13 +135,13 @@ goog.dom.gestures.Recognizer = function(target) {
   // All ready - add to view
   this.view_.addGestureRecognizer(this);
 };
-goog.inherits(goog.dom.gestures.Recognizer, goog.Disposable);
+goog.inherits(goog.events.gestures.Recognizer, goog.Disposable);
 
 
 /**
  * @override
  */
-goog.dom.gestures.Recognizer.prototype.disposeInternal = function() {
+goog.events.gestures.Recognizer.prototype.disposeInternal = function() {
   // This will handle failing the gesture gracefully
   this.setEnabled(false);
 
@@ -155,16 +155,16 @@ goog.dom.gestures.Recognizer.prototype.disposeInternal = function() {
 /**
  * @return {!Element} The target DOM element this recognizer is attached to.
  */
-goog.dom.gestures.Recognizer.prototype.getTarget = function() {
+goog.events.gestures.Recognizer.prototype.getTarget = function() {
   return this.target_;
 };
 
 
 /**
- * @return {!goog.dom.gestures.TouchView} The touch view this recognizer is
+ * @return {!goog.events.gestures.TouchView} The touch view this recognizer is
  *     attached to.
  */
-goog.dom.gestures.Recognizer.prototype.getView = function() {
+goog.events.gestures.Recognizer.prototype.getView = function() {
   return this.view_;
 };
 
@@ -172,7 +172,7 @@ goog.dom.gestures.Recognizer.prototype.getView = function() {
 /**
  * @return {boolean} Whether the recognizer is listening for gestures.
  */
-goog.dom.gestures.Recognizer.prototype.isEnabled = function() {
+goog.events.gestures.Recognizer.prototype.isEnabled = function() {
   return this.enabled_;
 };
 
@@ -183,7 +183,7 @@ goog.dom.gestures.Recognizer.prototype.isEnabled = function() {
  * operate as if the recognizer is always failing.
  * @param {boolean} value Whether to enable the recognizer.
  */
-goog.dom.gestures.Recognizer.prototype.setEnabled = function(value) {
+goog.events.gestures.Recognizer.prototype.setEnabled = function(value) {
   if (this.enabled_ == value) {
     return;
   }
@@ -191,16 +191,16 @@ goog.dom.gestures.Recognizer.prototype.setEnabled = function(value) {
 
   // If we are in the middle of a gesture, fail
   // This will allow for the proper chaining logic
-  if (this.state_ != goog.dom.gestures.State.POSSIBLE) {
-    this.setState(goog.dom.gestures.State.FAILED);
+  if (this.state_ != goog.events.gestures.State.POSSIBLE) {
+    this.setState(goog.events.gestures.State.FAILED);
   }
 };
 
 
 /**
- * @return {goog.dom.gestures.State} Current state of the state machine.
+ * @return {goog.events.gestures.State} Current state of the state machine.
  */
-goog.dom.gestures.Recognizer.prototype.getState = function() {
+goog.events.gestures.Recognizer.prototype.getState = function() {
   return this.state_;
 };
 
@@ -208,11 +208,11 @@ goog.dom.gestures.Recognizer.prototype.getState = function() {
 /**
  * Transitions the state machine to a new state.
  * @protected
- * @param {goog.dom.gestures.State} value The new state machine state.
+ * @param {goog.events.gestures.State} value The new state machine state.
  */
-goog.dom.gestures.Recognizer.prototype.setState = function(value) {
+goog.events.gestures.Recognizer.prototype.setState = function(value) {
   // Ignore redundant states of certain kinds
-  if (this.state_ == value && value == goog.dom.gestures.State.POSSIBLE) {
+  if (this.state_ == value && value == goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
@@ -223,10 +223,10 @@ goog.dom.gestures.Recognizer.prototype.setState = function(value) {
 
   // Check to see if the recognizer can recognize - it may be prevented by
   // other recognizers - if it is, fail
-  if (value == goog.dom.gestures.State.BEGAN ||
-      value == goog.dom.gestures.State.RECOGNIZED) {
+  if (value == goog.events.gestures.State.BEGAN ||
+      value == goog.events.gestures.State.RECOGNIZED) {
     if (!this.canRecognize_()) {
-      value = goog.dom.gestures.State.FAILED;
+      value = goog.events.gestures.State.FAILED;
     }
   }
 
@@ -244,52 +244,52 @@ goog.dom.gestures.Recognizer.prototype.setState = function(value) {
 /**
  * Validates that the given state machine transition is legal.
  * @private
- * @param {goog.dom.gestures.State} oldState Previous state machine state.
- * @param {goog.dom.gestures.State} newState Desired state machine state.
+ * @param {goog.events.gestures.State} oldState Previous state machine state.
+ * @param {goog.events.gestures.State} newState Desired state machine state.
  * @return {boolean} True if the given transition is valid.
  */
-goog.dom.gestures.Recognizer.prototype.isValidTransition_ =
+goog.events.gestures.Recognizer.prototype.isValidTransition_ =
     function(oldState, newState) {
   // NOTE: we assert here as well as check so that we can behave correctly in
   //     compiled mode as well as have good asserts in debug.
   var valid = true;
   switch (newState) {
-    case goog.dom.gestures.State.POSSIBLE:
+    case goog.events.gestures.State.POSSIBLE:
       break;
-    case goog.dom.gestures.State.BEGAN:
-      goog.asserts.assert(oldState == goog.dom.gestures.State.POSSIBLE);
-      valid = oldState == goog.dom.gestures.State.POSSIBLE;
+    case goog.events.gestures.State.BEGAN:
+      goog.asserts.assert(oldState == goog.events.gestures.State.POSSIBLE);
+      valid = oldState == goog.events.gestures.State.POSSIBLE;
       break;
-    case goog.dom.gestures.State.CHANGED:
+    case goog.events.gestures.State.CHANGED:
       goog.asserts.assert(
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED);
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED);
       valid =
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED;
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED;
       break;
-    case goog.dom.gestures.State.ENDED:
-    case goog.dom.gestures.State.RECOGNIZED:
+    case goog.events.gestures.State.ENDED:
+    case goog.events.gestures.State.RECOGNIZED:
       goog.asserts.assert(
-          oldState == goog.dom.gestures.State.POSSIBLE ||
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED);
+          oldState == goog.events.gestures.State.POSSIBLE ||
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED);
       valid =
-          oldState == goog.dom.gestures.State.POSSIBLE ||
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED;
+          oldState == goog.events.gestures.State.POSSIBLE ||
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED;
       break;
-    case goog.dom.gestures.State.CANCELLED:
+    case goog.events.gestures.State.CANCELLED:
       goog.asserts.assert(
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED);
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED);
       valid =
-          oldState == goog.dom.gestures.State.BEGAN ||
-          oldState == goog.dom.gestures.State.CHANGED;
+          oldState == goog.events.gestures.State.BEGAN ||
+          oldState == goog.events.gestures.State.CHANGED;
       break;
-    case goog.dom.gestures.State.FAILED:
-      goog.asserts.assert(oldState == goog.dom.gestures.State.POSSIBLE);
-      valid = oldState == goog.dom.gestures.State.POSSIBLE;
+    case goog.events.gestures.State.FAILED:
+      goog.asserts.assert(oldState == goog.events.gestures.State.POSSIBLE);
+      valid = oldState == goog.events.gestures.State.POSSIBLE;
       break;
   }
   return valid;
@@ -300,9 +300,9 @@ goog.dom.gestures.Recognizer.prototype.isValidTransition_ =
  * Adds a new allowed simultaneous recognizer.
  * The given recognizer will be allowed to recognize if this recognizer is
  * already recognizing a gesture.
- * @param {!goog.dom.gestures.Recognizer} recognizer Recognizer to allow.
+ * @param {!goog.events.gestures.Recognizer} recognizer Recognizer to allow.
  */
-goog.dom.gestures.Recognizer.prototype.addAllowedSimultaneousRecognizer =
+goog.events.gestures.Recognizer.prototype.addAllowedSimultaneousRecognizer =
     function(recognizer) {
   goog.asserts.assert(recognizer != this);
   goog.asserts.assert(!
@@ -316,12 +316,12 @@ goog.dom.gestures.Recognizer.prototype.addAllowedSimultaneousRecognizer =
  * @private
  * @return {boolean} True if the recognizer can recognize.
  */
-goog.dom.gestures.Recognizer.prototype.canRecognize_ = function() {
+goog.events.gestures.Recognizer.prototype.canRecognize_ = function() {
   var allRecognizers = this.view_.getGestureRecognizers();
   for (var n = 0; n < allRecognizers.length; n++) {
     var recognizer = allRecognizers[n];
     if (recognizer != this &&
-        recognizer.getState() == goog.dom.gestures.State.CHANGED) {
+        recognizer.getState() == goog.events.gestures.State.CHANGED) {
       if (!recognizer.canRecognizeWith(this)) {
         return false;
       }
@@ -335,11 +335,11 @@ goog.dom.gestures.Recognizer.prototype.canRecognize_ = function() {
  * Checks to see if the current gesture (assumed to be recognizing) allows the
  * given other gesture to begin recognizing.
  * @protected
- * @param {!goog.dom.gestures.Recognizer} other The gesture that is trying to
+ * @param {!goog.events.gestures.Recognizer} other The gesture that is trying to
  *     recognize.
  * @return {boolean} Whether the two gestures can be recognized simultaneously.
  */
-goog.dom.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
+goog.events.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
   return goog.array.contains(this.allowedSimultaneousRecognizers_, other);
 };
 
@@ -348,7 +348,7 @@ goog.dom.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
  * @return {number} X offset of the gesture from the top-left of the container
  *     element.
  */
-goog.dom.gestures.Recognizer.prototype.getOffsetX = function() {
+goog.events.gestures.Recognizer.prototype.getOffsetX = function() {
   return this.offsetX_;
 };
 
@@ -357,7 +357,7 @@ goog.dom.gestures.Recognizer.prototype.getOffsetX = function() {
  * @return {number} Y offset of the gesture from the top-left of the container
  *     element.
  */
-goog.dom.gestures.Recognizer.prototype.getOffsetY = function() {
+goog.events.gestures.Recognizer.prototype.getOffsetY = function() {
   return this.offsetY_;
 };
 
@@ -366,7 +366,7 @@ goog.dom.gestures.Recognizer.prototype.getOffsetY = function() {
  * @return {number} X offset of the gesture from the top-left of the browser
  *     window.
  */
-goog.dom.gestures.Recognizer.prototype.getClientX = function() {
+goog.events.gestures.Recognizer.prototype.getClientX = function() {
   return this.clientX_;
 };
 
@@ -375,7 +375,7 @@ goog.dom.gestures.Recognizer.prototype.getClientX = function() {
  * @return {number} Y offset of the gesture from the top-left of the browser
  *     window.
  */
-goog.dom.gestures.Recognizer.prototype.getClientY = function() {
+goog.events.gestures.Recognizer.prototype.getClientY = function() {
   return this.clientY_;
 };
 
@@ -383,7 +383,7 @@ goog.dom.gestures.Recognizer.prototype.getClientY = function() {
 /**
  * @return {number} X offset of the gesture from the top-left of the page.
  */
-goog.dom.gestures.Recognizer.prototype.getPageX = function() {
+goog.events.gestures.Recognizer.prototype.getPageX = function() {
   return this.pageX_;
 };
 
@@ -391,7 +391,7 @@ goog.dom.gestures.Recognizer.prototype.getPageX = function() {
 /**
  * @return {number} Y offset of the gesture from the top-left of the page.
  */
-goog.dom.gestures.Recognizer.prototype.getPageY = function() {
+goog.events.gestures.Recognizer.prototype.getPageY = function() {
   return this.pageY_;
 };
 
@@ -399,11 +399,11 @@ goog.dom.gestures.Recognizer.prototype.getPageY = function() {
 /**
  * Resets all state to the default values.
  * This will be called when the state machine transitions back to
- * {@see goog.dom.gestures.State.POSSIBLE}.
+ * {@see goog.events.gestures.State.POSSIBLE}.
  * @protected
  */
-goog.dom.gestures.Recognizer.prototype.reset = function() {
-  this.setState(goog.dom.gestures.State.POSSIBLE);
+goog.events.gestures.Recognizer.prototype.reset = function() {
+  this.setState(goog.events.gestures.State.POSSIBLE);
   this.updateLocation();
 };
 
@@ -411,15 +411,15 @@ goog.dom.gestures.Recognizer.prototype.reset = function() {
 /**
  * Adds a new listener.
  * This must only be called when the recognizer is in the
- * {@see goog.dom.gestures.State.POSSIBLE} state.
- * @param {!goog.dom.gestures.CallbackFunction} callback Callback function.
+ * {@see goog.events.gestures.State.POSSIBLE} state.
+ * @param {!goog.events.gestures.CallbackFunction} callback Callback function.
  * @param {Object=} opt_scope Scope that the callback will be called in.
  */
-goog.dom.gestures.Recognizer.prototype.addListener =
+goog.events.gestures.Recognizer.prototype.addListener =
     function(callback, opt_scope) {
-  goog.asserts.assert(this.state_ == goog.dom.gestures.State.POSSIBLE);
+  goog.asserts.assert(this.state_ == goog.events.gestures.State.POSSIBLE);
   this.listeners_.push(
-      new goog.dom.gestures.Recognizer.Listener_(callback, opt_scope));
+      new goog.events.gestures.Recognizer.Listener_(callback, opt_scope));
 };
 
 
@@ -428,7 +428,7 @@ goog.dom.gestures.Recognizer.prototype.addListener =
  * @protected
  * @param {boolean=} opt_reset Reset the recognizer to {@code POSSIBLE}.
  */
-goog.dom.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
+goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
   // Notify all listeners
   for (var n = 0; n < this.listeners_.length; n++) {
     var listener = this.listeners_[n];
@@ -451,7 +451,8 @@ goog.dom.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
  * @protected
  * @param {Array.<!TouchEvent>|TouchList=} opt_touches A list of active touches.
  */
-goog.dom.gestures.Recognizer.prototype.updateLocation = function(opt_touches) {
+goog.events.gestures.Recognizer.prototype.updateLocation =
+    function(opt_touches) {
   if (!opt_touches || !opt_touches.length) {
     // No touches - reset
     this.offsetX_ = this.offsetY_ = 0;
@@ -500,7 +501,7 @@ goog.dom.gestures.Recognizer.prototype.updateLocation = function(opt_touches) {
  * @protected
  * @param {!TouchEvent} e Browser touch event.
  */
-goog.dom.gestures.Recognizer.prototype.touchesBegan = goog.nullFunction;
+goog.events.gestures.Recognizer.prototype.touchesBegan = goog.nullFunction;
 
 
 /**
@@ -510,7 +511,7 @@ goog.dom.gestures.Recognizer.prototype.touchesBegan = goog.nullFunction;
  * @protected
  * @param {!TouchEvent} e Browser touch event.
  */
-goog.dom.gestures.Recognizer.prototype.touchesMoved = goog.nullFunction;
+goog.events.gestures.Recognizer.prototype.touchesMoved = goog.nullFunction;
 
 
 /**
@@ -520,7 +521,7 @@ goog.dom.gestures.Recognizer.prototype.touchesMoved = goog.nullFunction;
  * @protected
  * @param {!TouchEvent} e Browser touch event.
  */
-goog.dom.gestures.Recognizer.prototype.touchesEnded = goog.nullFunction;
+goog.events.gestures.Recognizer.prototype.touchesEnded = goog.nullFunction;
 
 
 /**
@@ -530,7 +531,7 @@ goog.dom.gestures.Recognizer.prototype.touchesEnded = goog.nullFunction;
  * @protected
  * @param {!TouchEvent} e Browser touch event.
  */
-goog.dom.gestures.Recognizer.prototype.touchesCancelled = goog.nullFunction;
+goog.events.gestures.Recognizer.prototype.touchesCancelled = goog.nullFunction;
 
 
 
@@ -538,17 +539,17 @@ goog.dom.gestures.Recognizer.prototype.touchesCancelled = goog.nullFunction;
  * A listener that receives recognizer update callbacks.
  * @private
  * @constructor
- * @param {!goog.dom.gestures.CallbackFunction} callback Callback function.
+ * @param {!goog.events.gestures.CallbackFunction} callback Callback function.
  * @param {Object=} opt_scope Scope that the callback will be called in.
  */
-goog.dom.gestures.Recognizer.Listener_ = function(callback, opt_scope) {
+goog.events.gestures.Recognizer.Listener_ = function(callback, opt_scope) {
   // NOTE: this is used instead of a goog.bind so that we retain typing on
   //       everything and avoid the currently *extremely* slow call-through
   //       of bound functions.
 
   /**
    * Callback function.
-   * @type {!goog.dom.gestures.CallbackFunction}
+   * @type {!goog.events.gestures.CallbackFunction}
    */
   this.callback = callback;
 

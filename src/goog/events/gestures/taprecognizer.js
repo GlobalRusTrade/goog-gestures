@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.TapRecognizer');
+goog.provide('goog.events.gestures.TapRecognizer');
 
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.Recognizer');
-goog.require('goog.dom.gestures.State');
+goog.require('goog.events.gestures.Recognizer');
+goog.require('goog.events.gestures.State');
 
 
 
 /**
  * An N-tap gesture recognizer.
  * @constructor
- * @extends {goog.dom.gestures.Recognizer}
+ * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.dom.gestures.TapRecognizer = function(target) {
+goog.events.gestures.TapRecognizer = function(target) {
   goog.base(this, target);
 
   /**
@@ -50,7 +50,7 @@ goog.dom.gestures.TapRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_;
+  this.moveHysteresis_ = goog.events.gestures.TapRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * The total distance the center has moved, in px.
@@ -59,7 +59,8 @@ goog.dom.gestures.TapRecognizer = function(target) {
    */
   this.centroidDistance_ = 0;
 };
-goog.inherits(goog.dom.gestures.TapRecognizer, goog.dom.gestures.Recognizer);
+goog.inherits(goog.events.gestures.TapRecognizer,
+    goog.events.gestures.Recognizer);
 
 
 /**
@@ -70,13 +71,13 @@ goog.inherits(goog.dom.gestures.TapRecognizer, goog.dom.gestures.Recognizer);
  * @const
  * @type {number}
  */
-goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 30;
+goog.events.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 30;
 
 
 /**
  * @return {number} Number of taps required for the gesture recognize.
  */
-goog.dom.gestures.TapRecognizer.prototype.getTapCount = function() {
+goog.events.gestures.TapRecognizer.prototype.getTapCount = function() {
   return this.tapCount_;
 };
 
@@ -85,8 +86,8 @@ goog.dom.gestures.TapRecognizer.prototype.getTapCount = function() {
  * Sets the number of taps required for the gesture to recognize.
  * @param {number} value New tap count value, >= 1.
  */
-goog.dom.gestures.TapRecognizer.prototype.setTapCount = function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+goog.events.gestures.TapRecognizer.prototype.setTapCount = function(value) {
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
   this.tapCount_ = value;
@@ -96,7 +97,7 @@ goog.dom.gestures.TapRecognizer.prototype.setTapCount = function(value) {
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.TapRecognizer.prototype.getTouchCount = function() {
+goog.events.gestures.TapRecognizer.prototype.getTouchCount = function() {
   return this.touchCount_;
 };
 
@@ -105,8 +106,8 @@ goog.dom.gestures.TapRecognizer.prototype.getTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New touch count value, >= 1.
  */
-goog.dom.gestures.TapRecognizer.prototype.setTouchCount = function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+goog.events.gestures.TapRecognizer.prototype.setTouchCount = function(value) {
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
   this.touchCount_ = value;
@@ -116,7 +117,7 @@ goog.dom.gestures.TapRecognizer.prototype.setTouchCount = function(value) {
 /**
  * @override
  */
-goog.dom.gestures.TapRecognizer.prototype.reset = function() {
+goog.events.gestures.TapRecognizer.prototype.reset = function() {
   this.centroidDistance_ = 0;
   goog.base(this, 'reset');
 };
@@ -125,14 +126,14 @@ goog.dom.gestures.TapRecognizer.prototype.reset = function() {
 /**
  * @override
  */
-goog.dom.gestures.TapRecognizer.prototype.touchesBegan = function(e) {
-  if (this.getState() != goog.dom.gestures.State.POSSIBLE) {
+goog.events.gestures.TapRecognizer.prototype.touchesBegan = function(e) {
+  if (this.getState() != goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
   if (e.targetTouches.length > this.touchCount_) {
     // Exceeded touch count, no way to recognize
-    this.setState(goog.dom.gestures.State.FAILED);
+    this.setState(goog.events.gestures.State.FAILED);
     return;
   }
 
@@ -143,8 +144,8 @@ goog.dom.gestures.TapRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
-  if (this.getState() != goog.dom.gestures.State.POSSIBLE) {
+goog.events.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
+  if (this.getState() != goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
@@ -161,7 +162,7 @@ goog.dom.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
   this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
   if (this.centroidDistance_ >= this.moveHysteresis_) {
     // Touch has moved too much - fail
-    this.setState(goog.dom.gestures.State.FAILED);
+    this.setState(goog.events.gestures.State.FAILED);
     return;
   }
 };
@@ -170,12 +171,12 @@ goog.dom.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
-  if (this.getState() == goog.dom.gestures.State.POSSIBLE) {
+goog.events.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
+  if (this.getState() == goog.events.gestures.State.POSSIBLE) {
     // TODO(benvanik): tap count
     // TODO(benvanik): touch count
     if (e.targetTouches.length + e.changedTouches.length == this.touchCount_) {
-      this.setState(goog.dom.gestures.State.RECOGNIZED);
+      this.setState(goog.events.gestures.State.RECOGNIZED);
       this.reset();
     }
   }
@@ -189,6 +190,6 @@ goog.dom.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.TapRecognizer.prototype.touchesCancelled = function(e) {
+goog.events.gestures.TapRecognizer.prototype.touchesCancelled = function(e) {
   this.reset();
 };

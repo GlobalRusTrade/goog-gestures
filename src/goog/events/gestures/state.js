@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.State');
+goog.provide('goog.events.gestures.State');
 
 
 /**
  * All possible states of the recognizer state machine.
  * @enum {number}
  */
-goog.dom.gestures.State = {
+goog.events.gestures.State = {
   /**
    * The gesture is listening for touch events but has not yet recognized.
    */

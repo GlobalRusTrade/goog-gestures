@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.Direction');
+goog.provide('goog.events.gestures.Direction');
 
 
 // TODO(benvanik): consider making the values here degrees, which would allow
@@ -25,7 +25,7 @@ goog.provide('goog.dom.gestures.Direction');
  * A direction as indicated by a gesture.
  * @enum {number}
  */
-goog.dom.gestures.Direction = {
+goog.events.gestures.Direction = {
   /**
    * No direction was indicated.
    */

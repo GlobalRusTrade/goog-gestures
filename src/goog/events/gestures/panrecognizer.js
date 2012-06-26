@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.PanRecognizer');
+goog.provide('goog.events.gestures.PanRecognizer');
 
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.Recognizer');
-goog.require('goog.dom.gestures.State');
+goog.require('goog.events.gestures.Recognizer');
+goog.require('goog.events.gestures.State');
 
 
 
 /**
  * A pan gesture recognizer.
  * @constructor
- * @extends {goog.dom.gestures.Recognizer}
+ * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.dom.gestures.PanRecognizer = function(target) {
+goog.events.gestures.PanRecognizer = function(target) {
   goog.base(this, target);
 
   /**
@@ -50,7 +50,7 @@ goog.dom.gestures.PanRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = goog.dom.gestures.PanRecognizer.DEFAULT_HYSTERESIS_;
+  this.moveHysteresis_ = goog.events.gestures.PanRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * X of the centroid when the gesture first began.
@@ -87,7 +87,8 @@ goog.dom.gestures.PanRecognizer = function(target) {
    */
   this.centroidDistance_ = 0;
 };
-goog.inherits(goog.dom.gestures.PanRecognizer, goog.dom.gestures.Recognizer);
+goog.inherits(goog.events.gestures.PanRecognizer,
+    goog.events.gestures.Recognizer);
 
 
 /**
@@ -97,13 +98,13 @@ goog.inherits(goog.dom.gestures.PanRecognizer, goog.dom.gestures.Recognizer);
  * @const
  * @type {number}
  */
-goog.dom.gestures.PanRecognizer.DEFAULT_HYSTERESIS_ = 6;
+goog.events.gestures.PanRecognizer.DEFAULT_HYSTERESIS_ = 6;
 
 
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.PanRecognizer.prototype.getMinimumTouchCount = function() {
+goog.events.gestures.PanRecognizer.prototype.getMinimumTouchCount = function() {
   return this.minTouchCount_;
 };
 
@@ -112,9 +113,9 @@ goog.dom.gestures.PanRecognizer.prototype.getMinimumTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New touch count value, >= 1.
  */
-goog.dom.gestures.PanRecognizer.prototype.setMinimumTouchCount =
+goog.events.gestures.PanRecognizer.prototype.setMinimumTouchCount =
     function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
   this.minTouchCount_ = value;
@@ -124,7 +125,7 @@ goog.dom.gestures.PanRecognizer.prototype.setMinimumTouchCount =
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.PanRecognizer.prototype.getMaximumTouchCount = function() {
+goog.events.gestures.PanRecognizer.prototype.getMaximumTouchCount = function() {
   return this.maxTouchCount_;
 };
 
@@ -133,9 +134,9 @@ goog.dom.gestures.PanRecognizer.prototype.getMaximumTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New touch count value, >= 1.
  */
-goog.dom.gestures.PanRecognizer.prototype.setMaximumTouchCount =
+goog.events.gestures.PanRecognizer.prototype.setMaximumTouchCount =
     function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
   goog.asserts.assert(this.maxTouchCount_ >= value);
@@ -146,7 +147,7 @@ goog.dom.gestures.PanRecognizer.prototype.setMaximumTouchCount =
 /**
  * @return {number} The amount of translation on X since the gesture began.
  */
-goog.dom.gestures.PanRecognizer.prototype.getTranslateX = function() {
+goog.events.gestures.PanRecognizer.prototype.getTranslateX = function() {
   return this.getPageX() - this.centroidStartX_ + this.centroidShiftX_;
 };
 
@@ -154,7 +155,7 @@ goog.dom.gestures.PanRecognizer.prototype.getTranslateX = function() {
 /**
  * @return {number} The amount of translation on Y since the gesture began.
  */
-goog.dom.gestures.PanRecognizer.prototype.getTranslateY = function() {
+goog.events.gestures.PanRecognizer.prototype.getTranslateY = function() {
   return this.getPageY() - this.centroidStartY_ + this.centroidShiftY_;
 };
 
@@ -162,7 +163,7 @@ goog.dom.gestures.PanRecognizer.prototype.getTranslateY = function() {
 /**
  * @override
  */
-goog.dom.gestures.PanRecognizer.prototype.reset = function() {
+goog.events.gestures.PanRecognizer.prototype.reset = function() {
   this.centroidStartX_ = this.centroidStartY_ = 0;
   this.centroidShiftX_ = this.centroidShiftY_ = 0;
   this.centroidDistance_ = 0;
@@ -173,19 +174,19 @@ goog.dom.gestures.PanRecognizer.prototype.reset = function() {
 /**
  * @override
  */
-goog.dom.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
+goog.events.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
   var oldPageX = this.getPageX();
   var oldPageY = this.getPageY();
   this.updateLocation(e.targetTouches);
 
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     // New touch while recognizing, shift centroid
     this.centroidShiftX_ -= this.getPageX() - oldPageX;
     this.centroidShiftY_ -= this.getPageY() - oldPageY;
 
     if (e.targetTouches.length > this.maxTouchCount_) {
       // Exceeded touch count, stop recognizing
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
     }
@@ -196,7 +197,7 @@ goog.dom.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
+goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
   // Ignore if out of touch range
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
@@ -216,19 +217,20 @@ goog.dom.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
   this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
 
   // Begin if we have moved far enough
-  if (this.getState() == goog.dom.gestures.State.POSSIBLE &&
+  if (this.getState() == goog.events.gestures.State.POSSIBLE &&
       this.centroidDistance_ > this.moveHysteresis_) {
     // Moved far enough, start (or try to)
     this.centroidStartX_ = pageX;
     this.centroidStartY_ = pageY;
     this.centroidShiftX_ = this.centroidShiftY_ = 0;
-    this.setState(goog.dom.gestures.State.BEGAN);
-    if (this.getState() == goog.dom.gestures.State.BEGAN) {
-      this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.BEGAN);
+    if (this.getState() == goog.events.gestures.State.BEGAN) {
+      this.setState(goog.events.gestures.State.CHANGED);
     }
-  } else if ((dx || dy) && this.getState() == goog.dom.gestures.State.CHANGED) {
+  } else if ((dx || dy) &&
+      this.getState() == goog.events.gestures.State.CHANGED) {
     // Normal update
-    this.setState(goog.dom.gestures.State.CHANGED);
+    this.setState(goog.events.gestures.State.CHANGED);
   }
 };
 
@@ -236,8 +238,8 @@ goog.dom.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
+goog.events.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
       // Still have some valid touches - shift centroid
       var oldPageX = this.getPageX();
@@ -247,7 +249,7 @@ goog.dom.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
       this.centroidShiftY_ -= this.getPageY() - oldPageY;
     } else {
       // Not enough touches
-      this.setState(goog.dom.gestures.State.ENDED);
+      this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }
   }
@@ -257,9 +259,9 @@ goog.dom.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.PanRecognizer.prototype.touchesCancelled = function(e) {
-  if (this.getState() == goog.dom.gestures.State.CHANGED) {
-    this.setState(goog.dom.gestures.State.CANCELLED);
+goog.events.gestures.PanRecognizer.prototype.touchesCancelled = function(e) {
+  if (this.getState() == goog.events.gestures.State.CHANGED) {
+    this.setState(goog.events.gestures.State.CANCELLED);
     this.reset();
   }
 };

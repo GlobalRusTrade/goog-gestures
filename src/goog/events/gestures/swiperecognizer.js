@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-goog.provide('goog.dom.gestures.SwipeRecognizer');
+goog.provide('goog.events.gestures.SwipeRecognizer');
 
 goog.require('goog.asserts');
-goog.require('goog.dom.gestures.Direction');
-goog.require('goog.dom.gestures.Recognizer');
-goog.require('goog.dom.gestures.State');
+goog.require('goog.events.gestures.Direction');
+goog.require('goog.events.gestures.Recognizer');
+goog.require('goog.events.gestures.State');
 
 
 
 /**
  * A simple directional swipe gesture recognizer.
  * @constructor
- * @extends {goog.dom.gestures.Recognizer}
+ * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.dom.gestures.SwipeRecognizer = function(target) {
+goog.events.gestures.SwipeRecognizer = function(target) {
   goog.base(this, target);
 
   /**
@@ -44,7 +44,8 @@ goog.dom.gestures.SwipeRecognizer = function(target) {
    * @private
    * @type {number}
    */
-  this.moveHysteresis_ = goog.dom.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_;
+  this.moveHysteresis_ =
+      goog.events.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_;
 
   /**
    * Whether the current touches are being watched as possible swipes.
@@ -79,11 +80,12 @@ goog.dom.gestures.SwipeRecognizer = function(target) {
   /**
    * Recognized swipe direction.
    * @private
-   * @type {goog.dom.gestures.Direction}
+   * @type {goog.events.gestures.Direction}
    */
-  this.direction_ = goog.dom.gestures.Direction.NONE;
+  this.direction_ = goog.events.gestures.Direction.NONE;
 };
-goog.inherits(goog.dom.gestures.SwipeRecognizer, goog.dom.gestures.Recognizer);
+goog.inherits(goog.events.gestures.SwipeRecognizer,
+    goog.events.gestures.Recognizer);
 
 
 /**
@@ -93,13 +95,13 @@ goog.inherits(goog.dom.gestures.SwipeRecognizer, goog.dom.gestures.Recognizer);
  * @const
  * @type {number}
  */
-goog.dom.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_ = 30;
+goog.events.gestures.SwipeRecognizer.DEFAULT_HYSTERESIS_ = 30;
 
 
 /**
  * @return {number} Number of touches required for the gesture recognize.
  */
-goog.dom.gestures.SwipeRecognizer.prototype.getTouchCount = function() {
+goog.events.gestures.SwipeRecognizer.prototype.getTouchCount = function() {
   return this.touchCount_;
 };
 
@@ -108,8 +110,8 @@ goog.dom.gestures.SwipeRecognizer.prototype.getTouchCount = function() {
  * Sets the number of touches required for the gesture to recognize.
  * @param {number} value New touch count value, >= 1.
  */
-goog.dom.gestures.SwipeRecognizer.prototype.setTouchCount = function(value) {
-  goog.asserts.assert(this.getState() == goog.dom.gestures.State.POSSIBLE);
+goog.events.gestures.SwipeRecognizer.prototype.setTouchCount = function(value) {
+  goog.asserts.assert(this.getState() == goog.events.gestures.State.POSSIBLE);
   value |= 0;
   goog.asserts.assert(value >= 1);
   this.touchCount_ = value;
@@ -117,10 +119,10 @@ goog.dom.gestures.SwipeRecognizer.prototype.setTouchCount = function(value) {
 
 
 /**
- * @return {goog.dom.gestures.Direction} The direction of the recognized swipe
- *     gesture.
+ * @return {goog.events.gestures.Direction} The direction of the recognized
+ *     swipe gesture.
  */
-goog.dom.gestures.SwipeRecognizer.prototype.getDirection = function() {
+goog.events.gestures.SwipeRecognizer.prototype.getDirection = function() {
   return this.direction_;
 };
 
@@ -128,11 +130,11 @@ goog.dom.gestures.SwipeRecognizer.prototype.getDirection = function() {
 /**
  * @override
  */
-goog.dom.gestures.SwipeRecognizer.prototype.reset = function() {
+goog.events.gestures.SwipeRecognizer.prototype.reset = function() {
   this.watching_ = false;
   this.startTime_ = 0;
   this.startX_ = this.startY_ = 0;
-  this.direction_ = goog.dom.gestures.Direction.NONE;
+  this.direction_ = goog.events.gestures.Direction.NONE;
   goog.base(this, 'reset');
 };
 
@@ -140,14 +142,14 @@ goog.dom.gestures.SwipeRecognizer.prototype.reset = function() {
 /**
  * @override
  */
-goog.dom.gestures.SwipeRecognizer.prototype.touchesBegan = function(e) {
-  if (this.getState() != goog.dom.gestures.State.POSSIBLE) {
+goog.events.gestures.SwipeRecognizer.prototype.touchesBegan = function(e) {
+  if (this.getState() != goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
   if (e.targetTouches.length != this.touchCount_) {
     // Touch count mismatch, no way to recognize
-    this.setState(goog.dom.gestures.State.FAILED);
+    this.setState(goog.events.gestures.State.FAILED);
     this.reset();
     return;
   }
@@ -157,8 +159,8 @@ goog.dom.gestures.SwipeRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
-  if (this.getState() != goog.dom.gestures.State.POSSIBLE) {
+goog.events.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
+  if (this.getState() != goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
@@ -183,20 +185,20 @@ goog.dom.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
       var distanceRequired = this.moveHysteresis_;
       var slipAllowed = distanceRequired / 3;
 
-      var direction = goog.dom.gestures.Direction.NONE;
+      var direction = goog.events.gestures.Direction.NONE;
       if (dx <= -distanceRequired && Math.abs(dy) <= slipAllowed) {
-        direction = goog.dom.gestures.Direction.LEFT;
+        direction = goog.events.gestures.Direction.LEFT;
       } else if (dx >= distanceRequired && Math.abs(dy) <= slipAllowed) {
-        direction = goog.dom.gestures.Direction.RIGHT;
+        direction = goog.events.gestures.Direction.RIGHT;
       } else if (dy <= -distanceRequired && Math.abs(dx) <= slipAllowed) {
-        direction = goog.dom.gestures.Direction.UP;
+        direction = goog.events.gestures.Direction.UP;
       } else if (dy >= distanceRequired && Math.abs(dx) <= slipAllowed) {
-        direction = goog.dom.gestures.Direction.DOWN;
+        direction = goog.events.gestures.Direction.DOWN;
       }
 
-      if (direction != goog.dom.gestures.Direction.NONE) {
+      if (direction != goog.events.gestures.Direction.NONE) {
         this.direction_ = direction;
-        this.setState(goog.dom.gestures.State.RECOGNIZED);
+        this.setState(goog.events.gestures.State.RECOGNIZED);
       }
     }
   }
@@ -206,7 +208,7 @@ goog.dom.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.SwipeRecognizer.prototype.touchesEnded = function(e) {
+goog.events.gestures.SwipeRecognizer.prototype.touchesEnded = function(e) {
   if (!e.targetTouches.length) {
     this.reset();
   }
@@ -216,6 +218,6 @@ goog.dom.gestures.SwipeRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.dom.gestures.SwipeRecognizer.prototype.touchesCancelled = function(e) {
+goog.events.gestures.SwipeRecognizer.prototype.touchesCancelled = function(e) {
   this.reset();
 };

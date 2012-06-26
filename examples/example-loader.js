@@ -33,7 +33,7 @@ function prepareExample(exampleCallback) {
     window.CLOSURE_NO_DEPS = true;
     doc.writeln('<script src="../third_party/closure-library/closure/goog/base.js"></script>');
     doc.writeln('<script src="../gestures_js_uncompiled-deps.js"></script>');
-    doc.writeln('<script>goog.require("goog.dom.gestures");</script>');
+    doc.writeln('<script>goog.require("goog.events.gestures");</script>');
 
     // Super hacky, but required to ensure all of the goog.require magic works
     window.__exampleCallback = exampleCallback;

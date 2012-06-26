@@ -75,12 +75,12 @@ closure_js_library(
 closure_js_library(
     name='gestures_js_compiled',
     mode='ADVANCED',
-    entry_points=['goog.dom.gestures.exports'],
+    entry_points=['goog.events.gestures.exports'],
     srcs=GESTURES_JS_SRCS,
     externs=[':closure_externs'],
     compiler_jar=JS_COMPILER_JAR,
     compiler_flags=SHARED_JS_FLAGS + [
-        '--define=goog.dom.gestures.exports.ENABLE_EXPORTS=true',
+        '--define=goog.events.gestures.exports.ENABLE_EXPORTS=true',
         ],
     wrap_with_global='window');
 
