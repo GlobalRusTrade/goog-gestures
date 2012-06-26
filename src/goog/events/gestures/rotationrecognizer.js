@@ -48,18 +48,25 @@ goog.events.gestures.RotationRecognizer = function(target) {
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
-   * The previous angle of rotation, in radians.
+   * Accumulated angle changes over the course of the gesture, in radians.
    * @private
    * @type {number}
    */
-  this.lastAngle_ = 0;
+  this.angle_ = 0;
 
   /**
    * The current rotation angle between the active touches, in radians.
    * @private
    * @type {number}
    */
-  this.angle_ = 0;
+  this.angleDelta_ = 0;
+
+  /**
+   * The previous angle of rotation, in radians.
+   * @private
+   * @type {number}
+   */
+  this.lastAngleDelta_ = 0;
 
   /**
    * Current rotation velocity.
@@ -85,11 +92,20 @@ goog.inherits(goog.events.gestures.RotationRecognizer,
 
 
 /**
+ * @return {number} The accumulated rotation angle for the gesture, in radians.
+ */
+goog.events.gestures.RotationRecognizer.prototype.getRotation =
+    function() {
+  return this.angle_;
+};
+
+
+/**
  * @return {number} The change in rotation angle, in radians.
  */
 goog.events.gestures.RotationRecognizer.prototype.getRotationDelta =
     function() {
-  return this.angle_;
+  return this.angleDelta_;
 };
 
 
@@ -105,8 +121,9 @@ goog.events.gestures.RotationRecognizer.prototype.getVelocity = function() {
  * @override
  */
 goog.events.gestures.RotationRecognizer.prototype.reset = function() {
-  this.lastAngle_ = 0;
   this.angle_ = 0;
+  this.angleDelta_ = 0;
+  this.lastAngleDelta_ = 0;
   this.velocity_ = 0;
   this.trackedTouches_ = {};
   goog.base(this, 'reset');
@@ -198,14 +215,15 @@ goog.events.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
 
   // Calculate angle
   // Always use the first two touches - not ideal, but good enough
-  this.lastAngle_ = this.angle_;
+  this.lastAngleDelta_ = this.angleDelta_;
   var touch0 = e.targetTouches[0];
   var touch1 = e.targetTouches[1];
-  this.angle_ = this.angleBetweenTouches_(touch0, touch1);
+  this.angleDelta_ = this.angleBetweenTouches_(touch0, touch1);
+  this.angle_ += this.angleDelta_;
 
   // TODO(benvanik): a real velocity
-  if (this.lastAngle_) {
-    this.velocity_ = this.angle_ / this.lastAngle_;
+  if (this.lastAngleDelta_) {
+    this.velocity_ = this.angleDelta_ / this.lastAngleDelta_;
   } else {
     this.velocity_ = 0;
   }
@@ -242,13 +260,14 @@ goog.events.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
   if (this.getState() == goog.events.gestures.State.POSSIBLE &&
       anyMovedEnough) {
     // Moved far enough, start (or try to)
-    this.lastAngle_ = this.angle_;
+    this.angle_ = 0;
+    this.lastAngleDelta_ = this.angleDelta_;
     this.setState(goog.events.gestures.State.BEGAN);
     if (this.getState() == goog.events.gestures.State.BEGAN) {
       this.setState(goog.events.gestures.State.CHANGED);
     }
   } else if (this.getState() == goog.events.gestures.State.CHANGED &&
-      this.angle_) {
+      this.angleDelta_) {
     // Normal update
     this.setState(goog.events.gestures.State.CHANGED);
   }
@@ -268,7 +287,7 @@ goog.events.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
       var touch0 = e.targetTouches[0];
       var touch1 = e.targetTouches[1];
       var newAngle = this.angleBetweenTouches_(touch0, touch1);
-      this.angle_ = this.lastAngle_ = newAngle;
+      this.angleDelta_ = this.lastAngleDelta_ = newAngle;
     } else {
       // Not enough touches
       this.setState(goog.events.gestures.State.ENDED);

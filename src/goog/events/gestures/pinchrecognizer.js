@@ -49,11 +49,11 @@ goog.events.gestures.PinchRecognizer = function(target) {
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
-   * The distance between the active touches when the pinch began, in px.
+   * Accumulated scale over the life of the gesture. Always relative to 1.
    * @private
    * @type {number}
    */
-  this.lastDistance_ = 0;
+  this.scale_ = 1;
 
   /**
    * The current distance between the active touches, in px.
@@ -61,6 +61,13 @@ goog.events.gestures.PinchRecognizer = function(target) {
    * @type {number}
    */
   this.distance_ = 0;
+
+  /**
+   * The distance between the active touches when the pinch began, in px.
+   * @private
+   * @type {number}
+   */
+  this.lastDistance_ = 0;
 
   /**
    * Current scale velocity.
@@ -132,6 +139,14 @@ goog.events.gestures.PinchRecognizer.prototype.setMaximumTouchCount =
 
 
 /**
+ * @return {number} The accumulated change in scaling factor for the gesture.
+ */
+goog.events.gestures.PinchRecognizer.prototype.getScaling = function() {
+  return this.scale_;
+};
+
+
+/**
  * @return {number} The change in scaling factor.
  */
 goog.events.gestures.PinchRecognizer.prototype.getScalingDelta = function() {
@@ -151,8 +166,9 @@ goog.events.gestures.PinchRecognizer.prototype.getVelocity = function() {
  * @override
  */
 goog.events.gestures.PinchRecognizer.prototype.reset = function() {
-  this.lastDistance_ = 0;
+  this.scale_ = 1;
   this.distance_ = 0;
+  this.lastDistance_ = 0;
   this.velocity_ = 0;
   this.trackedTouches_ = {};
   goog.base(this, 'reset');
@@ -251,11 +267,13 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
     this.lastDistance_ = this.distance_;
     this.setState(goog.events.gestures.State.BEGAN);
     if (this.getState() == goog.events.gestures.State.BEGAN) {
+      this.scale_ *= this.distance_ / this.lastDistance_;
       this.setState(goog.events.gestures.State.CHANGED);
     }
   } else if (this.getState() == goog.events.gestures.State.CHANGED &&
       this.distance_ != this.lastDistance_) {
     // Normal update
+    this.scale_ *= this.distance_ / this.lastDistance_;
     this.setState(goog.events.gestures.State.CHANGED);
   }
 };

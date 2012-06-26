@@ -168,6 +168,9 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.PinchRecognizer.prototype, 'setMaximumTouchCount',
       goog.events.gestures.PinchRecognizer.prototype.setMaximumTouchCount);
   goog.exportProperty(
+      goog.events.gestures.PinchRecognizer.prototype, 'getScaling',
+      goog.events.gestures.PinchRecognizer.prototype.getScaling);
+  goog.exportProperty(
       goog.events.gestures.PinchRecognizer.prototype, 'getScalingDelta',
       goog.events.gestures.PinchRecognizer.prototype.getScalingDelta);
   goog.exportProperty(
@@ -175,6 +178,9 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.PinchRecognizer.prototype.getVelocity);
 
   // RotationRecognizer
+  goog.exportProperty(
+      goog.events.gestures.RotationRecognizer.prototype, 'getRotation',
+      goog.events.gestures.RotationRecognizer.prototype.getRotation);
   goog.exportProperty(
       goog.events.gestures.RotationRecognizer.prototype, 'getRotationDelta',
       goog.events.gestures.RotationRecognizer.prototype.getRotationDelta);
