@@ -1,6 +1,8 @@
 goog-gestures
 =============
 
+Simple demo here: [example1](http://benvanik.github.com/goog-gestures/examples/example1.html) (run on iOS or enable touch emulation in Chrome dev tools)
+
 A simple Closure touch gesture library. This will hopefully be merged into the
 Closure Library at some point, but is here to play with until I can get it good
 enough to justify getting it included :)
