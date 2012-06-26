@@ -34,7 +34,8 @@ goog.require('goog.events.gestures.TouchView');
  * @param {Object=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.PanRecognizer} A new bound gesture instance.
  */
-goog.events.gestures.createPanGesture = function(target, callback, opt_scope) {
+goog.events.gestures.attachPanGesture =
+    function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.PanRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;
@@ -50,7 +51,7 @@ goog.events.gestures.createPanGesture = function(target, callback, opt_scope) {
  * @param {Object=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.PinchRecognizer} A new bound gesture instance.
  */
-goog.events.gestures.createPinchGesture =
+goog.events.gestures.attachPinchGesture =
     function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.PinchRecognizer(target);
   recognizer.addListener(callback, opt_scope);
@@ -68,7 +69,7 @@ goog.events.gestures.createPinchGesture =
  * @return {!goog.events.gestures.RotationRecognizer} A new bound gesture
  *     instance.
  */
-goog.events.gestures.createRotationGesture =
+goog.events.gestures.attachRotationGesture =
     function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.RotationRecognizer(target);
   recognizer.addListener(callback, opt_scope);
@@ -85,7 +86,7 @@ goog.events.gestures.createRotationGesture =
  * @param {Object=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.SwipeRecognizer} A new bound gesture instance.
  */
-goog.events.gestures.createSwipeGesture =
+goog.events.gestures.attachSwipeGesture =
     function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.SwipeRecognizer(target);
   recognizer.addListener(callback, opt_scope);
@@ -102,7 +103,8 @@ goog.events.gestures.createSwipeGesture =
  * @param {Object=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.TapRecognizer} A new bound gesture instance.
  */
-goog.events.gestures.createTapGesture = function(target, callback, opt_scope) {
+goog.events.gestures.attachTapGesture =
+    function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.TapRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;

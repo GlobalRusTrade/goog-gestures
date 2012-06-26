@@ -82,7 +82,7 @@
 
         (function() {
           var tapBox = document.getElementById('tapBox');
-          var tapGesture = goog.events.gestures.createTapGesture(tapBox,
+          var tapGesture = goog.events.gestures.attachTapGesture(tapBox,
               function(gesture) {
                 if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
@@ -99,7 +99,7 @@
 
         (function() {
           var swipeBox = document.getElementById('swipeBox');
-          var swipeGesture = goog.events.gestures.createSwipeGesture(swipeBox,
+          var swipeGesture = goog.events.gestures.attachSwipeGesture(swipeBox,
               function(gesture) {
                 if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
                   console.log('swiped', gesture.getDirection());
@@ -115,7 +115,7 @@
 
         (function() {
           var tapSwipeBox = document.getElementById('tapSwipeBox');
-          var tapGesture = goog.events.gestures.createTapGesture(tapSwipeBox,
+          var tapGesture = goog.events.gestures.attachTapGesture(tapSwipeBox,
               function(gesture) {
                 if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
@@ -128,7 +128,7 @@
               });
           // tapGesture.setTapCount(1);
           // tapGesture.setTouchCount(1);
-          var swipeGesture = goog.events.gestures.createSwipeGesture(tapSwipeBox,
+          var swipeGesture = goog.events.gestures.attachSwipeGesture(tapSwipeBox,
               function(gesture) {
                 if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
                   console.log('swiped', gesture.getDirection());
@@ -148,7 +148,7 @@
           var sty = 0;
           var tx = 0;
           var ty = 0;
-          var panGesture = goog.events.gestures.createPanGesture(panBox,
+          var panGesture = goog.events.gestures.attachPanGesture(panBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -175,7 +175,7 @@
         (function() {
           var pinchBox = document.getElementById('pinchBox');
           var scale = 1;
-          var pinchGesture = goog.events.gestures.createPinchGesture(pinchBox,
+          var pinchGesture = goog.events.gestures.attachPinchGesture(pinchBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -199,7 +199,7 @@
         (function() {
           var rotateBox = document.getElementById('rotateBox');
           var angle = 0;
-          var rotateGesture = goog.events.gestures.createRotationGesture(rotateBox,
+          var rotateGesture = goog.events.gestures.attachRotationGesture(rotateBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -230,7 +230,7 @@
             multiBox.style.webkitTransform =
                 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
           };
-          var tapGesture = goog.events.gestures.createTapGesture(multiBox,
+          var tapGesture = goog.events.gestures.attachTapGesture(multiBox,
               function(gesture) {
                 if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
@@ -241,7 +241,7 @@
                   }, 200);
                 }
               });
-          var panGesture = goog.events.gestures.createPanGesture(multiBox,
+          var panGesture = goog.events.gestures.attachPanGesture(multiBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -260,7 +260,7 @@
                     break;
                 }
               });
-          var pinchGesture = goog.events.gestures.createPinchGesture(multiBox,
+          var pinchGesture = goog.events.gestures.attachPinchGesture(multiBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -276,7 +276,7 @@
                     break;
                 }
               });
-          var rotateGesture = goog.events.gestures.createRotationGesture(multiBox,
+          var rotateGesture = goog.events.gestures.attachRotationGesture(multiBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:

@@ -41,20 +41,20 @@ goog.events.gestures.exports.ENABLE_EXPORTS = false;
 if (goog.events.gestures.exports.ENABLE_EXPORTS) {
   // Root namespace
   goog.exportSymbol(
-      'goog.events.gestures.createPanGesture',
-      goog.events.gestures.createPanGesture);
+      'goog.events.gestures.attachPanGesture',
+      goog.events.gestures.attachPanGesture);
   goog.exportSymbol(
-      'goog.events.gestures.createPinchGesture',
-      goog.events.gestures.createPinchGesture);
+      'goog.events.gestures.attachPinchGesture',
+      goog.events.gestures.attachPinchGesture);
   goog.exportSymbol(
-      'goog.events.gestures.createRotationGesture',
-      goog.events.gestures.createRotationGesture);
+      'goog.events.gestures.attachRotationGesture',
+      goog.events.gestures.attachRotationGesture);
   goog.exportSymbol(
-      'goog.events.gestures.createSwipeGesture',
-      goog.events.gestures.createSwipeGesture);
+      'goog.events.gestures.attachSwipeGesture',
+      goog.events.gestures.attachSwipeGesture);
   goog.exportSymbol(
-      'goog.events.gestures.createTapGesture',
-      goog.events.gestures.createTapGesture);
+      'goog.events.gestures.attachTapGesture',
+      goog.events.gestures.attachTapGesture);
   goog.exportSymbol(
       'goog.events.gestures.unattachAllGestures',
       goog.events.gestures.unattachAllGestures);
