@@ -231,7 +231,10 @@
           var angle = 0;
           function updateTransform() {
             multiBox.style.webkitTransform =
-                'translateZ(0) translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
+                'translateZ(0) ' +
+                'translate(' + tx + 'px,' + ty + 'px) ' +
+                'scale(' + scale + ') ' +
+                'rotate(' + angle + 'rad)';
           };
           var tapGesture = goog.events.gestures.attachTapGesture(multiBox,
               function(gesture) {
