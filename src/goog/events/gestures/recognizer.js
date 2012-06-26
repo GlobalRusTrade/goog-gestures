@@ -26,8 +26,7 @@ goog.require('goog.events.gestures.TouchView');
 
 /**
  * A callback function that receives the gesture that originated the call.
- * @typedef {function(
- *     !goog.events.gestures.Recognizer, goog.events.gestures.State)}
+ * @typedef {function(!goog.events.gestures.Recognizer)}
  */
 goog.events.gestures.CallbackFunction;
 
@@ -464,7 +463,7 @@ goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
     var listener = this.listeners_[n];
     // TODO(benvanik): protected the callbacks? Catch exceptions and rethrow
     //     after cleanup?
-    listener.callback.call(listener.scope, this, this.state_);
+    listener.callback.call(listener.scope, this);
   }
 
   // Reset to POSSIBLE if requested
