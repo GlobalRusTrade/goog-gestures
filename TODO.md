@@ -1,9 +1,23 @@
-LongPressRecognizer
-TapRecognizer support double taps
+New Recognizers
+===============
 
+* LongPressRecognizer
 
-cache the first use of updateLocation on a view for the given touch set,
-enabling better perf when many gestures are attached
+Recognizer Additions
+====================
 
-rename rotation angle/scale values to indicate that they are deltas
-allow getting the accumulated values
+* TapRecognizer getTranslationDeltaX|Y
+* Support double/N taps in TapRecognizer
+* Velocity:
+    * PanRecognizer (getVelocityX|Y)
+    * PinchRecognizer
+    * RotationRecognizer
+* Factor swipe speed into precision required
+
+Performance/Reuse
+=================
+
+This are speculative, but would help when many gestures are attached.
+
+* Cache the first use of updateLocation on a view for the given touch set (perf)
+* Adding touch deltas/distance on all touches (code size/perf)
