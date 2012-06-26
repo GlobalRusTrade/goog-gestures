@@ -154,11 +154,11 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.PanRecognizer.prototype, 'setMaximumTouchCount',
       goog.events.gestures.PanRecognizer.prototype.setMaximumTouchCount);
   goog.exportProperty(
-      goog.events.gestures.PanRecognizer.prototype, 'getTranslateX',
-      goog.events.gestures.PanRecognizer.prototype.getTranslateX);
+      goog.events.gestures.PanRecognizer.prototype, 'getTranslationX',
+      goog.events.gestures.PanRecognizer.prototype.getTranslationX);
   goog.exportProperty(
-      goog.events.gestures.PanRecognizer.prototype, 'getTranslateY',
-      goog.events.gestures.PanRecognizer.prototype.getTranslateY);
+      goog.events.gestures.PanRecognizer.prototype, 'getTranslationY',
+      goog.events.gestures.PanRecognizer.prototype.getTranslationY);
 
   // PinchRecognizer
   goog.exportProperty(
@@ -168,16 +168,16 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.PinchRecognizer.prototype, 'setMaximumTouchCount',
       goog.events.gestures.PinchRecognizer.prototype.setMaximumTouchCount);
   goog.exportProperty(
-      goog.events.gestures.PinchRecognizer.prototype, 'getScale',
-      goog.events.gestures.PinchRecognizer.prototype.getScale);
+      goog.events.gestures.PinchRecognizer.prototype, 'getScalingDelta',
+      goog.events.gestures.PinchRecognizer.prototype.getScalingDelta);
   goog.exportProperty(
       goog.events.gestures.PinchRecognizer.prototype, 'getVelocity',
       goog.events.gestures.PinchRecognizer.prototype.getVelocity);
 
   // RotationRecognizer
   goog.exportProperty(
-      goog.events.gestures.RotationRecognizer.prototype, 'getAngle',
-      goog.events.gestures.RotationRecognizer.prototype.getAngle);
+      goog.events.gestures.RotationRecognizer.prototype, 'getRotationDelta',
+      goog.events.gestures.RotationRecognizer.prototype.getRotationDelta);
   goog.exportProperty(
       goog.events.gestures.RotationRecognizer.prototype, 'getVelocity',
       goog.events.gestures.RotationRecognizer.prototype.getVelocity);

@@ -133,7 +133,7 @@ goog.events.gestures.PanRecognizer.prototype.setMaximumTouchCount =
 /**
  * @return {number} The amount of translation on X since the gesture began.
  */
-goog.events.gestures.PanRecognizer.prototype.getTranslateX = function() {
+goog.events.gestures.PanRecognizer.prototype.getTranslationX = function() {
   return this.getPageX() - this.centroidStartX_ + this.centroidShiftX_;
 };
 
@@ -141,7 +141,7 @@ goog.events.gestures.PanRecognizer.prototype.getTranslateX = function() {
 /**
  * @return {number} The amount of translation on Y since the gesture began.
  */
-goog.events.gestures.PanRecognizer.prototype.getTranslateY = function() {
+goog.events.gestures.PanRecognizer.prototype.getTranslationY = function() {
   return this.getPageY() - this.centroidStartY_ + this.centroidShiftY_;
 };
 

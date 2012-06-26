@@ -134,7 +134,7 @@ goog.events.gestures.PinchRecognizer.prototype.setMaximumTouchCount =
 /**
  * @return {number} The change in scaling factor.
  */
-goog.events.gestures.PinchRecognizer.prototype.getScale = function() {
+goog.events.gestures.PinchRecognizer.prototype.getScalingDelta = function() {
   return this.distance_ / this.lastDistance_;
 };
 

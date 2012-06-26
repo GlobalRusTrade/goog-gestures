@@ -87,7 +87,8 @@ goog.inherits(goog.events.gestures.RotationRecognizer,
 /**
  * @return {number} The change in rotation angle, in radians.
  */
-goog.events.gestures.RotationRecognizer.prototype.getAngle = function() {
+goog.events.gestures.RotationRecognizer.prototype.getRotationDelta =
+    function() {
   return this.angle_;
 };
 

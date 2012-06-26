@@ -157,8 +157,8 @@
                     panBox.className = 'box box-panning';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    tx = stx + gesture.getTranslateX();
-                    ty = sty + gesture.getTranslateY();
+                    tx = stx + gesture.getTranslationX();
+                    ty = sty + gesture.getTranslationY();
                     panBox.style.webkitTransform =
                         'translateZ(0) translate(' + tx + 'px,' + ty + 'px)';
                     window.logBox.innerText = 'translate ' + tx + ',' + ty;
@@ -182,7 +182,7 @@
                     pinchBox.className = 'box box-pinching';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    scale *= gesture.getScale();
+                    scale *= gesture.getScalingDelta();
                     pinchBox.style.webkitTransform =
                         'translateZ(0) scale(' + scale + ')';
                     window.logBox.innerText = 'scale ' + scale;
@@ -206,7 +206,7 @@
                     rotateBox.className = 'box box-rotating';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    angle += gesture.getAngle();
+                    angle += gesture.getRotationDelta();
                     rotateBox.style.webkitTransform =
                         'translateZ(0) rotate(' + angle + 'rad)';
                     window.logBox.innerText = 'rotate ' + angle;
@@ -250,8 +250,8 @@
                     multiBox.className = 'box box-panning';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    tx = stx + gesture.getTranslateX();
-                    ty = sty + gesture.getTranslateY();
+                    tx = stx + gesture.getTranslationX();
+                    ty = sty + gesture.getTranslationY();
                     updateTransform();
                     window.logBox.innerText = 'translate ' + tx + ',' + ty;
                     break;
@@ -267,7 +267,7 @@
                     multiBox.className = 'box box-pinching';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    scale *= gesture.getScale();
+                    scale *= gesture.getScalingDelta();
                     updateTransform();
                     window.logBox.innerText = 'scale ' + scale;
                     break;
@@ -283,7 +283,7 @@
                     multiBox.className = 'box box-rotating';
                     break;
                   case goog.events.gestures.State.CHANGED:
-                    angle += gesture.getAngle();
+                    angle += gesture.getRotationDelta();
                     updateTransform();
                     window.logBox.innerText = 'rotate ' + angle;
                     break;
