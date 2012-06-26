@@ -56,6 +56,9 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       'goog.events.gestures.createTapGesture',
       goog.events.gestures.createTapGesture);
   goog.exportSymbol(
+      'goog.events.gestures.unattachAllGestures',
+      goog.events.gestures.unattachAllGestures);
+  goog.exportSymbol(
       'goog.events.gestures.allowSimultaneousRecognition',
       goog.events.gestures.allowSimultaneousRecognition);
 

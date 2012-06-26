@@ -119,6 +119,20 @@ goog.events.gestures.TouchView.getInstance = function(target) {
 
 
 /**
+ * Disposes the touch view on the given DOM element, if it exists.
+ * @param {!Element} target Target DOM element.
+ */
+goog.events.gestures.TouchView.disposeInstance = function(target) {
+  var view = /** @type {goog.events.gestures.TouchView} */ (
+      target[goog.events.gestures.TouchView.DOM_PROPERTY_]);
+  if (view) {
+    // Dispose and remove from the element
+    goog.dispose(view);
+  }
+};
+
+
+/**
  * @return {!Element} Target DOM element.
  */
 goog.events.gestures.TouchView.prototype.getTarget = function() {

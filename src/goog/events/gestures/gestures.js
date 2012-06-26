@@ -22,6 +22,7 @@ goog.require('goog.events.gestures.PinchRecognizer');
 goog.require('goog.events.gestures.RotationRecognizer');
 goog.require('goog.events.gestures.SwipeRecognizer');
 goog.require('goog.events.gestures.TapRecognizer');
+goog.require('goog.events.gestures.TouchView');
 
 
 /**
@@ -105,6 +106,15 @@ goog.events.gestures.createTapGesture = function(target, callback, opt_scope) {
   var recognizer = new goog.events.gestures.TapRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;
+};
+
+
+/**
+ * Removes and disposes all of the gestures from the given element.
+ * @param {!Element} target DOM element to clean up.
+ */
+goog.events.gestures.unattachAllGestures = function(target) {
+  goog.events.gestures.TouchView.disposeInstance(target);
 };
 
 
