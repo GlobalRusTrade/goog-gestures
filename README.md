@@ -112,7 +112,7 @@ var pinchGesture = goog.events.gestures.attachPinchGesture(boxElement, function(
   }
 });
 
-var rotationGesture = goog.events.gestures.attachRotationGesture(boxElement, function(gesture,) {
+var rotationGesture = goog.events.gestures.attachRotationGesture(boxElement, function(gesture) {
   switch (gesture.getState()) {
     case goog.events.gestures.State.CHANGED:
       angle += gesture.getRotationDelta();
