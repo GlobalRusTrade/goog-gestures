@@ -14,6 +14,7 @@
         position: absolute;
         width: 200px;
         height: 200px;
+        z-index: 1;
 
         border: 3px solid #AAAAAA;
         border-radius: 3px;
@@ -24,6 +25,9 @@
       }
       .box-tapped {
         background-color: #663333;
+      }
+      .box-swiped {
+        background-color: #336666;
       }
       .box-panning {
         background-color: #336633;
@@ -38,6 +42,14 @@
     <div class="container">
       tap:
       <div id="tapBox" class="box"></div>
+    </div>
+    <div class="container">
+      swipe:
+      <div id="swipeBox" class="box"></div>
+    </div>
+    <div class="container">
+      tap/swipe:
+      <div id="tapSwipeBox" class="box"></div>
     </div>
     <div class="container">
       pan:
@@ -58,9 +70,9 @@
         window.console.log('ready', goog.dom.gestures);
 
         // Prevent scrolling
-        document.body.addEventListener('touchmove', function(e) {
-          e.preventDefault();
-        }, false);
+        // document.body.addEventListener('touchmove', function(e) {
+        //   e.preventDefault();
+        // }, false);
 
         (function() {
           var tapBox = document.getElementById('tapBox');
@@ -75,8 +87,53 @@
                   }, 200);
                 }
               });
-          tapGesture.setTapCount(1);
-          tapGesture.setTouchCount(1);
+          // tapGesture.setTapCount(1);
+          // tapGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var swipeBox = document.getElementById('swipeBox');
+          var swipeGesture = goog.dom.gestures.createSwipeGesture(swipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                  console.log('swiped', gesture.getDirection());
+                  window.logBox.innerText = 'swiped ' + gesture.getDirection();
+                  swipeBox.className = 'box box-swiped';
+                  window.setTimeout(function() {
+                    swipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // swipeGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var tapSwipeBox = document.getElementById('tapSwipeBox');
+          var tapGesture = goog.dom.gestures.createTapGesture(tapSwipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  tapSwipeBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    tapSwipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // tapGesture.setTapCount(1);
+          // tapGesture.setTouchCount(1);
+          var swipeGesture = goog.dom.gestures.createSwipeGesture(tapSwipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+                  console.log('swiped', gesture.getDirection());
+                  window.logBox.innerText = 'swiped ' + gesture.getDirection();
+                  tapSwipeBox.className = 'box box-swiped';
+                  window.setTimeout(function() {
+                    tapSwipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // swipeGesture.setTouchCount(1);
         })();
 
         (function() {

@@ -17,10 +17,12 @@
 goog.provide('goog.dom.gestures.exports');
 
 goog.require('goog.dom.gestures');
+goog.require('goog.dom.gestures.Direction');
 goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.PinchRecognizer');
 goog.require('goog.dom.gestures.Recognizer');
 goog.require('goog.dom.gestures.State');
+goog.require('goog.dom.gestures.SwipeRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
 
 
@@ -44,6 +46,9 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures, 'createPinchGesture',
       goog.dom.gestures.createPinchGesture);
+  goog.exportProperty(
+      goog.dom.gestures, 'createSwipeGesture',
+      goog.dom.gestures.createSwipeGesture);
   goog.exportProperty(
       goog.dom.gestures, 'createTapGesture',
       goog.dom.gestures.createTapGesture);
@@ -74,6 +79,24 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures.State, 'RECOGNIZED',
       goog.dom.gestures.State.RECOGNIZED);
+
+  // Direction
+  goog.exportSymbol('goog.dom.gestures.Direction', goog.dom.gestures.Direction);
+  goog.exportProperty(
+      goog.dom.gestures.Direction, 'NONE',
+      goog.dom.gestures.Direction.NONE);
+  goog.exportProperty(
+      goog.dom.gestures.Direction, 'UP',
+      goog.dom.gestures.Direction.NONE);
+  goog.exportProperty(
+      goog.dom.gestures.Direction, 'RIGHT',
+      goog.dom.gestures.Direction.NONE);
+  goog.exportProperty(
+      goog.dom.gestures.Direction, 'DOWN',
+      goog.dom.gestures.Direction.NONE);
+  goog.exportProperty(
+      goog.dom.gestures.Direction, 'LEFT',
+      goog.dom.gestures.Direction.NONE);
 
   // Recognizer
   goog.exportProperty(
@@ -134,6 +157,14 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures.PinchRecognizer.prototype, 'getVelocity',
       goog.dom.gestures.PinchRecognizer.prototype.getVelocity);
+
+  // SwipeRecognizer
+  goog.exportProperty(
+      goog.dom.gestures.SwipeRecognizer.prototype, 'setTouchCount',
+      goog.dom.gestures.SwipeRecognizer.prototype.setTouchCount);
+  goog.exportProperty(
+      goog.dom.gestures.SwipeRecognizer.prototype, 'getDirection',
+      goog.dom.gestures.SwipeRecognizer.prototype.getDirection);
 
   // TapRecognizer
   goog.exportProperty(

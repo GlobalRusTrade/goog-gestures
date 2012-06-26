@@ -70,7 +70,7 @@ goog.inherits(goog.dom.gestures.TapRecognizer, goog.dom.gestures.Recognizer);
  * @const
  * @type {number}
  */
-goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 40;
+goog.dom.gestures.TapRecognizer.DEFAULT_HYSTERESIS_ = 30;
 
 
 /**
