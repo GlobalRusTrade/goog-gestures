@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>goog-gestures example 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="example-loader.js"></script>
+    <style>
+      body {
+        -webkit-user-select: none;
+      }
+      .container {
+        position: relative;
+        width: 200px;
+        height: 220px;
+      }
+      .box {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        z-index: 1;
+
+        border: 3px solid #AAAAAA;
+        border-radius: 3px;
+        background-color: #666666;
+
+        -webkit-user-select: none;
+        -webkit-transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
+      }
+      .box-tapped {
+        background-color: #663333;
+      }
+      .box-swiped {
+        background-color: #336666;
+      }
+      .box-panning {
+        background-color: #336633;
+      }
+      .box-pinching {
+        background-color: #333366;
+      }
+      .box-rotating {
+        background-color: #666633;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="logBox">[log]</div>
+    <div class="container">
+      tap:
+      <div id="tapBox" class="box"></div>
+    </div>
+    <div class="container">
+      swipe:
+      <div id="swipeBox" class="box"></div>
+    </div>
+    <div class="container">
+      tap/swipe:
+      <div id="tapSwipeBox" class="box"></div>
+    </div>
+    <div class="container">
+      pan:
+      <div id="panBox" class="box"></div>
+    </div>
+    <div class="container">
+      pinch:
+      <div id="pinchBox" class="box"></div>
+    </div>
+    <div class="container">
+      rotation:
+      <div id="rotateBox" class="box"></div>
+    </div>
+    <div class="container">
+      tap/pan/pinch/rotate:
+      <div id="multiBox" class="box"></div>
+    </div>
+
+    <script>
+      prepareExample(function() {
+        window.logBox = document.getElementById('logBox');
+
+        // Prevent scrolling
+        // document.body.addEventListener('touchmove', function(e) {
+        //   e.preventDefault();
+        // }, false);
+
+        (function() {
+          var tapBox = document.getElementById('tapBox');
+          var tapGesture = goog.events.gestures.attachTapGesture(tapBox,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  tapBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    tapBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // tapGesture.setTapCount(1);
+          // tapGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var swipeBox = document.getElementById('swipeBox');
+          var swipeGesture = goog.events.gestures.attachSwipeGesture(swipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  console.log('swiped', gesture.getDirection());
+                  window.logBox.innerText = 'swiped ' + gesture.getDirection();
+                  swipeBox.className = 'box box-swiped';
+                  window.setTimeout(function() {
+                    swipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // swipeGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var tapSwipeBox = document.getElementById('tapSwipeBox');
+          var tapGesture = goog.events.gestures.attachTapGesture(tapSwipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  tapSwipeBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    tapSwipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // tapGesture.setTapCount(1);
+          // tapGesture.setTouchCount(1);
+          var swipeGesture = goog.events.gestures.attachSwipeGesture(tapSwipeBox,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  console.log('swiped', gesture.getDirection());
+                  window.logBox.innerText = 'swiped ' + gesture.getDirection();
+                  tapSwipeBox.className = 'box box-swiped';
+                  window.setTimeout(function() {
+                    tapSwipeBox.className = 'box';
+                  }, 200);
+                }
+              });
+          // swipeGesture.setTouchCount(1);
+        })();
+
+        (function() {
+          var panBox = document.getElementById('panBox');
+          var stx = 0;
+          var sty = 0;
+          var tx = 0;
+          var ty = 0;
+          var panGesture = goog.events.gestures.attachPanGesture(panBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    stx = tx;
+                    sty = ty;
+                    panBox.className = 'box box-panning';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    tx = stx + gesture.getTranslationX();
+                    ty = sty + gesture.getTranslationY();
+                    panBox.style.webkitTransform =
+                        'translateZ(0) translate(' + tx + 'px,' + ty + 'px)';
+                    window.logBox.innerText = 'translate ' + tx + ',' + ty;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    panBox.className = 'box';
+                    break;
+                }
+              });
+          // panGesture.setMinimumTouchCount(1);
+          // panGesture.setMaximumTouchCount(2);
+        })();
+
+        (function() {
+          var pinchBox = document.getElementById('pinchBox');
+          var scale = 1;
+          var pinchGesture = goog.events.gestures.attachPinchGesture(pinchBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    pinchBox.className = 'box box-pinching';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    scale *= gesture.getScalingDelta();
+                    pinchBox.style.webkitTransform =
+                        'translateZ(0) scale(' + scale + ')';
+                    window.logBox.innerText = 'scale ' + scale;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    pinchBox.className = 'box';
+                    break;
+                }
+              });
+          // pinchGesture.setMinimumTouchCount(3);
+          // pinchGesture.setMaximumTouchCount(2);
+        })();
+
+        (function() {
+          var rotateBox = document.getElementById('rotateBox');
+          var angle = 0;
+          var rotateGesture = goog.events.gestures.attachRotateGesture(rotateBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    rotateBox.className = 'box box-rotating';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    angle += gesture.getRotationDelta();
+                    rotateBox.style.webkitTransform =
+                        'translateZ(0) rotate(' + angle + 'rad)';
+                    window.logBox.innerText = 'rotate ' + angle;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    rotateBox.className = 'box';
+                    break;
+                }
+              });
+        })();
+
+        (function() {
+          var multiBox = document.getElementById('multiBox');
+          var stx = 0;
+          var sty = 0;
+          var tx = 0;
+          var ty = 0;
+          var scale = 1;
+          var angle = 0;
+          function updateTransform() {
+            multiBox.style.webkitTransform =
+                'translateZ(0) ' +
+                'translate(' + tx + 'px,' + ty + 'px) ' +
+                'scale(' + scale + ') ' +
+                'rotate(' + angle + 'rad)';
+          };
+          var tapGesture = goog.events.gestures.attachTapGesture(multiBox,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  console.log('tapped');
+                  window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
+                  multiBox.className = 'box box-tapped';
+                  window.setTimeout(function() {
+                    multiBox.className = 'box';
+                  }, 200);
+                }
+              });
+          var panGesture = goog.events.gestures.attachPanGesture(multiBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    stx = tx;
+                    sty = ty;
+                    multiBox.className = 'box box-panning';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    tx = stx + gesture.getTranslationX();
+                    ty = sty + gesture.getTranslationY();
+                    updateTransform();
+                    window.logBox.innerText = 'translate ' + tx + ',' + ty;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    multiBox.className = 'box';
+                    break;
+                }
+              });
+          var pinchGesture = goog.events.gestures.attachPinchGesture(multiBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    multiBox.className = 'box box-pinching';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    scale *= gesture.getScalingDelta();
+                    updateTransform();
+                    window.logBox.innerText = 'scale ' + scale;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    multiBox.className = 'box';
+                    break;
+                }
+              });
+          var rotateGesture = goog.events.gestures.attachRotateGesture(multiBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    multiBox.className = 'box box-rotating';
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    angle += gesture.getRotationDelta();
+                    updateTransform();
+                    window.logBox.innerText = 'rotate ' + angle;
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    multiBox.className = 'box';
+                    break;
+                }
+              });
+          // Allow all gestures to recognize together
+          goog.events.gestures.allowSimultaneousRecognition(
+              panGesture, pinchGesture, rotateGesture);
+        })();
+
+      });
+    </script>
+  </body>
+</html>
