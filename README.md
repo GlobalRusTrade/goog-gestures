@@ -58,7 +58,7 @@ Properties:
 
 * `setMovementThreshold(px)`: the minimum distance a touch must move before the gesture recognizes
 * `setTouchCount(n)`: number of touches required to recognize
-* 'getDirection()': the direction the swipe moved, from goog.events.gestures.Direction
+* `getDirection()`: the direction the swipe moved, from goog.events.gestures.Direction
     * `LEFT`/`RIGHT`/`UP`/`DOWN`
 
 ### Pan (attachPanGesture)
