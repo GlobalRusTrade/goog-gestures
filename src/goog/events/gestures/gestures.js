@@ -19,7 +19,7 @@ goog.provide('goog.events.gestures');
 goog.require('goog.asserts');
 goog.require('goog.events.gestures.PanRecognizer');
 goog.require('goog.events.gestures.PinchRecognizer');
-goog.require('goog.events.gestures.RotationRecognizer');
+goog.require('goog.events.gestures.RotateRecognizer');
 goog.require('goog.events.gestures.SwipeRecognizer');
 goog.require('goog.events.gestures.TapRecognizer');
 goog.require('goog.events.gestures.TouchView');
@@ -60,18 +60,18 @@ goog.events.gestures.attachPinchGesture =
 
 
 /**
- * Creates a new {@see goog.events.gestures.RotationRecognizer}.
+ * Creates a new {@see goog.events.gestures.RotateRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
  * @param {!goog.events.gestures.CallbackFunction} callback Function called on
  *     each gesture action.
  * @param {Object=} opt_scope Scope that the callback will be called in.
- * @return {!goog.events.gestures.RotationRecognizer} A new bound gesture
+ * @return {!goog.events.gestures.RotateRecognizer} A new bound gesture
  *     instance.
  */
-goog.events.gestures.attachRotationGesture =
+goog.events.gestures.attachRotateGesture =
     function(target, callback, opt_scope) {
-  var recognizer = new goog.events.gestures.RotationRecognizer(target);
+  var recognizer = new goog.events.gestures.RotateRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;
 };

@@ -202,7 +202,7 @@
         (function() {
           var rotateBox = document.getElementById('rotateBox');
           var angle = 0;
-          var rotateGesture = goog.events.gestures.attachRotationGesture(rotateBox,
+          var rotateGesture = goog.events.gestures.attachRotateGesture(rotateBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:
@@ -282,7 +282,7 @@
                     break;
                 }
               });
-          var rotateGesture = goog.events.gestures.attachRotationGesture(multiBox,
+          var rotateGesture = goog.events.gestures.attachRotateGesture(multiBox,
               function(gesture) {
                 switch (gesture.getState()) {
                   case goog.events.gestures.State.BEGAN:

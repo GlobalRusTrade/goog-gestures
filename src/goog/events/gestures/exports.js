@@ -21,7 +21,7 @@ goog.require('goog.events.gestures.Direction');
 goog.require('goog.events.gestures.PanRecognizer');
 goog.require('goog.events.gestures.PinchRecognizer');
 goog.require('goog.events.gestures.Recognizer');
-goog.require('goog.events.gestures.RotationRecognizer');
+goog.require('goog.events.gestures.RotateRecognizer');
 goog.require('goog.events.gestures.State');
 goog.require('goog.events.gestures.SwipeRecognizer');
 goog.require('goog.events.gestures.TapRecognizer');
@@ -47,8 +47,8 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       'goog.events.gestures.attachPinchGesture',
       goog.events.gestures.attachPinchGesture);
   goog.exportSymbol(
-      'goog.events.gestures.attachRotationGesture',
-      goog.events.gestures.attachRotationGesture);
+      'goog.events.gestures.attachRotateGesture',
+      goog.events.gestures.attachRotateGesture);
   goog.exportSymbol(
       'goog.events.gestures.attachSwipeGesture',
       goog.events.gestures.attachSwipeGesture);
@@ -183,16 +183,16 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
       goog.events.gestures.PinchRecognizer.prototype, 'getVelocity',
       goog.events.gestures.PinchRecognizer.prototype.getVelocity);
 
-  // RotationRecognizer
+  // RotateRecognizer
   goog.exportProperty(
-      goog.events.gestures.RotationRecognizer.prototype, 'getRotation',
-      goog.events.gestures.RotationRecognizer.prototype.getRotation);
+      goog.events.gestures.RotateRecognizer.prototype, 'getRotation',
+      goog.events.gestures.RotateRecognizer.prototype.getRotation);
   goog.exportProperty(
-      goog.events.gestures.RotationRecognizer.prototype, 'getRotationDelta',
-      goog.events.gestures.RotationRecognizer.prototype.getRotationDelta);
+      goog.events.gestures.RotateRecognizer.prototype, 'getRotationDelta',
+      goog.events.gestures.RotateRecognizer.prototype.getRotationDelta);
   goog.exportProperty(
-      goog.events.gestures.RotationRecognizer.prototype, 'getVelocity',
-      goog.events.gestures.RotationRecognizer.prototype.getVelocity);
+      goog.events.gestures.RotateRecognizer.prototype, 'getVelocity',
+      goog.events.gestures.RotateRecognizer.prototype.getVelocity);
 
   // SwipeRecognizer
   goog.exportProperty(

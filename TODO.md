@@ -6,11 +6,12 @@ New Recognizers
 Recognizer Additions
 ====================
 
+* Support isEnabled (currently ignored)
 * Support double/N taps in TapRecognizer
 * Velocity:
     * PanRecognizer (getVelocityX|Y)
     * PinchRecognizer
-    * RotationRecognizer
+    * RotateRecognizer
 * Factor swipe speed into precision required
 
 Performance/Reuse

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-goog.provide('goog.events.gestures.RotationRecognizer');
+goog.provide('goog.events.gestures.RotateRecognizer');
 
 goog.require('goog.events.gestures.Recognizer');
 goog.require('goog.events.gestures.State');
@@ -28,7 +28,7 @@ goog.require('goog.events.gestures.utils');
  * @extends {goog.events.gestures.Recognizer}
  * @param {!Element} target DOM element to attach to.
  */
-goog.events.gestures.RotationRecognizer = function(target) {
+goog.events.gestures.RotateRecognizer = function(target) {
   goog.base(this, target);
 
   this.setMovementThreshold(goog.events.gestures.utils.MOVEMENT_HYSTERESIS);
@@ -87,14 +87,14 @@ goog.events.gestures.RotationRecognizer = function(target) {
    */
   this.trackedTouches_ = {};
 };
-goog.inherits(goog.events.gestures.RotationRecognizer,
+goog.inherits(goog.events.gestures.RotateRecognizer,
     goog.events.gestures.Recognizer);
 
 
 /**
  * @return {number} The accumulated rotation angle for the gesture, in radians.
  */
-goog.events.gestures.RotationRecognizer.prototype.getRotation =
+goog.events.gestures.RotateRecognizer.prototype.getRotation =
     function() {
   return this.angle_;
 };
@@ -103,7 +103,7 @@ goog.events.gestures.RotationRecognizer.prototype.getRotation =
 /**
  * @return {number} The change in rotation angle, in radians.
  */
-goog.events.gestures.RotationRecognizer.prototype.getRotationDelta =
+goog.events.gestures.RotateRecognizer.prototype.getRotationDelta =
     function() {
   return this.angleDelta_;
 };
@@ -112,7 +112,7 @@ goog.events.gestures.RotationRecognizer.prototype.getRotationDelta =
 /**
  * @return {number} The current velocity of the rotation.
  */
-goog.events.gestures.RotationRecognizer.prototype.getVelocity = function() {
+goog.events.gestures.RotateRecognizer.prototype.getVelocity = function() {
   return this.velocity_;
 };
 
@@ -120,7 +120,7 @@ goog.events.gestures.RotationRecognizer.prototype.getVelocity = function() {
 /**
  * @override
  */
-goog.events.gestures.RotationRecognizer.prototype.reset = function() {
+goog.events.gestures.RotateRecognizer.prototype.reset = function() {
   this.angle_ = 0;
   this.angleDelta_ = 0;
   this.lastAngleDelta_ = 0;
@@ -137,7 +137,7 @@ goog.events.gestures.RotationRecognizer.prototype.reset = function() {
  * @param {!Touch} touch1 Second touch.
  * @return {number} Angle between the two touches, in radians.
  */
-goog.events.gestures.RotationRecognizer.prototype.angleBetweenTouches_ =
+goog.events.gestures.RotateRecognizer.prototype.angleBetweenTouches_ =
     function(touch0, touch1) {
   // Note that we may not have been tracking the touch - treat it as a no-op
   var trackedTouch0 = this.trackedTouches_[touch0.identifier];
@@ -175,7 +175,7 @@ goog.events.gestures.RotationRecognizer.prototype.angleBetweenTouches_ =
 /**
  * @override
  */
-goog.events.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
+goog.events.gestures.RotateRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
   // Stash touch start for distance calculations
@@ -203,7 +203,7 @@ goog.events.gestures.RotationRecognizer.prototype.touchesBegan = function(e) {
 /**
  * @override
  */
-goog.events.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
+goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
   // Ignore if out of touch range
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
@@ -279,7 +279,7 @@ goog.events.gestures.RotationRecognizer.prototype.touchesMoved = function(e) {
 /**
  * @override
  */
-goog.events.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
+goog.events.gestures.RotateRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
       // Still have some valid touches
@@ -302,7 +302,7 @@ goog.events.gestures.RotationRecognizer.prototype.touchesEnded = function(e) {
 /**
  * @override
  */
-goog.events.gestures.RotationRecognizer.prototype.touchesCancelled =
+goog.events.gestures.RotateRecognizer.prototype.touchesCancelled =
     function(e) {
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     this.setState(goog.events.gestures.State.CANCELLED);
