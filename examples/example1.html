@@ -86,8 +86,8 @@
         (function() {
           var tapBox = document.getElementById('tapBox');
           var tapGesture = goog.events.gestures.attachTapGesture(tapBox,
-              function(gesture) {
-                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+              function(gesture, state) {
+                if (state == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
                   window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
                   tapBox.className = 'box box-tapped';
@@ -103,8 +103,8 @@
         (function() {
           var swipeBox = document.getElementById('swipeBox');
           var swipeGesture = goog.events.gestures.attachSwipeGesture(swipeBox,
-              function(gesture) {
-                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+              function(gesture, state) {
+                if (state == goog.events.gestures.State.RECOGNIZED) {
                   console.log('swiped', gesture.getDirection());
                   window.logBox.innerText = 'swiped ' + gesture.getDirection();
                   swipeBox.className = 'box box-swiped';
@@ -119,8 +119,8 @@
         (function() {
           var tapSwipeBox = document.getElementById('tapSwipeBox');
           var tapGesture = goog.events.gestures.attachTapGesture(tapSwipeBox,
-              function(gesture) {
-                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+              function(gesture, state) {
+                if (state == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
                   window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
                   tapSwipeBox.className = 'box box-tapped';
@@ -132,8 +132,8 @@
           // tapGesture.setTapCount(1);
           // tapGesture.setTouchCount(1);
           var swipeGesture = goog.events.gestures.attachSwipeGesture(tapSwipeBox,
-              function(gesture) {
-                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+              function(gesture, state) {
+                if (state == goog.events.gestures.State.RECOGNIZED) {
                   console.log('swiped', gesture.getDirection());
                   window.logBox.innerText = 'swiped ' + gesture.getDirection();
                   tapSwipeBox.className = 'box box-swiped';
@@ -152,8 +152,8 @@
           var tx = 0;
           var ty = 0;
           var panGesture = goog.events.gestures.attachPanGesture(panBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     stx = tx;
                     sty = ty;
@@ -179,8 +179,8 @@
           var pinchBox = document.getElementById('pinchBox');
           var scale = 1;
           var pinchGesture = goog.events.gestures.attachPinchGesture(pinchBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     pinchBox.className = 'box box-pinching';
                     break;
@@ -203,8 +203,8 @@
           var rotateBox = document.getElementById('rotateBox');
           var angle = 0;
           var rotateGesture = goog.events.gestures.attachRotationGesture(rotateBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     rotateBox.className = 'box box-rotating';
                     break;
@@ -234,8 +234,8 @@
                 'translateZ(0) translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
           };
           var tapGesture = goog.events.gestures.attachTapGesture(multiBox,
-              function(gesture) {
-                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+              function(gesture, state) {
+                if (state == goog.events.gestures.State.RECOGNIZED) {
                   console.log('tapped');
                   window.logBox.innerText = 'tapped ' + gesture.getOffsetX() + ',' + gesture.getOffsetY();
                   multiBox.className = 'box box-tapped';
@@ -245,8 +245,8 @@
                 }
               });
           var panGesture = goog.events.gestures.attachPanGesture(multiBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     stx = tx;
                     sty = ty;
@@ -264,8 +264,8 @@
                 }
               });
           var pinchGesture = goog.events.gestures.attachPinchGesture(multiBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     multiBox.className = 'box box-pinching';
                     break;
@@ -280,8 +280,8 @@
                 }
               });
           var rotateGesture = goog.events.gestures.attachRotationGesture(multiBox,
-              function(gesture) {
-                switch (gesture.getState()) {
+              function(gesture, state) {
+                switch (state) {
                   case goog.events.gestures.State.BEGAN:
                     multiBox.className = 'box box-rotating';
                     break;
