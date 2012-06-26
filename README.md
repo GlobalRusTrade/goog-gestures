@@ -26,25 +26,74 @@ changed with `setTapCount()`.
 
 ## Recognizers
 
-### Tap
+All recognizers have the following properties:
+
+* `getTarget()`: target DOM element
+* `isEnabled()`/`setEnabled(value)`: whether or not the gesture is allowed to recognize
+* `getState()`: current recognizer state, one of goog.events.gestures.State
+    * `POSSIBLE`: the recognizer could recognize, but hasn't yet
+    * `BEGAN`: (continuous only) gesture has started recognizing
+    * `CHANGED`: (continuous only) gesture has changed and there are new values
+    * `ENDED`: (continuous only) gesture has ended recognizing
+    * `RECOGNIZED`: (discrete only) gesture recognized
+    * `FAILED`: gesture failed to recognize (too many fingers/etc)
+    * `CANCELLED`: gesture was cancelled (browser stole touches)
+* `getOffsetX|Y()`, `getClientX|Y()`, `getPageX|Y()`: gesture location (centroid of touches/etc)
+
+### Tap (attachTapGesture)
 
 `gesture = goog.events.gestures.attachTapGesture(element, callback, opt_scope)`
 
-### Swipe
+Properties:
+
+* `setMovementThreshold(px)`: the maximum distance a touch can move before the gesture fails
+* `setTapCount(n)`: number of taps required to recognize
+* `setTouchCount(n)`: number of touches required to recognize
+
+### Swipe (attachSwipeGesture)
 
 `gesture = goog.events.gestures.attachSwipeGesture(element, callback, opt_scope)`
 
-### Pan
+Properties:
+
+* `setMovementThreshold(px)`: the minimum distance a touch must move before the gesture recognizes
+* `setTouchCount(n)`: number of touches required to recognize
+* 'getDirection()': the direction the swipe moved, from goog.events.gestures.Direction
+    * `LEFT`/`RIGHT`/`UP`/`DOWN`
+
+### Pan (attachPanGesture)
 
 `gesture = goog.events.gestures.attachPanGesture(element, callback, opt_scope)`
 
-### Pinch
+Properties:
+
+* `setMovementThreshold(px)`: the minimum distance a touch must move before the gesture recognizes
+* `setMinimumTouchCount(n)`: minimum number of touches required to recognize
+* `setMaximumTouchCount(n)`: maximum number of touches required to recognize
+* `getTranslationX|Y()`: total translation in px since the gesture began recognizing
+* `getTranslationDeltaX|Y()`: translation in px since the last CHANGED state callback
+
+### Pinch (attachPinchGesture)
 
 `gesture = goog.events.gestures.attachPinchGesture(element, callback, opt_scope)`
 
-### Rotate
+Properties:
+
+* `setMovementThreshold(px)`: the minimum distance a touch must move before the gesture recognizes
+* `setMinimumTouchCount(n)`: minimum number of touches required to recognize
+* `setMaximumTouchCount(n)`: maximum number of touches required to recognize
+* `getScaling()`: total scaling factor (starting at 1) since the gesture began recognizing
+* `getScalingDelta()`: scaling factor change since the last CHANGED state callback
+
+### Rotate (attachRotateGesture)
 
 `gesture = goog.events.gestures.attachRotateGesture(element, callback, opt_scope)`
+
+Properties:
+
+* `setMovementThreshold(px)`: the minimum distance a touch must move before the gesture recognizes
+* `getRotation()`: total rotation in radians since the gesture began recognizing
+* `getRotationDelta()`: rotation change in radians since the last CHANGED state callback
 
 ## Examples
 
