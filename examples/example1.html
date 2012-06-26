@@ -160,7 +160,7 @@
                     tx = stx + gesture.getTranslateX();
                     ty = sty + gesture.getTranslateY();
                     panBox.style.webkitTransform =
-                        'translate(' + tx + 'px,' + ty + 'px)';
+                        'translateZ(0) translate(' + tx + 'px,' + ty + 'px)';
                     window.logBox.innerText = 'translate ' + tx + ',' + ty;
                     break;
                   case goog.events.gestures.State.ENDED:
@@ -184,7 +184,7 @@
                   case goog.events.gestures.State.CHANGED:
                     scale *= gesture.getScale();
                     pinchBox.style.webkitTransform =
-                        'scale(' + scale + ')';
+                        'translateZ(0) scale(' + scale + ')';
                     window.logBox.innerText = 'scale ' + scale;
                     break;
                   case goog.events.gestures.State.ENDED:
@@ -208,7 +208,7 @@
                   case goog.events.gestures.State.CHANGED:
                     angle += gesture.getAngle();
                     rotateBox.style.webkitTransform =
-                        'rotate(' + angle + 'rad)';
+                        'translateZ(0) rotate(' + angle + 'rad)';
                     window.logBox.innerText = 'rotate ' + angle;
                     break;
                   case goog.events.gestures.State.ENDED:
@@ -228,7 +228,7 @@
           var angle = 0;
           function updateTransform() {
             multiBox.style.webkitTransform =
-                'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
+                'translateZ(0) translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
           };
           var tapGesture = goog.events.gestures.attachTapGesture(multiBox,
               function(gesture) {
