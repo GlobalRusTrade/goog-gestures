@@ -21,6 +21,7 @@ goog.require('goog.dom.gestures.Direction');
 goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.PinchRecognizer');
 goog.require('goog.dom.gestures.Recognizer');
+goog.require('goog.dom.gestures.RotationRecognizer');
 goog.require('goog.dom.gestures.State');
 goog.require('goog.dom.gestures.SwipeRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
@@ -46,6 +47,9 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures, 'createPinchGesture',
       goog.dom.gestures.createPinchGesture);
+  goog.exportProperty(
+      goog.dom.gestures, 'createRotationGesture',
+      goog.dom.gestures.createRotationGesture);
   goog.exportProperty(
       goog.dom.gestures, 'createSwipeGesture',
       goog.dom.gestures.createSwipeGesture);
@@ -157,6 +161,14 @@ if (goog.dom.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.dom.gestures.PinchRecognizer.prototype, 'getVelocity',
       goog.dom.gestures.PinchRecognizer.prototype.getVelocity);
+
+  // RotationRecognizer
+  goog.exportProperty(
+      goog.dom.gestures.RotationRecognizer.prototype, 'getAngle',
+      goog.dom.gestures.RotationRecognizer.prototype.getAngle);
+  goog.exportProperty(
+      goog.dom.gestures.RotationRecognizer.prototype, 'getVelocity',
+      goog.dom.gestures.RotationRecognizer.prototype.getVelocity);
 
   // SwipeRecognizer
   goog.exportProperty(

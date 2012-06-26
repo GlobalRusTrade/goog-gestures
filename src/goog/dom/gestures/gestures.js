@@ -19,12 +19,9 @@ goog.provide('goog.dom.gestures');
 goog.require('goog.asserts');
 goog.require('goog.dom.gestures.PanRecognizer');
 goog.require('goog.dom.gestures.PinchRecognizer');
+goog.require('goog.dom.gestures.RotationRecognizer');
 goog.require('goog.dom.gestures.SwipeRecognizer');
 goog.require('goog.dom.gestures.TapRecognizer');
-
-
-// TODO(benvanik): RotationRecognizer
-// TODO(benvanik): LongPressRecognizer
 
 
 /**
@@ -54,6 +51,23 @@ goog.dom.gestures.createPanGesture = function(target, callback, opt_scope) {
  */
 goog.dom.gestures.createPinchGesture = function(target, callback, opt_scope) {
   var recognizer = new goog.dom.gestures.PinchRecognizer(target);
+  recognizer.addListener(callback, opt_scope);
+  return recognizer;
+};
+
+
+/**
+ * Creates a new {@see goog.dom.gestures.RotationRecognizer}.
+ *
+ * @param {!Element} target DOM element to attach to.
+ * @param {!goog.dom.gestures.CallbackFunction} callback Function called on each
+ *     gesture action.
+ * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @return {!goog.dom.gestures.RotationRecognizer} A new bound gesture instance.
+ */
+goog.dom.gestures.createRotationGesture = function(target, callback,
+    opt_scope) {
+  var recognizer = new goog.dom.gestures.RotationRecognizer(target);
   recognizer.addListener(callback, opt_scope);
   return recognizer;
 };

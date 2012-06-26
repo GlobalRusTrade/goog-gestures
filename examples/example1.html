@@ -35,6 +35,9 @@
       .box-pinching {
         background-color: #333366;
       }
+      .box-rotating {
+        background-color: #666633;
+      }
     </style>
   </head>
   <body>
@@ -60,7 +63,11 @@
       <div id="pinchBox" class="box"></div>
     </div>
     <div class="container">
-      tap/pan/pinch:
+      rotation:
+      <div id="rotateBox" class="box"></div>
+    </div>
+    <div class="container">
+      tap/pan/pinch/rotate:
       <div id="multiBox" class="box"></div>
     </div>
 
@@ -191,15 +198,38 @@
         })();
 
         (function() {
+          var rotateBox = document.getElementById('rotateBox');
+          var angle = 0;
+          var rotateGesture = goog.dom.gestures.createRotationGesture(rotateBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.dom.gestures.State.BEGAN:
+                    rotateBox.className = 'box box-rotating';
+                    break;
+                  case goog.dom.gestures.State.CHANGED:
+                    angle += gesture.getAngle();
+                    rotateBox.style.webkitTransform =
+                        'rotate(' + angle + 'rad)';
+                    window.logBox.innerText = 'rotate ' + angle;
+                    break;
+                  case goog.dom.gestures.State.ENDED:
+                    rotateBox.className = 'box';
+                    break;
+                }
+              });
+        })();
+
+        (function() {
           var multiBox = document.getElementById('multiBox');
           var stx = 0;
           var sty = 0;
           var tx = 0;
           var ty = 0;
           var scale = 1;
+          var angle = 0;
           function updateTransform() {
             multiBox.style.webkitTransform =
-                'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+                'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + angle + 'rad)';
           };
           var tapGesture = goog.dom.gestures.createTapGesture(multiBox,
               function(gesture) {
@@ -247,9 +277,25 @@
                     break;
                 }
               });
-          // Allow both the pan and pinch gestures to recognize together
+          var rotateGesture = goog.dom.gestures.createRotationGesture(multiBox,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.dom.gestures.State.BEGAN:
+                    multiBox.className = 'box box-rotating';
+                    break;
+                  case goog.dom.gestures.State.CHANGED:
+                    angle += gesture.getAngle();
+                    updateTransform();
+                    window.logBox.innerText = 'rotate ' + angle;
+                    break;
+                  case goog.dom.gestures.State.ENDED:
+                    multiBox.className = 'box';
+                    break;
+                }
+              });
+          // Allow all gestures to recognize together
           goog.dom.gestures.allowSimultaneousRecognition(
-              panGesture, pinchGesture);
+              panGesture, pinchGesture, rotateGesture);
         })();
 
       });
