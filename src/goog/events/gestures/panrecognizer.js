@@ -49,6 +49,34 @@ goog.events.gestures.PanRecognizer = function(target) {
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
+   * Translation X of the last change.
+   * @private
+   * @type {number}
+   */
+  this.translationX_ = 0;
+
+  /**
+   * Translation Y of the last change.
+   * @private
+   * @type {number}
+   */
+  this.translationY_ = 0;
+
+  /**
+   * Last translation X.
+   * @private
+   * @type {number}
+   */
+  this.lastTranslationX_ = 0;
+
+  /**
+   * Last translation Y.
+   * @private
+   * @type {number}
+   */
+  this.lastTranslationY_ = 0;
+
+  /**
    * X of the centroid when the gesture first began.
    * @private
    * @type {number}
@@ -134,7 +162,7 @@ goog.events.gestures.PanRecognizer.prototype.setMaximumTouchCount =
  * @return {number} The amount of translation on X since the gesture began.
  */
 goog.events.gestures.PanRecognizer.prototype.getTranslationX = function() {
-  return this.getPageX() - this.centroidStartX_ + this.centroidShiftX_;
+  return this.translationX_;
 };
 
 
@@ -142,7 +170,38 @@ goog.events.gestures.PanRecognizer.prototype.getTranslationX = function() {
  * @return {number} The amount of translation on Y since the gesture began.
  */
 goog.events.gestures.PanRecognizer.prototype.getTranslationY = function() {
-  return this.getPageY() - this.centroidStartY_ + this.centroidShiftY_;
+  return this.translationY_;
+};
+
+
+/**
+ * @return {number} The change of translation on X.
+ */
+goog.events.gestures.PanRecognizer.prototype.getTranslationDeltaX = function() {
+  return this.translationX_ - this.lastTranslationX_;
+};
+
+
+/**
+ * @return {number} The change of translation on Y.
+ */
+goog.events.gestures.PanRecognizer.prototype.getTranslationDeltaY = function() {
+  return this.translationY_ - this.lastTranslationY_;
+};
+
+
+/**
+ * Updates the current translation variables.
+ * Sets delta values, so only call once per update.
+ * @private
+ */
+goog.events.gestures.PanRecognizer.prototype.updateTranslation_ = function() {
+  this.lastTranslationX_ = this.translationX_;
+  this.lastTranslationY_ = this.translationY_;
+  this.translationX_ =
+      this.getPageX() - this.centroidStartX_ + this.centroidShiftX_;
+  this.translationY_ =
+      this.getPageY() - this.centroidStartY_ + this.centroidShiftY_;
 };
 
 
@@ -150,6 +209,8 @@ goog.events.gestures.PanRecognizer.prototype.getTranslationY = function() {
  * @override
  */
 goog.events.gestures.PanRecognizer.prototype.reset = function() {
+  this.translationX_ = this.translationY_ = 0;
+  this.lastTranslationX_ = this.lastTranslationY_ = 0;
   this.centroidStartX_ = this.centroidStartY_ = 0;
   this.centroidShiftX_ = this.centroidShiftY_ = 0;
   this.centroidDistance_ = 0;
@@ -169,6 +230,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
     // New touch while recognizing, shift centroid
     this.centroidShiftX_ -= this.getPageX() - oldPageX;
     this.centroidShiftY_ -= this.getPageY() - oldPageY;
+    this.updateTranslation_();
 
     if (e.targetTouches.length > this.maxTouchCount_) {
       // Exceeded touch count, stop recognizing
@@ -209,6 +271,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
     this.centroidStartX_ = pageX;
     this.centroidStartY_ = pageY;
     this.centroidShiftX_ = this.centroidShiftY_ = 0;
+    this.updateTranslation_();
     this.setState(goog.events.gestures.State.BEGAN);
     if (this.getState() == goog.events.gestures.State.BEGAN) {
       this.setState(goog.events.gestures.State.CHANGED);
@@ -216,6 +279,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
   } else if ((dx || dy) &&
       this.getState() == goog.events.gestures.State.CHANGED) {
     // Normal update
+    this.updateTranslation_();
     this.setState(goog.events.gestures.State.CHANGED);
   }
 };
@@ -233,6 +297,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
       this.updateLocation(e.targetTouches);
       this.centroidShiftX_ -= this.getPageX() - oldPageX;
       this.centroidShiftY_ -= this.getPageY() - oldPageY;
+      this.updateTranslation_();
     } else {
       // Not enough touches
       this.setState(goog.events.gestures.State.ENDED);

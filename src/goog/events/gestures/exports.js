@@ -159,6 +159,12 @@ if (goog.events.gestures.exports.ENABLE_EXPORTS) {
   goog.exportProperty(
       goog.events.gestures.PanRecognizer.prototype, 'getTranslationY',
       goog.events.gestures.PanRecognizer.prototype.getTranslationY);
+  goog.exportProperty(
+      goog.events.gestures.PanRecognizer.prototype, 'getTranslationDeltaX',
+      goog.events.gestures.PanRecognizer.prototype.getTranslationDeltaX);
+  goog.exportProperty(
+      goog.events.gestures.PanRecognizer.prototype, 'getTranslationDeltaY',
+      goog.events.gestures.PanRecognizer.prototype.getTranslationDeltaY);
 
   // PinchRecognizer
   goog.exportProperty(

@@ -6,7 +6,6 @@ New Recognizers
 Recognizer Additions
 ====================
 
-* TapRecognizer getTranslationDeltaX|Y
 * Support double/N taps in TapRecognizer
 * Velocity:
     * PanRecognizer (getVelocityX|Y)
