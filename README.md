@@ -134,7 +134,7 @@ var pinchGesture = goog.events.gestures.attachPinchGesture(boxElement, function(
   }
 });
 
-var rotationGesture = goog.events.gestures.attachRotationGesture(boxElement, function(gesture) {
+var rotateGesture = goog.events.gestures.attachRotateGesture(boxElement, function(gesture) {
   switch (gesture.getState()) {
     case goog.events.gestures.State.CHANGED:
       angle += gesture.getRotationDelta();
@@ -144,7 +144,7 @@ var rotationGesture = goog.events.gestures.attachRotationGesture(boxElement, fun
 });
     
 // Allow all gestures to recognize at the same time
-goog.events.gestures.allowSimultaneousRecognition(panGesture, pinchGesture, rotationGesture);
+goog.events.gestures.allowSimultaneousRecognition(panGesture, pinchGesture, rotateGesture);
 ```
 
 ## Setup
