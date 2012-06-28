@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>goog-gestures photo pile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="example-loader.js"></script>
+    <style>
+      body {
+        -webkit-user-select: none;
+      }
+      #container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+      .photo {
+        position: absolute;
+        z-index: 0;
+
+        border: 2px solid #AAAAAA;
+        background-color: #666666;
+
+        -webkit-user-select: none;
+        -webkit-transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
+      }
+      .photo-tapped {
+        border-color: #663333;
+      }
+      .photo-panning {
+        border-color: #336633;
+      }
+      .photo-pinching {
+        border-color: #333366;
+      }
+      .photo-rotating {
+        border-color: #666633;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+
+    <script>
+      prepareExample(function() {
+        // Prevent scrolling
+        document.body.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
+        var container = document.getElementById('container');
+
+        function hasClass(el, className) {
+          return el.className.indexOf(className) != -1;
+        }
+        function addClass(el, className) {
+          if (el.className.indexOf(className) == -1) {
+            el.className += ' ' + className;
+          }
+        }
+        function removeClass(el, className) {
+          el.className = el.className.replace(' ' + className, '');
+        }
+
+        // All photos in their z-order
+        var order = [];
+
+        function addPhoto(src, width, height) {
+          var photo = document.createElement('img');
+          photo.className = 'photo';
+          photo.style.width = width + 'px';
+          photo.style.height = height + 'px';
+          photo.src = src;
+          container.appendChild(photo);
+
+          photo.style.zIndex = order.length;
+          order.push(photo);
+
+          var stx = 0;
+          var sty = 0;
+          var tx = 0;
+          var ty = 0;
+          var scale = 1;
+          var angle = 0;
+          function updateTransform() {
+            // TODO(benvanik): scale/rotate around gesture origin
+            photo.style.webkitTransform =
+                'translateZ(0) ' +
+                'translate(' + tx + 'px,' + ty + 'px) ' +
+                'scale(' + scale + ') ' +
+                'rotate(' + angle + 'rad)';
+          };
+
+          function reorder() {
+            order.splice(order.indexOf(photo), 1);
+            order.push(photo);
+            for (var n = 0; n < order.length; n++) {
+              order[n].style.zIndex = n;
+            }
+          };
+
+          var tapGesture = goog.events.gestures.attachTapGesture(photo,
+              function(gesture) {
+                if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                  reorder();
+                }
+              });
+          var panGesture = goog.events.gestures.attachPanGesture(photo,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    stx = tx;
+                    sty = ty;
+                    addClass(photo, 'photo-panning');
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    tx = stx + gesture.getTranslationX();
+                    ty = sty + gesture.getTranslationY();
+                    updateTransform();
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    removeClass(photo, 'photo-panning');
+                    break;
+                }
+              });
+          var pinchGesture = goog.events.gestures.attachPinchGesture(photo,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    addClass(photo, 'photo-pinching');
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    scale *= gesture.getScalingDelta();
+                    updateTransform();
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    removeClass(photo, 'photo-pinching');
+                    break;
+                }
+              });
+          var rotateGesture = goog.events.gestures.attachRotateGesture(photo,
+              function(gesture) {
+                switch (gesture.getState()) {
+                  case goog.events.gestures.State.BEGAN:
+                    addClass(photo, 'photo-rotating');
+                    break;
+                  case goog.events.gestures.State.CHANGED:
+                    angle += gesture.getRotationDelta();
+                    updateTransform();
+                    break;
+                  case goog.events.gestures.State.ENDED:
+                    removeClass(photo, 'photo-rotating');
+                    break;
+                }
+              });
+
+          // Allow all gestures to recognize together
+          goog.events.gestures.allowSimultaneousRecognition(
+              panGesture, pinchGesture, rotateGesture);
+        };
+
+        // Photos randomly snatched from the flickr top 100 pool
+        // All (c) their respective owners
+        // http://www.flickr.com/groups/best100only/pool/
+        addPhoto('photos/1.jpg', 640, 416);
+        addPhoto('photos/2.jpg', 640, 426);
+        addPhoto('photos/3.jpg', 640, 640);
+
+        // TODO(benvanik): scale all by window to fit
+        // TODO(benvanik): randomize
+      });
+    </script>
+  </body>
+</html>
