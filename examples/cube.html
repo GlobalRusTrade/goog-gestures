@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>goog-gestures cube</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="example-loader.js"></script>
+    <style>
+      body {
+        -webkit-user-select: none;
+      }
+
+      #inputLayer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+
+      /* CSS 3D cube from: https://github.com/fofr/paulrhayes.com-experiments/blob/master/cube-3d/css/experiment.css */
+      .viewport {
+        -webkit-perspective: 800;
+        -moz-perspective: 800;
+
+        position: relative;
+        top: 0px;
+      }
+      .cube {
+        position: relative;
+        margin: 0 auto;
+        height: 400px;
+        width: 400px;
+        text-align: center;
+        -webkit-transition: -webkit-transform 33ms linear;
+        -webkit-transform-style: preserve-3d;
+        -moz-transition: -moz-transform 33ms linear;
+        -moz-transform-style: preserve-3d;
+      }
+      .cube > div {
+        position: absolute;
+        height: 360px;
+        width: 360px;
+        padding: 20px;
+        background-color: rgba(50, 50, 50, 0.85);
+        font-size: 1em;
+        line-height: 1em;
+        color: #fff;
+        border: 1px solid #555;
+        border-radius: 3px;
+
+        -webkit-transition: background-color 100ms linear;
+      }
+      .cube > div:first-child  {
+        -webkit-transform: rotateX(90deg) translateZ(200px);
+        -moz-transform: rotateX(90deg) translateZ(200px);
+      }
+      .cube > div:nth-child(2) {
+        -webkit-transform: translateZ(200px);
+        -moz-transform: translateZ(200px);
+      }
+      .cube > div:nth-child(3) {
+        -webkit-transform: rotateY(90deg) translateZ(200px);
+        -moz-transform: rotateY(90deg) translateZ(200px);
+      }
+      .cube > div:nth-child(4) {
+        -webkit-transform: rotateY(180deg) translateZ(200px);
+        -moz-transform: rotateY(180deg) translateZ(200px);
+      }
+      .cube > div:nth-child(5) {
+        -webkit-transform: rotateY(-90deg) translateZ(200px);
+        -moz-transform: rotateY(-90deg) translateZ(200px);
+      }
+      .cube > div:nth-child(6) {
+        -webkit-transform: rotateX(-90deg) rotate(180deg) translateZ(200px);
+        -moz-transform: rotateX(-90deg) rotate(180deg) translateZ(200px);
+      }
+      .cube-tapped > div {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewport" class="viewport">
+      <div id="cube" class="cube">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+      </div>
+    </div>
+    <div id="inputLayer"></div>
+
+    <script>
+      prepareExample(function() {
+        var inputLayer = document.getElementById('inputLayer');
+        var cube = document.getElementById('cube');
+
+        // Prevent scrolling
+        document.body.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
+        var stx = 0;
+        var sty = 0;
+        var tx = 0;
+        var ty = 0;
+        var scale = 1;
+        var angleX = 0;
+        var angleY = 0;
+        var angleZ = 0;
+        var rotationQuaternion = [0, 0, 0, 1];
+        function makeQuaternionEulerZYX(theta1, theta2, theta3) {
+          var s1 = Math.sin(theta1 / 2);
+          var c1 = Math.cos(theta1 / 2);
+          var s2 = Math.sin(theta2 / 2);
+          var c2 = Math.cos(theta2 / 2);
+          var s3 = Math.sin(theta3 / 2);
+          var c3 = Math.cos(theta3 / 2);
+          return [
+              (c1 * s2) * c3 + (s1 * c2) * s3,
+              (s1 * c2) * c3 - (c1 * s2) * s3,
+              (c1 * c2) * s3 - (s1 * s2) * c3,
+              (c1 * c2) * c3 + (s1 * s2) * s3];
+        };
+        function concatQuaternion(quat0, quat1) {
+          var x0 = quat0[0], y0 = quat0[1], z0 = quat0[2], w0 = quat0[3];
+          var x1 = quat1[0], y1 = quat1[1], z1 = quat1[2], w1 = quat1[3];
+          return [
+              w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
+              w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
+              w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
+              w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1];
+        };
+        function quaternionToRotationMatrix(quat) {
+          var x = quat[0], y = quat[1], z = quat[2], w = quat[3];
+          var x2 = 2 * x, y2 = 2 * y, z2 = 2 * z;
+          var wx = x2 * w;
+          var wy = y2 * w;
+          var wz = z2 * w;
+          var xx = x2 * x;
+          var xy = y2 * x;
+          var xz = z2 * x;
+          var yy = y2 * y;
+          var yz = z2 * y;
+          var zz = z2 * z;
+
+          var m = new WebKitCSSMatrix();
+          m.m11 = 1 - (yy + zz);
+          m.m12 = xy + wz;
+          m.m13 = xz - wy;
+          m.m14 = 0;
+          m.m21 = xy - wz;
+          m.m22 = 1 - (xx + zz);
+          m.m23 = yz + wx;
+          m.m24 = 0;
+          m.m31 = xz + wy;
+          m.m32 = yz - wx;
+          m.m33 = 1 - (xx + yy);
+          m.m34 = 0;
+          m.m41 = 0;
+          m.m42 = 0;
+          m.m43 = 0;
+          m.m44 = 1;
+          return m;
+        };
+        function updateTransform() {
+          angleX /= 100;
+          angleY /= 100;
+          var q = makeQuaternionEulerZYX(angleX, -angleY, angleZ);
+          angleX = angleY = angleZ = 0;
+          rotationQuaternion = concatQuaternion(rotationQuaternion, q);
+          var m = quaternionToRotationMatrix(rotationQuaternion);
+          cube.style.webkitTransform =
+              'translateZ(0) ' +
+              'translate(' + tx + 'px, ' + ty + 'px) ' +
+              'scale(' + scale + ') ' +
+              m.toString();
+        };
+        updateTransform();
+
+        // Setup gestures
+        var tapGesture = goog.events.gestures.attachTapGesture(inputLayer,
+            function(gesture) {
+              if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+                // Tapped
+                if (cube.className.indexOf('cube-tapped') == -1) {
+                  cube.className += ' cube-tapped';
+                  window.setTimeout(function() {
+                    cube.className = cube.className.replace(' cube-tapped', '');
+                  }, 200);
+                }
+              }
+            });
+        var panGesture = goog.events.gestures.attachPanGesture(inputLayer,
+            function(gesture) {
+              switch (gesture.getState()) {
+                case goog.events.gestures.State.BEGAN:
+                  stx = tx;
+                  sty = ty;
+                  break;
+                case goog.events.gestures.State.CHANGED:
+                  tx = stx + gesture.getTranslationX();
+                  ty = sty + gesture.getTranslationY();
+                  updateTransform();
+                  break;
+              }
+            });
+        panGesture.setMinimumTouchCount(1);
+        panGesture.setMaximumTouchCount(1);
+        var pinchGesture = goog.events.gestures.attachPinchGesture(inputLayer,
+            function(gesture) {
+              switch (gesture.getState()) {
+                case goog.events.gestures.State.CHANGED:
+                  scale *= gesture.getScalingDelta();
+                  updateTransform();
+                  break;
+              }
+            });
+        var rotateXYGesture = goog.events.gestures.attachPanGesture(inputLayer,
+            function(gesture) {
+              switch (gesture.getState()) {
+                case goog.events.gestures.State.CHANGED:
+                  angleX += gesture.getTranslationDeltaX();
+                  angleY += gesture.getTranslationDeltaY();
+                  updateTransform();
+                  break;
+              }
+            });
+        rotateXYGesture.setMinimumTouchCount(2);
+        rotateXYGesture.setMaximumTouchCount(100);
+        var rotateZGesture = goog.events.gestures.attachRotateGesture(inputLayer,
+            function(gesture) {
+              switch (gesture.getState()) {
+                case goog.events.gestures.State.CHANGED:
+                  angleZ += gesture.getRotationDelta();
+                  updateTransform();
+                  break;
+              }
+            });
+
+        // Allow all gestures to recognize together
+        goog.events.gestures.allowSimultaneousRecognition(
+            panGesture, pinchGesture, rotateXYGesture, rotateZGesture);
+      });
+    </script>
+  </body>
+</html>
