@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Pyramid Demo (with gestures)</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no">
+    <script src="example-loader.js"></script>
+    <script src="pyramiddemo.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+      #toolbar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 20px;
+        z-index: 1;
+      }
+      #displayCanvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="toolbar">
+      <input type="range" min="1" max="1000" value="100" step="1" onchange="bias(parseFloat(this.value) / 100)"/>
+    </div>
+    <canvas id="displayCanvas"></canvas>
+    <script>
+      prepareExample(function() {
+        initDemo();
+      });
+    </script>
+  </body>
+</html>
