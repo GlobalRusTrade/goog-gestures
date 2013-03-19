@@ -259,11 +259,6 @@ goog.events.gestures.Recognizer.prototype.setState = function(value) {
     }
   }
 
-  // TODO(benvanik): better logging switch.
-  if (goog.DEBUG) {
-    window.console.log('setState(' + value + ')');
-  }
-
   // Transition.
   this.state_ = value;
   this.issueCallback();
@@ -441,14 +436,17 @@ goog.events.gestures.Recognizer.prototype.reset = function() {
  * Adds a new listener.
  * This must only be called when the recognizer is in the
  * {@see goog.events.gestures.State.POSSIBLE} state.
- * @param {!goog.events.gestures.CallbackFunction} callback Callback function.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
+ * @template T
  */
 goog.events.gestures.Recognizer.prototype.addListener =
     function(callback, opt_scope) {
   goog.asserts.assert(this.state_ == goog.events.gestures.State.POSSIBLE);
-  this.listeners_.push(
-      new goog.events.gestures.Recognizer.Listener_(callback, opt_scope));
+  this.listeners_.push(new goog.events.gestures.Recognizer.Listener_(
+      /** @type {!goog.events.gestures.CallbackFunction} */ (callback),
+      opt_scope));
 };
 
 

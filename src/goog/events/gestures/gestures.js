@@ -29,10 +29,11 @@ goog.require('goog.events.gestures.TouchView');
  * Creates a new {@see goog.events.gestures.PanRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
- * @param {!goog.events.gestures.CallbackFunction} callback Function called on
- *     each gesture action.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.PanRecognizer} A new bound gesture instance.
+ * @template T
  */
 goog.events.gestures.attachPanGesture =
     function(target, callback, opt_scope) {
@@ -46,10 +47,11 @@ goog.events.gestures.attachPanGesture =
  * Creates a new {@see goog.events.gestures.PinchRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
- * @param {!goog.events.gestures.CallbackFunction} callback Function called on
- *     each gesture action.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.PinchRecognizer} A new bound gesture instance.
+ * @template T
  */
 goog.events.gestures.attachPinchGesture =
     function(target, callback, opt_scope) {
@@ -63,11 +65,12 @@ goog.events.gestures.attachPinchGesture =
  * Creates a new {@see goog.events.gestures.RotateRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
- * @param {!goog.events.gestures.CallbackFunction} callback Function called on
- *     each gesture action.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.RotateRecognizer} A new bound gesture
  *     instance.
+ * @template T
  */
 goog.events.gestures.attachRotateGesture =
     function(target, callback, opt_scope) {
@@ -81,10 +84,11 @@ goog.events.gestures.attachRotateGesture =
  * Creates a new {@see goog.events.gestures.SwipeRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
- * @param {!goog.events.gestures.CallbackFunction} callback Function called on
- *     each gesture action.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.SwipeRecognizer} A new bound gesture instance.
+ * @template T
  */
 goog.events.gestures.attachSwipeGesture =
     function(target, callback, opt_scope) {
@@ -98,10 +102,11 @@ goog.events.gestures.attachSwipeGesture =
  * Creates a new {@see goog.events.gestures.TapRecognizer}.
  *
  * @param {!Element} target DOM element to attach to.
- * @param {!goog.events.gestures.CallbackFunction} callback Function called on
- *     each gesture action.
- * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @param {!function(this:T, !goog.events.gestures.Recognizer)} callback
+ *     Function called on each gesture action.
+ * @param {T=} opt_scope Scope that the callback will be called in.
  * @return {!goog.events.gestures.TapRecognizer} A new bound gesture instance.
+ * @template T
  */
 goog.events.gestures.attachTapGesture =
     function(target, callback, opt_scope) {

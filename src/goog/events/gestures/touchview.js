@@ -210,11 +210,6 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
    * @param {!TouchEvent} e Event.
    */
   function dispatchEvent(e) {
-    // TODO(benvanik): better logging switch.
-    if (goog.DEBUG) {
-      window.console.log(e.type, e);
-    }
-
     var preventDefault = false;
     for (var n = 0; n < recognizers.length; n++) {
       var recognizer = recognizers[n];
