@@ -25,9 +25,9 @@ goog.require('goog.events.gestures.utils');
 
 /**
  * A pan gesture recognizer.
+ * @param {!Element} target DOM element to attach to.
  * @constructor
  * @extends {goog.events.gestures.Recognizer}
- * @param {!Element} target DOM element to attach to.
  */
 goog.events.gestures.PanRecognizer = function(target) {
   goog.base(this, target);
@@ -36,78 +36,78 @@ goog.events.gestures.PanRecognizer = function(target) {
 
   /**
    * Minimum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.minTouchCount_ = 1;
 
   /**
    * Maximum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
    * Translation X of the last change.
-   * @private
    * @type {number}
+   * @private
    */
   this.translationX_ = 0;
 
   /**
    * Translation Y of the last change.
-   * @private
    * @type {number}
+   * @private
    */
   this.translationY_ = 0;
 
   /**
    * Last translation X.
-   * @private
    * @type {number}
+   * @private
    */
   this.lastTranslationX_ = 0;
 
   /**
    * Last translation Y.
-   * @private
    * @type {number}
+   * @private
    */
   this.lastTranslationY_ = 0;
 
   /**
    * X of the centroid when the gesture first began.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidStartX_ = 0;
 
   /**
    * Y of the centroid when the gesture first began.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidStartY_ = 0;
 
   /**
    * Current shift accumulation in centroid offset X.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidShiftX_ = 0;
 
   /**
    * Current shift accumulation in centroid offset Y.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidShiftY_ = 0;
 
   /**
    * The total distance the center has moved, in px.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidDistance_ = 0;
 };

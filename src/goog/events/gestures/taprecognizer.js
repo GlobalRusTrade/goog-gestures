@@ -25,9 +25,9 @@ goog.require('goog.events.gestures.utils');
 
 /**
  * An N-tap gesture recognizer.
+ * @param {!Element} target DOM element to attach to.
  * @constructor
  * @extends {goog.events.gestures.Recognizer}
- * @param {!Element} target DOM element to attach to.
  */
 goog.events.gestures.TapRecognizer = function(target) {
   goog.base(this, target);
@@ -36,22 +36,22 @@ goog.events.gestures.TapRecognizer = function(target) {
 
   /**
    * Number of taps required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.tapCount_ = 1;
 
   /**
    * Number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.touchCount_ = 1;
 
   /**
    * The total distance the center has moved, in px.
-   * @private
    * @type {number}
+   * @private
    */
   this.centroidDistance_ = 0;
 };

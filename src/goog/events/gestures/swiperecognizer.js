@@ -26,9 +26,9 @@ goog.require('goog.events.gestures.utils');
 
 /**
  * A simple directional swipe gesture recognizer.
+ * @param {!Element} target DOM element to attach to.
  * @constructor
  * @extends {goog.events.gestures.Recognizer}
- * @param {!Element} target DOM element to attach to.
  */
 goog.events.gestures.SwipeRecognizer = function(target) {
   goog.base(this, target);
@@ -37,8 +37,8 @@ goog.events.gestures.SwipeRecognizer = function(target) {
 
   /**
    * Number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.touchCount_ = 1;
 
@@ -46,36 +46,36 @@ goog.events.gestures.SwipeRecognizer = function(target) {
    * Whether the current touches are being watched as possible swipes.
    * If this is true then the start position is valid and should be used to
    * calculate distance.
-   * @private
    * @type {boolean}
+   * @private
    */
   this.watching_ = false;
 
   /**
    * Time from {@code goog.now()} when the touches started being watched.
-   * @private
    * @type {number}
+   * @private
    */
   this.startTime_ = 0;
 
   /**
    * Start point when recognition looks possible, X.
-   * @private
    * @type {number}
+   * @private
    */
   this.startX_ = 0;
 
   /**
    * Start point when recognition looks possible, Y.
-   * @private
    * @type {number}
+   * @private
    */
   this.startY_ = 0;
 
   /**
    * Recognized swipe direction.
-   * @private
    * @type {goog.events.gestures.Direction}
+   * @private
    */
   this.direction_ = goog.events.gestures.Direction.NONE;
 };

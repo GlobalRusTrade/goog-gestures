@@ -24,9 +24,9 @@ goog.require('goog.events.gestures.utils');
 
 /**
  * A rotation gesture recognizer.
+ * @param {!Element} target DOM element to attach to.
  * @constructor
  * @extends {goog.events.gestures.Recognizer}
- * @param {!Element} target DOM element to attach to.
  */
 goog.events.gestures.RotateRecognizer = function(target) {
   goog.base(this, target);
@@ -35,55 +35,55 @@ goog.events.gestures.RotateRecognizer = function(target) {
 
   /**
    * Minimum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.minTouchCount_ = 2;
 
   /**
    * Maximum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
    * Accumulated angle changes over the course of the gesture, in radians.
-   * @private
    * @type {number}
+   * @private
    */
   this.angle_ = 0;
 
   /**
    * The current rotation angle between the active touches, in radians.
-   * @private
    * @type {number}
+   * @private
    */
   this.angleDelta_ = 0;
 
   /**
    * The previous angle of rotation, in radians.
-   * @private
    * @type {number}
+   * @private
    */
   this.lastAngleDelta_ = 0;
 
   /**
    * Current rotation velocity.
-   * @private
    * @type {number}
+   * @private
    */
   this.velocity_ = 0;
 
   /**
    * Touches that are being tracked for movement, mapped by identifier.
-   * @private
    * @type {!Object.<{
    *   identifier: number,
    *   lastX: number,
    *   lastY: number,
    *   distance: number
    * }>}
+   * @private
    */
   this.trackedTouches_ = {};
 };
@@ -132,10 +132,10 @@ goog.events.gestures.RotateRecognizer.prototype.reset = function() {
 
 /**
  * Gets the angle between two touches.
- * @private
  * @param {!Touch} touch0 First touch.
  * @param {!Touch} touch1 Second touch.
  * @return {number} Angle between the two touches, in radians.
+ * @private
  */
 goog.events.gestures.RotateRecognizer.prototype.angleBetweenTouches_ =
     function(touch0, touch1) {

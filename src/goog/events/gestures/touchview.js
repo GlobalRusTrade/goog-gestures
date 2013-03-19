@@ -32,32 +32,32 @@ goog.require('goog.events.gestures.State');
  * lifetime of their gestures (disposing them when no longer needed) to ensure
  * that leaks do not occur.
  *
+ * @param {!Element} target Target DOM element.
  * @constructor
  * @extends {goog.Disposable}
- * @param {!Element} target Target DOM element.
  */
 goog.events.gestures.TouchView = function(target) {
   goog.base(this);
 
   /**
    * Target DOM element.
-   * @private
    * @type {!Element}
+   * @private
    */
   this.target_ = target;
 
   /**
    * All recognizers attached to this view.
-   * @private
    * @type {!Array.<!goog.events.gestures.Recognizer>}
+   * @private
    */
   this.recognizers_ = [];
 
   /**
    * All currently bound event handlers.
    * This should only be manipulated by {@see #bindAllEvents_}.
-   * @private
    * @type {!Array.<!{eventType: string, listener: !Function}>}
+   * @private
    */
   this.boundHandlers_ = [];
 
@@ -95,9 +95,9 @@ goog.events.gestures.TouchView.prototype.disposeInternal = function() {
 /**
  * Property name used on DOM elements to store touch view instances.
  * Hopefully this never conflicts with anyone.
- * @private
  * @const
  * @type {string}
+ * @private
  */
 goog.events.gestures.TouchView.DOM_PROPERTY_ = 'gdg_view';
 
@@ -260,9 +260,9 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
 
 /**
  * Binds an event handler to the target and registers it for unbinding.
- * @private
  * @param {string} eventType Event type name.
  * @param {!Function} listener Event listener.
+ * @private
  */
 goog.events.gestures.TouchView.prototype.bindEventHandler_ =
     function(eventType, listener) {

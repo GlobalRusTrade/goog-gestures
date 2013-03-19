@@ -25,9 +25,9 @@ goog.require('goog.events.gestures.utils');
 
 /**
  * A pinch gesture recognizer.
+ * @param {!Element} target DOM element to attach to.
  * @constructor
  * @extends {goog.events.gestures.Recognizer}
- * @param {!Element} target DOM element to attach to.
  */
 goog.events.gestures.PinchRecognizer = function(target) {
   goog.base(this, target);
@@ -36,55 +36,55 @@ goog.events.gestures.PinchRecognizer = function(target) {
 
   /**
    * Minimum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.minTouchCount_ = 2;
 
   /**
    * Maximum number of touches required for the gesture to recognize.
-   * @private
    * @type {number}
+   * @private
    */
   this.maxTouchCount_ = Number.MAX_VALUE;
 
   /**
    * Accumulated scale over the life of the gesture. Always relative to 1.
-   * @private
    * @type {number}
+   * @private
    */
   this.scale_ = 1;
 
   /**
    * The current distance between the active touches, in px.
-   * @private
    * @type {number}
+   * @private
    */
   this.distance_ = 0;
 
   /**
    * The distance between the active touches when the pinch began, in px.
-   * @private
    * @type {number}
+   * @private
    */
   this.lastDistance_ = 0;
 
   /**
    * Current scale velocity.
-   * @private
    * @type {number}
+   * @private
    */
   this.velocity_ = 0;
 
   /**
    * Touches that are being tracked for movement, mapped by identifier.
-   * @private
    * @type {!Object.<{
    *   identifier: number,
    *   lastX: number,
    *   lastY: number,
    *   distance: number
    * }>}
+   * @private
    */
   this.trackedTouches_ = {};
 };

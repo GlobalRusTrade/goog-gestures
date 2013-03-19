@@ -34,95 +34,95 @@ goog.events.gestures.CallbackFunction;
 
 /**
  * Abstract base type for gesture recognizers.
+ * @param {!Element} target Target DOM element.
  * @constructor
  * @extends {goog.Disposable}
- * @param {!Element} target Target DOM element.
  */
 goog.events.gestures.Recognizer = function(target) {
   goog.base(this);
 
   /**
    * Target DOM element.
-   * @private
    * @type {!Element}
+   * @private
    */
   this.target_ = target;
 
   /**
    * Target touch view.
-   * @private
    * @type {!goog.events.gestures.TouchView}
+   * @private
    */
   this.view_ = goog.events.gestures.TouchView.getInstance(this.target_);
 
   /**
    * Number of pixels of movement in a touch to activate the gesture.
    * Some gestures may use this as a min, some use it as a max.
-   * @private
    * @type {number}
+   * @private
    */
   this.movementThreshold_ = 0;
 
   /**
    * Whether the recognizer is actively listening for gestures.
-   * @private
    * @type {boolean}
+   * @private
    */
   this.enabled_ = true;
 
   /**
    * Current state of the state machine.
-   * @private
    * @type {goog.events.gestures.State}
+   * @private
    */
   this.state_ = goog.events.gestures.State.POSSIBLE;
 
   /**
    * X offset of the gesture from the top-left of the container element.
-   * @private
    * @type {number}
+   * @private
    */
   this.offsetX_ = 0;
 
   /**
    * Y offset of the gesture from the top-left of the container element.
-   * @private
    * @type {number}
+   * @private
    */
   this.offsetY_ = 0;
 
   /**
    * X offset of the gesture from the top-left of the visible window.
-   * @private
    * @type {number}
+   * @private
    */
   this.clientX_ = 0;
 
   /**
    * Y offset of the gesture from the top-left of the visible window.
-   * @private
    * @type {number}
+   * @private
    */
   this.clientY_ = 0;
 
   /**
    * X offset of the gesture from the top-left of the page.
-   * @private
    * @type {number}
+   * @private
    */
   this.pageX_ = 0;
 
   /**
    * Y offset of the gesture from the top-left of the page.
-   * @private
    * @type {number}
+   * @private
    */
   this.pageY_ = 0;
 
   /**
    * Listeners for recognizer updates.
-   * @private
    * @type {!Array.<!goog.events.gestures.Recognizer.Listener_>}
+   * @private
    */
   this.listeners_ = [];
 
@@ -131,8 +131,8 @@ goog.events.gestures.Recognizer = function(target) {
    * If a recognizer is in this list then it is allowed to recognize if this
    * gesture is currently recognizing. These relationships are not always
    * symmetrical.
-   * @private
    * @type {!Array.<!goog.events.gestures.Recognizer>}
+   * @private
    */
   this.allowedSimultaneousRecognizers_ = [];
 
@@ -236,8 +236,8 @@ goog.events.gestures.Recognizer.prototype.getState = function() {
 
 /**
  * Transitions the state machine to a new state.
- * @protected
  * @param {goog.events.gestures.State} value The new state machine state.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.setState = function(value) {
   // Ignore redundant states of certain kinds.
@@ -272,10 +272,10 @@ goog.events.gestures.Recognizer.prototype.setState = function(value) {
 
 /**
  * Validates that the given state machine transition is legal.
- * @private
  * @param {goog.events.gestures.State} oldState Previous state machine state.
  * @param {goog.events.gestures.State} newState Desired state machine state.
  * @return {boolean} True if the given transition is valid.
+ * @private
  */
 goog.events.gestures.Recognizer.prototype.isValidTransition_ =
     function(oldState, newState) {
@@ -342,8 +342,8 @@ goog.events.gestures.Recognizer.prototype.addAllowedSimultaneousRecognizer =
 
 /**
  * Checks to see if the recognizer is allowed to begin.
- * @private
  * @return {boolean} True if the recognizer can recognize.
+ * @private
  */
 goog.events.gestures.Recognizer.prototype.canRecognize_ = function() {
   var allRecognizers = this.view_.getGestureRecognizers();
@@ -363,10 +363,10 @@ goog.events.gestures.Recognizer.prototype.canRecognize_ = function() {
 /**
  * Checks to see if the current gesture (assumed to be recognizing) allows the
  * given other gesture to begin recognizing.
- * @protected
  * @param {!goog.events.gestures.Recognizer} other The gesture that is trying to
  *     recognize.
  * @return {boolean} Whether the two gestures can be recognized simultaneously.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.canRecognizeWith = function(other) {
   return goog.array.contains(this.allowedSimultaneousRecognizers_, other);
@@ -454,8 +454,8 @@ goog.events.gestures.Recognizer.prototype.addListener =
 
 /**
  * Issues a callback to the listener on an update, optionally resetting state.
- * @protected
  * @param {boolean=} opt_reset Reset the recognizer to {@code POSSIBLE}.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
   // Notify all listeners.
@@ -477,8 +477,8 @@ goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
  * Updates the gesture location based on the given touches.
  * If there are no touches the location will be reset. If there are multiple
  * touches the centroid will be used.
- * @protected
  * @param {Array.<!TouchEvent>|TouchList=} opt_touches A list of active touches.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.updateLocation =
     function(opt_touches) {
@@ -527,8 +527,8 @@ goog.events.gestures.Recognizer.prototype.updateLocation =
  * Handles new touches.
  * The event given may contain many touches; use {@code changedTouches} to find
  * the new touches.
- * @protected
  * @param {!TouchEvent} e Browser touch event.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.touchesBegan = goog.nullFunction;
 
@@ -537,8 +537,8 @@ goog.events.gestures.Recognizer.prototype.touchesBegan = goog.nullFunction;
  * Handles moved touches.
  * The event given may contain many touches; use {@code changedTouches} to find
  * the moved touches.
- * @protected
  * @param {!TouchEvent} e Browser touch event.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.touchesMoved = goog.nullFunction;
 
@@ -547,8 +547,8 @@ goog.events.gestures.Recognizer.prototype.touchesMoved = goog.nullFunction;
  * Handles ended touches.
  * The event given may contain many touches; use {@code changedTouches} to find
  * the ended touches.
- * @protected
  * @param {!TouchEvent} e Browser touch event.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.touchesEnded = goog.nullFunction;
 
@@ -557,8 +557,8 @@ goog.events.gestures.Recognizer.prototype.touchesEnded = goog.nullFunction;
  * Handles cancelled touches.
  * The event given may contain many touches; use {@code changedTouches} to find
  * the cancelled touches.
- * @protected
  * @param {!TouchEvent} e Browser touch event.
+ * @protected
  */
 goog.events.gestures.Recognizer.prototype.touchesCancelled = goog.nullFunction;
 
@@ -566,10 +566,10 @@ goog.events.gestures.Recognizer.prototype.touchesCancelled = goog.nullFunction;
 
 /**
  * A listener that receives recognizer update callbacks.
- * @private
- * @constructor
  * @param {!goog.events.gestures.CallbackFunction} callback Callback function.
  * @param {Object=} opt_scope Scope that the callback will be called in.
+ * @constructor
+ * @private
  */
 goog.events.gestures.Recognizer.Listener_ = function(callback, opt_scope) {
   // NOTE: this is used instead of a goog.bind so that we retain typing on
