@@ -227,13 +227,13 @@ goog.events.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
   if (this.getState() == goog.events.gestures.State.CHANGED) {
-    // New touch while recognizing, shift centroid
+    // New touch while recognizing, shift centroid.
     this.centroidShiftX_ -= this.getPageX() - oldPageX;
     this.centroidShiftY_ -= this.getPageY() - oldPageY;
     this.updateTranslation_();
 
     if (e.targetTouches.length > this.maxTouchCount_) {
-      // Exceeded touch count, stop recognizing
+      // Exceeded touch count, stop recognizing.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
@@ -246,28 +246,28 @@ goog.events.gestures.PanRecognizer.prototype.touchesBegan = function(e) {
  * @override
  */
 goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
-  // Ignore if out of touch range
+  // Ignore if out of touch range.
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
     return;
   }
 
-  // Grab the latest centroid position
+  // Grab the latest centroid position.
   var oldPageX = this.getPageX();
   var oldPageY = this.getPageY();
   this.updateLocation(e.targetTouches);
   var pageX = this.getPageX();
   var pageY = this.getPageY();
 
-  // Compute distance moved
+  // Compute distance moved.
   var dx = pageX - oldPageX;
   var dy = pageY - oldPageY;
   this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
 
-  // Begin if we have moved far enough
+  // Begin if we have moved far enough.
   if (this.getState() == goog.events.gestures.State.POSSIBLE &&
       this.centroidDistance_ > this.getMovementThreshold()) {
-    // Moved far enough, start (or try to)
+    // Moved far enough, start (or try to).
     this.centroidStartX_ = pageX;
     this.centroidStartY_ = pageY;
     this.centroidShiftX_ = this.centroidShiftY_ = 0;
@@ -278,7 +278,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
     }
   } else if ((dx || dy) &&
       this.getState() == goog.events.gestures.State.CHANGED) {
-    // Normal update
+    // Normal update.
     this.updateTranslation_();
     this.setState(goog.events.gestures.State.CHANGED);
   }
@@ -291,7 +291,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesMoved = function(e) {
 goog.events.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
-      // Still have some valid touches - shift centroid
+      // Still have some valid touches - shift centroid.
       var oldPageX = this.getPageX();
       var oldPageY = this.getPageY();
       this.updateLocation(e.targetTouches);
@@ -299,7 +299,7 @@ goog.events.gestures.PanRecognizer.prototype.touchesEnded = function(e) {
       this.centroidShiftY_ -= this.getPageY() - oldPageY;
       this.updateTranslation_();
     } else {
-      // Not enough touches
+      // Not enough touches.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }

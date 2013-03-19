@@ -133,7 +133,7 @@ goog.events.gestures.SwipeRecognizer.prototype.touchesBegan = function(e) {
   }
 
   if (e.targetTouches.length != this.touchCount_) {
-    // Touch count mismatch, no way to recognize
+    // Touch count mismatch, no way to recognize.
     this.setState(goog.events.gestures.State.FAILED);
     this.reset();
     return;
@@ -149,23 +149,23 @@ goog.events.gestures.SwipeRecognizer.prototype.touchesMoved = function(e) {
     return;
   }
 
-  // Grab the latest centroid position
+  // Grab the latest centroid position.
   this.updateLocation(e.targetTouches);
 
-  // If the right number of touches are down, we may be recongized
+  // If the right number of touches are down, we may be recongized.
   if (e.targetTouches.length == this.touchCount_) {
     if (!this.watching_) {
-      // First time, reset start position
+      // First time, reset start position.
       this.watching_ = true;
       this.startTime_ = goog.now();
       this.startX_ = this.getPageX();
       this.startY_ = this.getPageY();
     } else {
-      // In a cycle, check for distance threshold
+      // In a cycle, check for distance threshold.
       var dx = this.getPageX() - this.startX_;
       var dy = this.getPageY() - this.startY_;
 
-      // TODO(benvanik): vary the slip allowed by the elapsed time
+      // TODO(benvanik): vary the slip allowed by the elapsed time.
       var elapsed = goog.now() - this.startTime_;
       var distanceRequired = this.getMovementThreshold();
       var slipAllowed = distanceRequired / 3;

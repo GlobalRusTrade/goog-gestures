@@ -140,7 +140,7 @@ goog.events.gestures.Recognizer = function(target) {
   // TODO(benvanik): cancel touches in the target that the recognizer eats
   // TODO(benvanik): delay touches to the target until failure, if desired
 
-  // All ready - add to view
+  // All ready - add to view.
   this.view_.addGestureRecognizer(this);
 };
 goog.inherits(goog.events.gestures.Recognizer, goog.Disposable);
@@ -150,10 +150,10 @@ goog.inherits(goog.events.gestures.Recognizer, goog.Disposable);
  * @override
  */
 goog.events.gestures.Recognizer.prototype.disposeInternal = function() {
-  // This will handle failing the gesture gracefully
+  // This will handle failing the gesture gracefully.
   this.setEnabled(false);
 
-  // Remove from view -- note that this may cause the view to be disposed
+  // Remove from view -- note that this may cause the view to be disposed.
   this.view_.removeGestureRecognizer(this);
 
   goog.base(this, 'disposeInternal');
@@ -218,8 +218,8 @@ goog.events.gestures.Recognizer.prototype.setEnabled = function(value) {
   }
   this.enabled_ = value;
 
-  // If we are in the middle of a gesture, fail
-  // This will allow for the proper chaining logic
+  // If we are in the middle of a gesture, fail.
+  // This will allow for the proper chaining logic.
   if (this.state_ != goog.events.gestures.State.POSSIBLE) {
     this.setState(goog.events.gestures.State.FAILED);
   }
@@ -240,18 +240,18 @@ goog.events.gestures.Recognizer.prototype.getState = function() {
  * @param {goog.events.gestures.State} value The new state machine state.
  */
 goog.events.gestures.Recognizer.prototype.setState = function(value) {
-  // Ignore redundant states of certain kinds
+  // Ignore redundant states of certain kinds.
   if (this.state_ == value && value == goog.events.gestures.State.POSSIBLE) {
     return;
   }
 
-  // Verify state transition is valid - this may assert
+  // Verify state transition is valid - this may assert.
   if (!this.isValidTransition_(this.state_, value)) {
     return;
   }
 
   // Check to see if the recognizer can recognize - it may be prevented by
-  // other recognizers - if it is, fail
+  // other recognizers - if it is, fail.
   if (value == goog.events.gestures.State.BEGAN ||
       value == goog.events.gestures.State.RECOGNIZED) {
     if (!this.canRecognize_()) {
@@ -259,12 +259,12 @@ goog.events.gestures.Recognizer.prototype.setState = function(value) {
     }
   }
 
-  // TODO(benvanik): better logging switch
+  // TODO(benvanik): better logging switch.
   if (goog.DEBUG) {
     window.console.log('setState(' + value + ')');
   }
 
-  // Trandition
+  // Transition.
   this.state_ = value;
   this.issueCallback();
 };
@@ -458,7 +458,7 @@ goog.events.gestures.Recognizer.prototype.addListener =
  * @param {boolean=} opt_reset Reset the recognizer to {@code POSSIBLE}.
  */
 goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
-  // Notify all listeners
+  // Notify all listeners.
   for (var n = 0; n < this.listeners_.length; n++) {
     var listener = this.listeners_[n];
     // TODO(benvanik): protected the callbacks? Catch exceptions and rethrow
@@ -466,7 +466,7 @@ goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
     listener.callback.call(listener.scope, this);
   }
 
-  // Reset to POSSIBLE if requested
+  // Reset to POSSIBLE if requested.
   if (opt_reset) {
     this.reset();
   }
@@ -483,12 +483,12 @@ goog.events.gestures.Recognizer.prototype.issueCallback = function(opt_reset) {
 goog.events.gestures.Recognizer.prototype.updateLocation =
     function(opt_touches) {
   if (!opt_touches || !opt_touches.length) {
-    // No touches - reset
+    // No touches - reset.
     this.offsetX_ = this.offsetY_ = 0;
     this.clientX_ = this.clientY_ = 0;
     this.pageX_ = this.pageY_ = 0;
   } else if (opt_touches.length == 1) {
-    // One touch - fast common case
+    // One touch - fast common case.
     var touch = opt_touches[0];
     this.offsetX_ = touch.clientX - this.target_.clientLeft;
     this.offsetY_ = touch.clientY - this.target_.clientTop;
@@ -497,9 +497,9 @@ goog.events.gestures.Recognizer.prototype.updateLocation =
     this.pageX_ = touch.pageX;
     this.pageY_ = touch.pageY;
   } else {
-    // Compute centroid
+    // Compute centroid.
     // NOTE: this may be possible to optimize by doing the math once and
-    //     offseting by the diff between a single touches offset/client/page
+    //     offseting by the diff between a single touches offset/client/page.
     this.offsetX_ = this.offsetY_ = 0;
     this.clientX_ = this.clientY_ = 0;
     this.pageX_ = this.pageY_ = 0;

@@ -139,7 +139,7 @@ goog.events.gestures.RotateRecognizer.prototype.reset = function() {
  */
 goog.events.gestures.RotateRecognizer.prototype.angleBetweenTouches_ =
     function(touch0, touch1) {
-  // Note that we may not have been tracking the touch - treat it as a no-op
+  // Note that we may not have been tracking the touch - treat it as a no-op.
   var trackedTouch0 = this.trackedTouches_[touch0.identifier];
   var trackedTouch1 = this.trackedTouches_[touch1.identifier];
   if (!trackedTouch0 || !trackedTouch1) {
@@ -155,7 +155,7 @@ goog.events.gestures.RotateRecognizer.prototype.angleBetweenTouches_ =
   var line1p1x = touch1.pageX;
   var line1p1y = touch1.pageY;
 
-  // Code adapted from Jeff Lamarche's blog
+  // Code adapted from Jeff Lamarche's blog:
   // https://github.com/jlamarche/Old-Blog-Code/blob/master/Better%20Rotate/Classes/RotateViewController.h
   var a = line0p1x - line0p0x;
   var b = line0p1y - line0p0y;
@@ -178,7 +178,7 @@ goog.events.gestures.RotateRecognizer.prototype.angleBetweenTouches_ =
 goog.events.gestures.RotateRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
-  // Stash touch start for distance calculations
+  // Stash touch start for distance calculations.
   for (var n = 0; n < e.changedTouches.length; n++) {
     var touch = e.changedTouches[n];
     this.trackedTouches_[touch.identifier] = {
@@ -191,7 +191,7 @@ goog.events.gestures.RotateRecognizer.prototype.touchesBegan = function(e) {
 
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length > this.maxTouchCount_) {
-      // Exceeded touch count, stop recognizing
+      // Exceeded touch count, stop recognizing.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
@@ -204,37 +204,37 @@ goog.events.gestures.RotateRecognizer.prototype.touchesBegan = function(e) {
  * @override
  */
 goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
-  // Ignore if out of touch range
+  // Ignore if out of touch range.
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
     return;
   }
 
-  // Update centroid
+  // Update centroid.
   this.updateLocation(e.targetTouches);
 
-  // Calculate angle
-  // Always use the first two touches - not ideal, but good enough
+  // Calculate angle.
+  // Always use the first two touches - not ideal, but good enough.
   this.lastAngleDelta_ = this.angleDelta_;
   var touch0 = e.targetTouches[0];
   var touch1 = e.targetTouches[1];
   this.angleDelta_ = this.angleBetweenTouches_(touch0, touch1);
 
-  // TODO(benvanik): a real velocity
+  // TODO(benvanik): a real velocity.
   if (this.lastAngleDelta_) {
     this.velocity_ = this.angleDelta_ / this.lastAngleDelta_;
   } else {
     this.velocity_ = 0;
   }
 
-  // Update all touches
+  // Update all touches.
   // TODO(benvanik): abort this check once we find the first two touches?
   var anyMovedEnough = false;
   for (var n = 0; n < e.targetTouches.length; n++) {
     var touch = e.targetTouches[n];
     var trackedTouch = this.trackedTouches_[touch.identifier];
     if (!trackedTouch) {
-      // May have been cleared - re-add
+      // May have been cleared - re-add.
       trackedTouch = {
         identifier: touch.identifier,
         lastX: touch.pageX,
@@ -244,7 +244,7 @@ goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
       this.trackedTouches_[touch.identifier] = trackedTouch;
     }
 
-    // Compute distance moved
+    // Compute distance moved.
     var dx = touch.pageX - trackedTouch.lastX;
     var dy = touch.pageY - trackedTouch.lastY;
     trackedTouch.lastX = touch.pageX;
@@ -255,12 +255,12 @@ goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
     }
   }
 
-  // Begin if we have moved far enough
+  // Begin if we have moved far enough.
   if (this.getState() == goog.events.gestures.State.POSSIBLE &&
       anyMovedEnough) {
-    // Moved far enough, start (or try to)
+    // Moved far enough, start (or try to).
     // Note that the calculated angle delta is ignored here so that we don't
-    // get a 'pop' when the gesture begins
+    // get a 'pop' when the gesture begins.
     this.angle_ = 0;
     this.angleDelta_ = this.lastAngleDelta_ = 0;
     this.setState(goog.events.gestures.State.BEGAN);
@@ -269,7 +269,7 @@ goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
     }
   } else if (this.getState() == goog.events.gestures.State.CHANGED &&
       this.angleDelta_) {
-    // Normal update
+    // Normal update.
     this.angle_ += this.angleDelta_;
     this.setState(goog.events.gestures.State.CHANGED);
   }
@@ -282,16 +282,16 @@ goog.events.gestures.RotateRecognizer.prototype.touchesMoved = function(e) {
 goog.events.gestures.RotateRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
-      // Still have some valid touches
+      // Still have some valid touches.
       this.updateLocation(e.targetTouches);
 
-      // Reset angle when touches change
+      // Reset angle when touches change.
       var touch0 = e.targetTouches[0];
       var touch1 = e.targetTouches[1];
       var newAngle = this.angleBetweenTouches_(touch0, touch1);
       this.angleDelta_ = this.lastAngleDelta_ = newAngle;
     } else {
-      // Not enough touches
+      // Not enough touches.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }

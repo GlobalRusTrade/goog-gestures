@@ -61,13 +61,13 @@ goog.events.gestures.TouchView = function(target) {
    */
   this.boundHandlers_ = [];
 
-  // Bind to the target DOM element
+  // Bind to the target DOM element.
   goog.asserts.assert(
       !this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_]);
   this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_] = this;
 
-  // Bind all events
-  // The expectation is that if we are created we will be using them soon
+  // Bind all events.
+  // The expectation is that if we are created we will be using them soon.
   this.bindAllEvents_();
 };
 goog.inherits(goog.events.gestures.TouchView, goog.Disposable);
@@ -77,13 +77,13 @@ goog.inherits(goog.events.gestures.TouchView, goog.Disposable);
  * @override
  */
 goog.events.gestures.TouchView.prototype.disposeInternal = function() {
-  // Cleanup any recognizers (if they exist)
+  // Cleanup any recognizers (if they exist).
   this.removeAllGestureRecognizers();
 
-  // Unbind all events
+  // Unbind all events.
   this.unbindAllEvents_();
 
-  // Remove from the DOM
+  // Remove from the DOM.
   goog.asserts.assert(
       this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_]);
   delete this.target_[goog.events.gestures.TouchView.DOM_PROPERTY_];
@@ -126,7 +126,7 @@ goog.events.gestures.TouchView.disposeInstance = function(target) {
   var view = /** @type {goog.events.gestures.TouchView} */ (
       target[goog.events.gestures.TouchView.DOM_PROPERTY_]);
   if (view) {
-    // Dispose and remove from the element
+    // Dispose and remove from the element.
     goog.dispose(view);
   }
 };
@@ -162,7 +162,7 @@ goog.events.gestures.TouchView.prototype.removeGestureRecognizer =
   goog.array.remove(this.recognizers_, recognizer);
   goog.dispose(recognizer);
   if (!this.recognizers_.length) {
-    // last recognizer removed - no need to keep this around
+    // last recognizer removed - no need to keep this around.
     goog.dispose(this);
   }
 };
@@ -200,7 +200,7 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
   //     normalization and more about manipulating them quickly.
   // NOTE: we avoid using goog.bind here as bind has very bad call-through perf.
 
-  // Unbind first
+  // Unbind first.
   if (this.boundHandlers_.length) {
     this.unbindAllEvents_();
   }
@@ -210,7 +210,7 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
    * @param {!TouchEvent} e Event.
    */
   function dispatchEvent(e) {
-    // TODO(benvanik): better logging switch
+    // TODO(benvanik): better logging switch.
     if (goog.DEBUG) {
       window.console.log(e.type, e);
     }
@@ -234,7 +234,7 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
       }
 
       // TODO(benvanik): let the gesture define whether they want to prevent
-      //     default - maybe even a settable attribute
+      //     default - maybe even a settable attribute.
       var state = recognizer.getState();
       switch (state) {
         case goog.events.gestures.State.BEGAN:
@@ -250,7 +250,7 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
     }
   };
 
-  // Bind all events
+  // Bind all events.
   this.bindEventHandler_(goog.events.EventType.TOUCHSTART, dispatchEvent);
   this.bindEventHandler_(goog.events.EventType.TOUCHMOVE, dispatchEvent);
   this.bindEventHandler_(goog.events.EventType.TOUCHEND, dispatchEvent);

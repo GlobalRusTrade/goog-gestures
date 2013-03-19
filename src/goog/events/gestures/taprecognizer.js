@@ -117,7 +117,7 @@ goog.events.gestures.TapRecognizer.prototype.touchesBegan = function(e) {
   }
 
   if (e.targetTouches.length > this.touchCount_) {
-    // Exceeded touch count, no way to recognize
+    // Exceeded touch count, no way to recognize.
     this.setState(goog.events.gestures.State.FAILED);
     return;
   }
@@ -134,19 +134,19 @@ goog.events.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
     return;
   }
 
-  // Grab the latest centroid position
+  // Grab the latest centroid position.
   var oldPageX = this.getPageX();
   var oldPageY = this.getPageY();
   this.updateLocation(e.targetTouches);
   var pageX = this.getPageX();
   var pageY = this.getPageY();
 
-  // Compute distance moved
+  // Compute distance moved.
   var dx = pageX - oldPageX;
   var dy = pageY - oldPageY;
   this.centroidDistance_ += Math.sqrt(dx * dx + dy * dy);
   if (this.centroidDistance_ >= this.getMovementThreshold()) {
-    // Touch has moved too much - fail
+    // Touch has moved too much - fail.
     this.setState(goog.events.gestures.State.FAILED);
     return;
   }
@@ -158,8 +158,8 @@ goog.events.gestures.TapRecognizer.prototype.touchesMoved = function(e) {
  */
 goog.events.gestures.TapRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.events.gestures.State.POSSIBLE) {
-    // TODO(benvanik): tap count
-    // TODO(benvanik): touch count
+    // TODO(benvanik): tap count.
+    // TODO(benvanik): touch count.
     if (e.targetTouches.length + e.changedTouches.length == this.touchCount_) {
       this.setState(goog.events.gestures.State.RECOGNIZED);
       this.reset();

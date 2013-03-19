@@ -181,7 +181,7 @@ goog.events.gestures.PinchRecognizer.prototype.reset = function() {
 goog.events.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
   this.updateLocation(e.targetTouches);
 
-  // Stash touch start for distance calculations
+  // Stash touch start for distance calculations.
   for (var n = 0; n < e.changedTouches.length; n++) {
     var touch = e.changedTouches[n];
     this.trackedTouches_[touch.identifier] = {
@@ -194,7 +194,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
 
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length > this.maxTouchCount_) {
-      // Exceeded touch count, stop recognizing
+      // Exceeded touch count, stop recognizing.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
       return;
@@ -207,17 +207,17 @@ goog.events.gestures.PinchRecognizer.prototype.touchesBegan = function(e) {
  * @override
  */
 goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
-  // Ignore if out of touch range
+  // Ignore if out of touch range.
   if (e.targetTouches.length < this.minTouchCount_ ||
       e.targetTouches.length > this.maxTouchCount_) {
     return;
   }
 
-  // Update centroid
+  // Update centroid.
   this.updateLocation(e.targetTouches);
 
-  // Calculate distance
-  // Always use the first two touches - not ideal, but good enough
+  // Calculate distance.
+  // Always use the first two touches - not ideal, but good enough.
   this.lastDistance_ = this.distance_;
   var touch0 = e.targetTouches[0];
   var touch1 = e.targetTouches[1];
@@ -225,7 +225,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
   var tdy = touch1.pageY - touch0.pageY;
   this.distance_ = Math.sqrt(tdx * tdx + tdy * tdy);
 
-  // TODO(benvanik): a real velocity
+  // TODO(benvanik): a real velocity.
   if (this.lastDistance_) {
     this.velocity_ = this.distance_ / this.lastDistance_;
   } else {
@@ -239,7 +239,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
     var touch = e.targetTouches[n];
     var trackedTouch = this.trackedTouches_[touch.identifier];
     if (!trackedTouch) {
-      // May have been cleared - re-add
+      // May have been cleared - re-add.
       trackedTouch = {
         identifier: touch.identifier,
         lastX: touch.pageX,
@@ -249,7 +249,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
       this.trackedTouches_[touch.identifier] = trackedTouch;
     }
 
-    // Compute distance moved
+    // Compute distance moved.
     var dx = touch.pageX - trackedTouch.lastX;
     var dy = touch.pageY - trackedTouch.lastY;
     trackedTouch.lastX = touch.pageX;
@@ -260,10 +260,10 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
     }
   }
 
-  // Begin if we have moved far enough
+  // Begin if we have moved far enough.
   if (this.getState() == goog.events.gestures.State.POSSIBLE &&
       anyMovedEnough) {
-    // Moved far enough, start (or try to)
+    // Moved far enough, start (or try to).
     this.lastDistance_ = this.distance_;
     this.setState(goog.events.gestures.State.BEGAN);
     if (this.getState() == goog.events.gestures.State.BEGAN) {
@@ -272,7 +272,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
     }
   } else if (this.getState() == goog.events.gestures.State.CHANGED &&
       this.distance_ != this.lastDistance_) {
-    // Normal update
+    // Normal update.
     this.scale_ *= this.distance_ / this.lastDistance_;
     this.setState(goog.events.gestures.State.CHANGED);
   }
@@ -285,10 +285,10 @@ goog.events.gestures.PinchRecognizer.prototype.touchesMoved = function(e) {
 goog.events.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
   if (this.getState() == goog.events.gestures.State.CHANGED) {
     if (e.targetTouches.length >= this.minTouchCount_) {
-      // Still have some valid touches
+      // Still have some valid touches.
       this.updateLocation(e.targetTouches);
 
-      // Reset distance when touches change
+      // Reset distance when touches change.
       var touch0 = e.targetTouches[0];
       var touch1 = e.targetTouches[1];
       var tdx = touch1.pageX - touch0.pageX;
@@ -296,7 +296,7 @@ goog.events.gestures.PinchRecognizer.prototype.touchesEnded = function(e) {
       var newDistance = Math.sqrt(tdx * tdx + tdy * tdy);
       this.distance_ = this.lastDistance_ = newDistance;
     } else {
-      // Not enough touches
+      // Not enough touches.
       this.setState(goog.events.gestures.State.ENDED);
       this.reset();
     }
