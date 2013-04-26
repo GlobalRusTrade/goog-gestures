@@ -106,7 +106,7 @@ Properties:
 var boxElement = document.getElementById('box');
 goog.events.gestures.attachTapGesture(boxElement, function(gesture) {
   // Check to see if the gesture was recognized
-  if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+  if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
     alert('tapped!');
   }
 });
@@ -122,14 +122,14 @@ goog.events.gestures.unattachAllGestures(boxElement);
 var boxElement = document.getElementById('box');
 goog.events.gestures.attachTapGesture(boxElement, function(gesture) {
   // Check to see if the gesture was recognized
-  if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
+  if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
     alert('tapped!');
   }
 });
 goog.events.gestures.attachSwipeGesture(boxElement, function(gesture) {
   // Check to see if the gesture was recognized
-  if (gesture.getState() == goog.dom.gestures.State.RECOGNIZED) {
-    if (gesture.getDirection() == goog.dom.gestures.Direction.RIGHT) {
+  if (gesture.getState() == goog.events.gestures.State.RECOGNIZED) {
+    if (gesture.getDirection() == goog.events.gestures.Direction.RIGHT) {
       alert('swiped right!');
     }
   }
