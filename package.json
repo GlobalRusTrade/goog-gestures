@@ -1,0 +1,12 @@
+{
+  "name": "goog-gestures",
+  "version": "1.0.0",
+  "description": "A simple Closure touch gesture library.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c7s/goog-gestures.git"
+  },
+  "author": "Ben Vanik",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/c7s/goog-gestures#readme"
+}
