@@ -210,7 +210,6 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
    * @param {!TouchEvent} e Event.
    */
   function dispatchEvent(e) {
-    var preventDefault = false;
     for (var n = 0; n < recognizers.length; n++) {
       var recognizer = recognizers[n];
       switch (e.type) {
@@ -227,21 +226,6 @@ goog.events.gestures.TouchView.prototype.bindAllEvents_ = function() {
           recognizer.touchesCancelled(e);
           break;
       }
-
-      // TODO(benvanik): let the gesture define whether they want to prevent
-      //     default - maybe even a settable attribute.
-      var state = recognizer.getState();
-      switch (state) {
-        case goog.events.gestures.State.BEGAN:
-        case goog.events.gestures.State.CHANGED:
-        case goog.events.gestures.State.ENDED:
-          preventDefault = true;
-          break;
-      }
-    }
-
-    if (preventDefault) {
-      e.preventDefault();
     }
   };
 
